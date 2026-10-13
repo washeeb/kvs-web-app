@@ -1,0 +1,100 @@
+name: Build deploy bundle
+
+# On every push to main: checks + unit tests and end-to-end/accessibility tests run in parallel; only if both
+# pass is the shared-hosting bundle built on Linux and appended to the `deploy` branch. cPanel → Git Version
+# Control tracks that branch; "Deploy HEAD Commit" runs deploy-hooks/cpanel-deploy.sh (docs/deploy-inmotion.md).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-bundle
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - name: Dependency audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=high
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Demo database and local secrets (CI only)
+        run: npm run setup
+      - run: npx next build
+      - run: npx playwright test
+      - name: Keep the report when tests fail
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  bundle:
+    needs: [checks, e2e]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build bundle
+        run: node scripts/package-shared.mjs --no-zip
+        env:
+          # Build-time only; the server uses its own key from .env.production.
+          APP_ENCRYPTION_KEY: Y2ktb25seS1rZXktY2ktb25seS1rZXktMzJieXRlcyE=
+      - name: Publish to deploy branch
+        # Adds a commit on top of the existing `deploy` branch (never rewrites it), so cPanel's
+        # "Update from Remote" can always fast-forward.
+        env:
+          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          rm -f .next/standalone/.env .next/standalone/.env.local .next/standalone/.env.production
+          DEST="$RUNNER_TEMP/deploy"
+          if git clone -q --depth 1 --branch deploy "$REMOTE" "$DEST"; then
+            echo "Updating existing deploy branch"
+          else
+            git init -q -b deploy "$DEST"
+          fi
+          rsync -a --delete --exclude '.git' .next/standalone/ "$DEST/"
+          cd "$DEST"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -f .
+          if git diff --cached --quiet; then
+            echo "Bundle unchanged; nothing to publish" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git commit -q -m "Bundle for ${GITHUB_SHA::7}: $(git -C "$GITHUB_WORKSPACE" log -1 --format=%s)"
+          git push -q "$REMOTE" HEAD:deploy
+          echo "Published deploy branch for ${GITHUB_SHA::7}" >> "$GITHUB_STEP_SUMMARY"

@@ -1,7 +1,7 @@
 # KingsView Solutions (KVS) — Web App Master Plan
 
 > Living specification. Update **Status**, **Decisions** and **Progress log** as work lands.
-> Last updated: 2026-10-13 · Current milestone: **K1 — Foundation, website, shop, back office** · Next: K2 (SES link, Paystack)
+> Last updated: 2026-10-13 · **K1 and K2 built and tested** (website, shop, back office, SES link, Paystack in test mode) · Next: K3 go-live (needs the KingsView domain)
 
 ---
 
@@ -67,16 +67,19 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 6. Milestones
 
-### K1 — Foundation, website, shop, back office *(in progress)*
-- [ ] Scaffold from SES foundation, KVS branding, fresh schema and seed
-- [ ] Public site: services (9), shop, enquiry/quote forms, contact, privacy
-- [ ] Shop: catalogue, cart, guest checkout, order tracking link, invoice, offline payment instructions
-- [ ] Back office: dashboard, enquiries, customers, catalogue & stock, orders, quotations, jobs, invoices & payments, users & roles, settings, audit
-- [ ] Tests (unit + e2e + axe), CI, docs
+### K1 — Foundation, website, shop, back office *(built 2026-10-13)*
+- [x] Scaffold from the SES foundation (auth + TOTP, permission engine, nonce CSP, jobs, mail, audit, packaging, CI); KingsView branding from `Identity/` (red #B00101 / black); fresh PG13-compatible schema (`drizzle/0000_init.sql`); reference seed for production, labelled demo seed for development
+- [x] Public site: home, 9 service pages each with a request form, services list, contact, privacy, shop, cart, guest checkout, private order page (`/order/<token>`; only a SHA-256 of the token is stored)
+- [x] Shop: cookie cart (ids + quantities only), re-priced from the database, Ghana taxes, stock reserved under row locks, invoice issued at checkout, online order limit (GHS 20,000 default; larger orders by quotation), pickup or delivery, e-mail with the tracking link
+- [x] Back office (`/admin`): dashboard; enquiries (assign, status, → customer → quotation); customers with history; quotations (catalogue + custom lines, discount, printable, e-mail, accept → order + invoice + optional job, decline); orders (confirm → ready → completed; cancel releases stock and voids the unpaid invoice; expiry job); service jobs (schedule with assignee and customer e-mail, start, complete with note, cancel); products & stock (options with price and cost, receive / count with ledger); invoices & payments (manual MoMo/bank/cash/cheque with two-step verification, never above the balance, two-person reversal, void rules); staff & roles with second-admin approval for sensitive roles; settings; audit; exports; notifications
+- [x] Roles: Owner, Manager, Sales & front desk, Store & stock, Technician, Accounts, Read-only auditor
+- [x] Tests: 32 unit/integration/contract tests; Playwright + axe suite for public and staff pages and the key flows (runs in CI); local browser check of public pages, checkout → order page → invoice, store and sales back office
 
-### K2 — SES link and online payments
-- [ ] SES contract v1 partner side: signed outbox + delivery with retries, inbound SES events (signature, replay, duplicates), SES orders in the back office, fulfilment updates back to SES; contract tests against the SES endpoint format
-- [ ] Paystack checkout + webhook (test mode until keys)
+### K2 — SES link and online payments *(built 2026-10-13)*
+- [x] SES contract v1, partner side (`docs/ses-link.md`): transactional outbox; HMAC-SHA256 `SES-Signature` exactly as SES verifies; retries on 429/5xx; stop + alert on other 4xx; per-entity increasing versions; manual retry and full resync. Inbound `/api/ses/events`: signature, ±300 s window, 415/413 checks, de-duplication, SES orders at cost with stock reservation, unknown or short lines rejected back to SES, fulfilment updates accepted → shipped → delivered / rejected, SES cancellations
+- [x] Contract test against SES's own schemas and signature code (vendored copy, with a drift check against the SES repository when it is next to this one)
+- [x] Paystack on KingsView's own account: pay the invoice balance from the private order page, HMAC-SHA512 webhook, verify-API confirmation, amount/currency checks, test-mode label; stays off until a key is set
+- Found while building: SES line ids are UUIDs (the contract doc does not say so) and SES limits product names to 200 characters — both handled
 
 ### K3 — Go live
 - [ ] Domain + InMotion add-on domain, database, Node app, cron; GitHub repo and deploy pipeline
@@ -92,6 +95,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 | Q4 | KingsView Paystack account | Waiting for owner |
 | Q5 | Data Protection Commission registration for KingsView | Waiting for owner |
 
-## 7. Progress log
+## 8. Progress log
 
+- 2026-10-13 — K1 + K2 built: 32 tests passing (shop/orders/payments, quotations/jobs/roles, Paystack, SES link behaviour, SES contract, sign-in security). Local browser check: all public pages 200, guest checkout → order page with invoice and taxes, store and sales back office, no console errors.
 - 2026-10-13 — Plan created. Foundation copied from SES (commit `ac7f5e0`) into `E:\Businesses\1.KingsView\KVS-Web-App`.

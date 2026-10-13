@@ -1,0 +1,108 @@
+/**
+ * KingsView service lines (from KingsView, 2026-10-13). Copy describes what each line covers;
+ * it makes no claims about clients, years in business or certifications — add those once confirmed.
+ */
+export interface ServiceLine {
+  slug: string;
+  title: string;
+  short: string;
+  summary: string;
+  includes: string[];
+  /** quote = enquiry → quotation/booking; shop = buy online; both = shop items plus custom work */
+  sold: "quote" | "shop" | "both";
+  /** Shop category slugs that belong to this line. */
+  shopCategories?: string[];
+  /** Wording for the request button. */
+  cta: string;
+}
+
+export const SERVICE_LINES: ServiceLine[] = [
+  {
+    slug: "web-software-development",
+    title: "Website & software development",
+    short: "Websites, web apps and business software",
+    summary: "Websites and web applications built for your business — from a clear company website to online shops and custom systems that save your team time.",
+    includes: ["Company websites and landing pages", "Online shops", "Web and business applications", "Domain, hosting and e-mail set-up", "Maintenance and updates"],
+    sold: "quote",
+    cta: "Request a quotation",
+  },
+  {
+    slug: "branding-advertising",
+    title: "Branding & advertising",
+    short: "Logos, brand identity and campaigns",
+    summary: "A recognisable brand and the material to promote it — identity design, campaign artwork and social media content.",
+    includes: ["Logo and brand identity", "Brand guidelines", "Advertising and campaign design", "Social media graphics", "Signage design"],
+    sold: "quote",
+    cta: "Request a quotation",
+  },
+  {
+    slug: "design-printing",
+    title: "Design & printing",
+    short: "Business print, from design to delivery",
+    summary: "Design and printing for everyday business needs, with proofs for your approval before anything is printed.",
+    includes: ["Business cards and letterheads", "Flyers, brochures and posters", "Banners and roll-ups", "Stickers and labels", "Invoices, receipts and forms"],
+    sold: "quote",
+    cta: "Request a quotation",
+  },
+  {
+    slug: "cctv-installation",
+    title: "Sales & installation of CCTV cameras",
+    short: "CCTV supply, installation and support",
+    summary: "Security camera systems for homes, shops and offices — supplied, installed and configured so you can view them on your phone.",
+    includes: ["Site survey and system design", "Cameras, recorders (DVR/NVR) and storage", "Cabling and installation", "Remote viewing set-up", "Maintenance and repairs"],
+    sold: "both",
+    shopCategories: ["cctv"],
+    cta: "Book a site survey",
+  },
+  {
+    slug: "office-supplies",
+    title: "Office supplies",
+    short: "Stationery and everyday office essentials",
+    summary: "Stationery, paper and office essentials for businesses and schools, with delivery or pickup.",
+    includes: ["Paper and notebooks", "Pens, files and folders", "Printer ink and toner", "Desk and filing accessories"],
+    sold: "shop",
+    shopCategories: ["office-supplies"],
+    cta: "Shop office supplies",
+  },
+  {
+    slug: "photography-videography",
+    title: "Photography & videography",
+    short: "Events, corporate and product shoots",
+    summary: "Photography and video for events, businesses and products, with edited files delivered digitally.",
+    includes: ["Event coverage", "Corporate and staff portraits", "Product photography", "Promotional and event videos", "Editing"],
+    sold: "quote",
+    cta: "Book a shoot",
+  },
+  {
+    slug: "computer-training-consultancy",
+    title: "Computer training & consultancy",
+    short: "Practical IT skills and advice",
+    summary: "Practical computer training for individuals and staff, and IT advice for businesses choosing systems and equipment.",
+    includes: ["Computer basics and office software", "Staff training sessions", "IT advice and planning", "Equipment and software recommendations"],
+    sold: "quote",
+    cta: "Book training or advice",
+  },
+  {
+    slug: "souvenirs-uniforms-promotional",
+    title: "Souvenirs, uniforms & promotional items",
+    short: "Branded merchandise and uniforms",
+    summary: "Branded items for events, staff and customers — from uniforms and T-shirts to mugs, pens and gifts.",
+    includes: ["Uniforms and branded clothing", "T-shirts and caps", "Mugs, pens and keyholders", "Event souvenirs and gift items"],
+    sold: "both",
+    shopCategories: ["souvenirs-promotional"],
+    cta: "Request branded items",
+  },
+  {
+    slug: "tech-networking-it-supplies",
+    title: "Sales of tech, networking & IT supplies",
+    short: "Computers, accessories and network gear",
+    summary: "Computers, accessories and networking equipment for homes and businesses, with advice on what fits your needs.",
+    includes: ["Laptops, desktops and accessories", "Routers, switches and access points", "Cables, connectors and storage", "Power protection (UPS, surge protectors)"],
+    sold: "shop",
+    shopCategories: ["computers-accessories", "networking"],
+    cta: "Shop tech & IT",
+  },
+];
+
+export const serviceBySlug = (slug: string | null | undefined) => SERVICE_LINES.find((s) => s.slug === slug) ?? null;
+export const serviceTitle = (slug: string | null | undefined) => serviceBySlug(slug)?.title ?? "General";

@@ -15,9 +15,9 @@ if (!email || !/^[^@\s]+@[^@\s]+$/.test(email) || !name) {
   process.exit(1);
 }
 const { db, close } = createDb(DATABASE_URL);
-const [ses] = await db.select().from(organizations).where(eq(organizations.type, "operator"));
-const [set] = await db.select().from(permissionSets).where(and(eq(permissionSets.key, "platform_admin"), isNull(permissionSets.organizationId)));
-if (!ses || !set) {
+const [org] = await db.select().from(organizations).where(eq(organizations.type, "operator"));
+const [set] = await db.select().from(permissionSets).where(and(eq(permissionSets.key, "owner"), isNull(permissionSets.organizationId)));
+if (!org || !set) {
   console.error("Run `npm run db:seed` (reference data) first.");
   process.exit(1);
 }
@@ -25,8 +25,8 @@ const normalized = email.toLowerCase();
 const [existing] = await db.select().from(users).where(eq(users.email, normalized));
 const [user] = existing
   ? [existing]
-  : await db.insert(users).values({ email: normalized, name, organizationId: ses.id, passwordHash: await hashPassword(randomToken(24)) }).returning();
-await db.insert(roleAssignments).values({ userId: user!.id, permissionSetId: set.id, organizationId: ses.id }).onConflictDoNothing();
+  : await db.insert(users).values({ email: normalized, name, organizationId: org.id, passwordHash: await hashPassword(randomToken(24)) }).returning();
+await db.insert(roleAssignments).values({ userId: user!.id, permissionSetId: set.id, organizationId: org.id }).onConflictDoNothing();
 const token = randomToken(32);
 await db.insert(passwordResetTokens).values({ userId: user!.id, tokenHash: sha256(token), expiresAt: new Date(Date.now() + 30 * 60_000) });
 await audit(db, { action: "admin.bootstrap", targetType: "user", targetId: user!.id, data: { email: normalized } });

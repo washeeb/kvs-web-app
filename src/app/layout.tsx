@@ -6,9 +6,9 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.APP_URL ?? "https://synclyticsenterprisesystems.com"),
-  title: { default: "Synclytics Enterprise Systems", template: "%s · Synclytics Enterprise Systems" },
-  description: "Enterprise software, integration, infrastructure, networks, security, hardware and data solutions for businesses and institutions in Ghana.",
+  metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
+  title: { default: "KingsView Solutions", template: "%s · KingsView Solutions" },
+  description: "Websites and software, branding, design and printing, CCTV, office supplies, photography, training, branded items and IT supplies in Ghana.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

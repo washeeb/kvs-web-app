@@ -1,22 +1,21 @@
-import { and, desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createHmac } from "node:crypto";
+import { z } from "zod";
 import type { DB } from "../../db/client";
-import { invoices, orders, payments } from "../../db/schema";
-import { authorize, can, type Actor } from "../../authz/policy";
+import { invoices, payments } from "../../db/schema";
 import { randomToken, safeEqual } from "../../lib/crypto";
 import { conflict, invalid, notFound } from "../../lib/errors";
 import { log } from "../../lib/log";
+import { enforce } from "../../auth/rate-limit";
 import { audit } from "../audit";
 import { publish } from "../events";
 import { enqueue } from "../jobs";
-import { clearReservationExpiry } from "../inventory";
-import { applyOnlinePayment, balanceOf, invoiceForOrder, OPEN_STATUSES } from "../invoices";
-import { announce } from "../notifications";
+import { applyOnlinePayment, balanceOf, OPEN_STATUSES } from "../invoices";
+import { getOrderByTracking } from "../orders";
 
 /**
- * Paystack (cards and mobile money, GHS). Only test keys (sk_test_…) are expected until SES goes live.
- * Payment truth comes from Paystack's verify API, triggered by the signed webhook or the return page —
- * never from the browser redirect alone.
+ * Paystack (cards and mobile money, GHS) on KingsView's own account. Test keys (sk_test_…) until KingsView goes live.
+ * A payment only counts once KingsView has verified it with Paystack's API — never from the browser redirect alone.
  */
 const API = "https://api.paystack.co";
 
@@ -32,70 +31,37 @@ export function paystackConfig() {
   };
 }
 
-const PAYABLE_ORDER_STATUSES = ["pending", "confirmed"];
+const emailSchema = z.string().trim().toLowerCase().email("Enter an e-mail address for your Paystack receipt.").max(200);
 
-export async function listPayments(db: DB, orderId: string) {
-  return db.select().from(payments).where(eq(payments.orderId, orderId)).orderBy(desc(payments.createdAt));
-}
-
-/** Starts a Paystack checkout for an order and returns the hosted payment page URL. Pays the order's invoice when it has one. */
-export async function startPaystackCheckout(db: DB, actor: Actor, orderId: string, appUrl: string, fetchImpl: FetchLike = fetch as unknown as FetchLike) {
+/**
+ * Starts checkout for the outstanding balance of a shop order's invoice. The customer is identified by the
+ * private tracking token, so no account is needed. Returns the Paystack payment page URL.
+ */
+export async function startOrderPayment(db: DB, token: string, emailInput: string, appUrl: string, ip: string | null, fetchImpl: FetchLike = fetch as unknown as FetchLike) {
   const cfg = paystackConfig();
   if (!cfg) throw invalid("Online payment is not available yet.");
-  const [order] = await db.select().from(orders).where(eq(orders.id, orderId));
-  if (!order || !can(actor, "customer.orders.read", { organizationId: order.customerOrgId })) throw notFound("Order not found.");
-  authorize(actor, "customer.orders.pay", { organizationId: order.customerOrgId });
-  if (!PAYABLE_ORDER_STATUSES.includes(order.status)) throw conflict("This order can no longer be paid online.");
-  if (order.paymentStatus === "paid") throw conflict("This order is already paid.");
-  const inv = await invoiceForOrder(db, orderId);
-  if (inv) return startInvoicePayment(db, actor, inv.id, appUrl, fetchImpl, `/portal/orders/${orderId}`);
-  // Orders placed before invoicing existed are paid in full against the order.
-  return initialize(db, actor, cfg, fetchImpl, { orderId, invoiceId: null, amountMinor: order.totalMinor, currency: order.currency, label: order.number, callback: `${appUrl}/portal/orders/${orderId}` });
-}
-
-/** Starts a Paystack checkout for the full outstanding balance of an invoice. */
-export async function startInvoicePayment(db: DB, actor: Actor, invoiceId: string, appUrl: string, fetchImpl: FetchLike = fetch as unknown as FetchLike, returnPath?: string) {
-  const cfg = paystackConfig();
-  if (!cfg) throw invalid("Online payment is not available yet.");
-  const [inv] = await db.select().from(invoices).where(eq(invoices.id, invoiceId));
-  const visible = inv && (can(actor, "customer.invoices.read", { organizationId: inv.customerOrgId }) || can(actor, "customer.orders.read", { organizationId: inv.customerOrgId }));
-  if (!inv || !visible) throw notFound("Invoice not found.");
-  authorize(actor, "customer.orders.pay", { organizationId: inv.customerOrgId });
-  if (!OPEN_STATUSES.includes(inv.status)) throw conflict(inv.status === "paid" ? "This invoice is already paid." : "This invoice can no longer be paid.");
-  return initialize(db, actor, cfg, fetchImpl, {
-    orderId: inv.orderId,
-    invoiceId: inv.id,
-    amountMinor: balanceOf(inv),
-    currency: inv.currency,
-    label: inv.number,
-    callback: `${appUrl}${returnPath ?? `/portal/invoices/${inv.id}`}`,
-  });
-}
-
-async function initialize(
-  db: DB,
-  actor: Actor,
-  cfg: NonNullable<ReturnType<typeof paystackConfig>>,
-  fetchImpl: FetchLike,
-  t: { orderId: string | null; invoiceId: string | null; amountMinor: number; currency: string; label: string; callback: string },
-) {
-  if (t.currency !== "GHS") throw invalid("Online payment currently supports GHS only.");
-  const reference = `SES-${t.label}-${randomToken(6).replace(/[^A-Za-z0-9]/g, "x")}`;
-  const [payment] = await db
-    .insert(payments)
-    .values({ orderId: t.orderId, invoiceId: t.invoiceId, provider: "paystack", reference, amountMinor: t.amountMinor, currency: t.currency, mode: cfg.mode, initiatedBy: actor.userId })
-    .returning();
+  await enforce(db, `paystack:ip:${ip ?? "unknown"}`, 20, 60 * 60);
+  const found = await getOrderByTracking(db, token);
+  if (!found?.invoice) throw notFound("Order not found.");
+  const { order, invoice } = found;
+  if (!["pending", "confirmed", "ready"].includes(order.status)) throw conflict("This order can no longer be paid online.");
+  if (!OPEN_STATUSES.includes(invoice.status)) throw conflict(invoice.status === "paid" ? "This order is already paid." : "This order can no longer be paid online.");
+  if (invoice.currency !== "GHS") throw invalid("Online payment supports GHS only.");
+  const email = emailSchema.parse(order.contactEmail || emailInput);
+  const amount = balanceOf(invoice);
+  const reference = `KVS-${invoice.number}-${randomToken(6).replace(/[^A-Za-z0-9]/g, "x")}`;
+  const [payment] = await db.insert(payments).values({ invoiceId: invoice.id, provider: "paystack", reference, amountMinor: amount, currency: invoice.currency, mode: cfg.mode }).returning();
   const res = await fetchImpl(`${API}/transaction/initialize`, {
     method: "POST",
     headers: { authorization: `Bearer ${cfg.secret}`, "content-type": "application/json" },
     body: JSON.stringify({
-      email: actor.email,
-      amount: t.amountMinor, // pesewas
-      currency: t.currency,
+      email,
+      amount, // pesewas
+      currency: invoice.currency,
       reference,
       channels: cfg.channels,
-      callback_url: `${t.callback}?payment=${encodeURIComponent(reference)}`,
-      metadata: { reference_label: t.label, payment_id: payment!.id },
+      callback_url: `${appUrl}/order/${token}?payment=${encodeURIComponent(reference)}`,
+      metadata: { order_number: order.number, invoice_number: invoice.number },
     }),
     signal: AbortSignal.timeout(15_000),
   });
@@ -103,20 +69,19 @@ async function initialize(
   const url = body?.data?.authorization_url;
   if (!res.ok || !body?.status || !url || !/^https:\/\/([a-z0-9-]+\.)*paystack\.(com|co)\//.test(url)) {
     await db.update(payments).set({ status: "failed", failureReason: `initialize failed: ${body?.message ?? res.status}` }).where(eq(payments.id, payment!.id));
-    log.warn("paystack.initialize_failed", { label: t.label, status: res.status, message: body?.message });
+    log.warn("paystack.initialize_failed", { order: order.number, status: res.status, message: body?.message });
     throw invalid("The payment provider could not start the payment. Please try again shortly.");
   }
-  await audit(db, { actor, action: "payment.initialized", targetType: t.invoiceId ? "invoice" : "order", targetId: (t.invoiceId ?? t.orderId)!, data: { reference, amountMinor: t.amountMinor, mode: cfg.mode } });
+  await audit(db, { action: "payment.initialized", targetType: "invoice", targetId: invoice.id, ip, data: { reference, amountMinor: amount, mode: cfg.mode } });
   return url;
 }
 
-/** HMAC-SHA512 of the raw body with the secret key, hex-encoded, in `x-paystack-signature`. */
 export function verifyPaystackSignature(secret: string, rawBody: string, signature: string | null) {
   if (!signature) return false;
   return safeEqual(createHmac("sha512", secret).update(rawBody).digest("hex"), signature);
 }
 
-/** Webhook entry point: verify, queue, acknowledge. */
+/** Webhook entry point: verify the HMAC-SHA512 signature, queue verification, acknowledge. */
 export async function receivePaystackWebhook(db: DB, rawBody: string, signature: string | null) {
   const cfg = paystackConfig();
   if (!cfg) return { status: 503 };
@@ -137,68 +102,42 @@ export async function receivePaystackWebhook(db: DB, rawBody: string, signature:
   return { status: 200 };
 }
 
-/**
- * Confirms a payment with Paystack's verify endpoint and applies it once.
- * Idempotent: safe to call from the webhook job and the customer's return page.
- */
+/** Confirms a payment with Paystack's verify API and applies it once. Safe to call from the job and the return page. */
 export async function verifyAndApplyPayment(db: DB, reference: string, fetchImpl: FetchLike = fetch as unknown as FetchLike) {
   const cfg = paystackConfig();
   if (!cfg) throw new Error("Paystack is not configured");
   const [payment] = await db.select().from(payments).where(eq(payments.reference, reference));
   if (!payment) return "unknown_reference" as const;
   if (payment.status === "success") return "already_applied" as const;
-
-  const res = await fetchImpl(`${API}/transaction/verify/${encodeURIComponent(reference)}`, {
-    headers: { authorization: `Bearer ${cfg.secret}` },
-    signal: AbortSignal.timeout(15_000),
-  });
-  if (!res.ok) throw new Error(`Paystack verify responded ${res.status}`); // retried by the job queue
-  const body = (await res.json()) as { data?: { status?: string; amount?: number; currency?: string; id?: number; channel?: string; paid_at?: string; gateway_response?: string } };
-  const d = body.data ?? {};
+  const res = await fetchImpl(`${API}/transaction/verify/${encodeURIComponent(reference)}`, { headers: { authorization: `Bearer ${cfg.secret}` }, signal: AbortSignal.timeout(15_000) });
+  if (!res.ok) throw new Error(`Paystack verify responded ${res.status}`);
+  const d = ((await res.json()) as { data?: { status?: string; amount?: number; currency?: string; id?: number; channel?: string; paid_at?: string; gateway_response?: string } }).data ?? {};
   if (d.status !== "success") {
-    if (d.status === "failed" || d.status === "abandoned") {
-      await db.update(payments).set({ status: d.status, failureReason: d.gateway_response ?? null }).where(eq(payments.id, payment.id));
-    }
+    if (d.status === "failed" || d.status === "abandoned") await db.update(payments).set({ status: d.status, failureReason: d.gateway_response ?? null }).where(eq(payments.id, payment.id));
     return "not_successful" as const;
   }
   if (d.amount !== payment.amountMinor || d.currency !== payment.currency) {
     await db.update(payments).set({ status: "amount_mismatch", failureReason: `paid ${d.amount} ${d.currency}, expected ${payment.amountMinor} ${payment.currency}` }).where(eq(payments.id, payment.id));
-    await audit(db, { action: "payment.amount_mismatch", targetType: payment.invoiceId ? "invoice" : "order", targetId: (payment.invoiceId ?? payment.orderId)!, data: { reference, paid: d.amount, currency: d.currency } });
+    await audit(db, { action: "payment.amount_mismatch", targetType: "invoice", targetId: payment.invoiceId, data: { reference, paid: d.amount, currency: d.currency } });
     return "amount_mismatch" as const;
   }
-
-  const order = await db.transaction(async (tx) => {
+  await db.transaction(async (tx) => {
     const [p] = await tx.select().from(payments).where(eq(payments.id, payment.id)).for("update");
-    if (p!.status === "success") return null;
+    if (p!.status === "success") return;
     await tx
       .update(payments)
-      .set({ status: "success", providerTransactionId: d.id ? String(d.id) : null, channel: d.channel ?? null, method: d.channel ?? null, paidAt: d.paid_at ? new Date(d.paid_at) : new Date() })
+      .set({ status: "success", providerTransactionId: d.id ? String(d.id) : null, method: d.channel ?? null, paidAt: d.paid_at ? new Date(d.paid_at) : new Date() })
       .where(eq(payments.id, payment.id));
-    if (p!.invoiceId) {
-      await applyOnlinePayment(tx, p!.invoiceId, { id: p!.id, amountMinor: p!.amountMinor, reference });
-      await audit(tx, { action: "payment.succeeded", targetType: "invoice", targetId: p!.invoiceId, data: { reference, amountMinor: payment.amountMinor, channel: d.channel, mode: payment.mode } });
-      const [inv] = await tx.select({ customerOrgId: invoices.customerOrgId }).from(invoices).where(eq(invoices.id, p!.invoiceId));
-      return inv ?? null;
-    }
-    const orderId = payment.orderId!;
-    const [o] = await tx
-      .update(orders)
-      .set({ paymentStatus: "paid", paidAt: new Date() })
-      .where(and(eq(orders.id, orderId), eq(orders.paymentStatus, "unpaid")))
-      .returning();
-    if (!o) {
-      // Order was already paid by an earlier transaction: money must go back to the customer.
-      await audit(tx, { action: "payment.duplicate_needs_refund", targetType: "order", targetId: orderId, data: { reference, amountMinor: payment.amountMinor } });
-    }
-    // A paid order keeps its stock until fulfilled or cancelled.
-    await clearReservationExpiry(tx, orderId);
-    await audit(tx, { action: "payment.succeeded", targetType: "order", targetId: orderId, data: { reference, amountMinor: payment.amountMinor, channel: d.channel, mode: payment.mode } });
-    return o ?? null;
+    await applyOnlinePayment(tx, p!.invoiceId, { amountMinor: p!.amountMinor, reference });
+    await audit(tx, { action: "payment.succeeded", targetType: "invoice", targetId: p!.invoiceId, data: { reference, amountMinor: p!.amountMinor, channel: d.channel, mode: p!.mode } });
   });
-  if (order) {
-    publish({ topic: "orders", orgIds: [order.customerOrgId] });
-    publish({ topic: "invoices", orgIds: [order.customerOrgId] });
-    announce();
-  }
+  publish({ topic: "invoices" });
+  publish({ topic: "orders" });
   return "applied" as const;
+}
+
+export async function invoicePaymentsPublic(db: DB, invoiceId: string) {
+  const [inv] = await db.select().from(invoices).where(eq(invoices.id, invoiceId));
+  if (!inv) return [];
+  return db.select({ reference: payments.reference, status: payments.status, amountMinor: payments.amountMinor, paidAt: payments.paidAt, mode: payments.mode }).from(payments).where(eq(payments.invoiceId, invoiceId));
 }

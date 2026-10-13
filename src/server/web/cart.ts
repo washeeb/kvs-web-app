@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { parseCart, type Cart } from "../modules/store";
+import { parseCart, type Cart } from "../modules/shop";
 
 /** The cart lives in an httpOnly cookie: variant ids and quantities only, re-priced on every read. */
 export const CART_COOKIE = "ses_cart";

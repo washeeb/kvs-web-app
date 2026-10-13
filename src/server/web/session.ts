@@ -58,7 +58,8 @@ export const getSessionState = cache(async (): Promise<SessionState | null> => {
 });
 
 export function homeFor(actor: Actor) {
-  return actor.organizationType === "operator" ? "/ops" : actor.organizationType === "partner" ? "/partner" : "/portal";
+  void actor;
+  return "/admin";
 }
 
 /** Guards a server component or action. Redirects instead of throwing. */

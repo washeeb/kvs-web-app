@@ -9,21 +9,17 @@ export default async function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-3xl font-bold text-slate-900">Privacy notice</h1>
-      <p className="mt-3 text-sm text-slate-500">
+      <p className="mt-3 text-sm text-slate-600">
         {s.companyName} processes personal data in line with Ghana&apos;s Data Protection Act, 2012 (Act 843).
         {s.dpcRegistrationNumber && <> Registered with the Data Protection Commission, registration no. <strong>{s.dpcRegistrationNumber}</strong>.</>}
       </p>
       <div className="mt-6 space-y-4 text-slate-700">
-        <p>We collect the details you give us in enquiry and account forms (name, e-mail, phone, organisation and your message) to respond to you and provide services.</p>
-        <p>Account activity is logged for security, including sign-ins and changes to records. Access to personal data is limited to staff who need it.</p>
-        <p>Online payments are processed by Paystack; we do not store card details. We do not sell personal data. Partner companies only receive what is needed to fulfil an order you place.</p>
-        {s.aiEnabled && (
-          <p>
-            Our support staff may use an AI service to suggest replies to support tickets. Only the text of your ticket is sent, with e-mail addresses and phone numbers removed; staff check every suggestion and the AI never acts on your account.
-          </p>
-        )}
+        <p>We collect the details you give us in request and order forms — name, phone, e-mail, organisation, delivery address and your message — to reply to you, deliver orders and provide services.</p>
+        <p>Online payments are processed by Paystack; we never see or store card details. Mobile money and bank payments are recorded with their transaction reference only.</p>
+        <p>We do not sell personal data. When Synclytics Enterprise Systems orders goods from us for its own customers, we receive only the items and quantities — not their customers&apos; personal details.</p>
+        <p>Staff access to personal data is limited to what each role needs and is logged.</p>
         <p>
-          To ask for a copy, correction or deletion of your data, contact <a className="text-teal-700 hover:underline" href={`mailto:${s.supportEmail}`}>{s.supportEmail}</a>.
+          To ask for a copy, correction or deletion of your data, contact <a className="text-teal-700 underline" href={`mailto:${s.contactEmail}`}>{s.contactEmail}</a>.
         </p>
       </div>
     </div>

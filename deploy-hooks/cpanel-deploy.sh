@@ -5,12 +5,11 @@
 set -euo pipefail
 
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
-APP="${SES_APP_DIR:-$HOME/ses-app}"
+# KingsView shares the InMotion account with Synclytics, so it has its own folder (never ~/ses-app).
+APP="${KVS_APP_DIR:-$HOME/kvs-app}"
 echo "Deploying $(git -C "$SRC" log -1 --format='%h %s' 2>/dev/null || echo bundle) → $APP"
 
 mkdir -p "$APP"
-# Uploaded documents live beside the app, never inside it (rsync --delete would remove them).
-mkdir -p "$HOME/ses-data/uploads" && chmod 700 "$HOME/ses-data" 2>/dev/null || true
 if command -v rsync >/dev/null 2>&1; then
   rsync -a --delete \
     --exclude '.git' --exclude '.cpanel.yml' --exclude '.env.production' --exclude 'tmp/' \
@@ -39,4 +38,4 @@ fi
 # Passenger restarts the app on its next request when this file changes.
 mkdir -p "$APP/tmp"
 touch "$APP/tmp/restart.txt"
-echo "Deployed. Check https://synclyticsenterprisesystems.com/api/health"
+echo "Deployed. Check {APP_URL}/api/health"

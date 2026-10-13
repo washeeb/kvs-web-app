@@ -1,10 +1,10 @@
 import Link from "next/link";
-import type { getInvoice } from "@/server/modules/invoices";
+import type { invoices, invoiceLines } from "@/server/db/schema";
 import { balanceOf, isOverdue } from "@/server/modules/invoices";
 import type { CompanySettings } from "@/server/modules/settings";
 import { Badge, DateTime, Money, StatusBadge } from "./ui";
 
-type InvoiceView = Awaited<ReturnType<typeof getInvoice>>;
+type InvoiceView = typeof invoices.$inferSelect & { lines: (typeof invoiceLines.$inferSelect)[]; orderNumber?: string | null };
 
 /** The invoice itself, shared by staff and customer pages and laid out to print cleanly. */
 export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: InvoiceView; settings: CompanySettings; orderHref: string | null; now: Date }) {
@@ -16,7 +16,7 @@ export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: Invoic
         <div>
           <p className="text-lg font-bold text-slate-900">{settings.companyName}</p>
           {settings.companyAddress && <p className="text-sm text-slate-600">{settings.companyAddress}</p>}
-          <p className="text-sm text-slate-600">{settings.supportEmail} · {settings.supportPhone}</p>
+          <p className="text-sm text-slate-600">{[settings.contactPhone, settings.contactEmail].filter(Boolean).join(" · ")}</p>
           {settings.companyTin && <p className="text-sm text-slate-600">TIN {settings.companyTin}</p>}
         </div>
         <div className="text-right">
@@ -32,7 +32,7 @@ export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: Invoic
       <dl className="mt-6 grid gap-4 text-sm sm:grid-cols-4">
         <div>
           <dt className="font-semibold text-slate-700">Bill to</dt>
-          <dd>{inv.customerName}</dd>
+          <dd>{inv.billToName}{inv.billToDetails && <span className="block text-slate-600">{inv.billToDetails}</span>}</dd>
         </div>
         <div>
           <dt className="font-semibold text-slate-700">Issued</dt>
@@ -46,7 +46,6 @@ export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: Invoic
           <dt className="font-semibold text-slate-700">References</dt>
           <dd>
             {inv.orderNumber ? (orderHref ? <Link href={orderHref} className="text-teal-700">Order {inv.orderNumber}</Link> : <>Order {inv.orderNumber}</>) : "—"}
-            {inv.customerReference && <span className="block">Your ref. {inv.customerReference}</span>}
           </dd>
         </div>
       </dl>

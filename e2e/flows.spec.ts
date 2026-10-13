@@ -1,94 +1,55 @@
 import { expect, test } from "@playwright/test";
-import { expectAccessible, signIn, signInWithMfa } from "./helpers";
+import { expectAccessible } from "./helpers";
 import { STATE } from "./auth.setup";
 
-test("visitor can send an enquiry and gets a reference", async ({ page }) => {
-  await page.goto("/contact");
+test("visitor sends a service request and gets a reference", async ({ page }) => {
+  await page.goto("/services/photography-videography");
   await page.getByLabel("Your name").fill("E2E Visitor");
-  await page.getByLabel("E-mail").fill("e2e.visitor@example.com");
-  await page.getByLabel("How can we help?").fill("Automated test enquiry about network monitoring.");
-  await page.getByRole("button", { name: "Send enquiry" }).click();
-  await expect(page.getByRole("status")).toContainText(/reference is L-\d{4}-\d{5}/);
+  await page.getByLabel("Phone or WhatsApp").fill("0240000001");
+  await page.getByLabel("What do you need?").fill("Photography for a product launch next month.");
+  await page.getByRole("button", { name: "Book a shoot" }).click();
+  await expect(page.getByRole("status")).toContainText(/request E-\d{4}-\d{5} has been received/);
 });
 
-test("keyboard users can reach the main content and navigation", async ({ page }) => {
-  await page.goto("/");
-  await page.keyboard.press("Tab");
-  const skip = page.getByRole("link", { name: "Skip to content" });
-  await expect(skip).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#main$/);
-});
-
-test.describe("sales officer", () => {
-  test.use({ storageState: STATE.sales });
-  test("sees only their modules; admin URLs are refused", async ({ page }) => {
-  await page.goto("/ops");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Welcome");
-  const nav = page.getByRole("navigation", { name: "Operations" });
-  await expect(nav.getByRole("link", { name: "Quotations" })).toBeVisible();
-  await expect(nav.getByRole("link", { name: "Audit log" })).toHaveCount(0);
-  await page.goto("/ops/audit");
-  await expect(page.getByText("You can't open this page")).toBeVisible();
-  });
-});
-
-test("customer sees the seeded quotation and cannot reach operations", async ({ page }) => {
-  await signIn(page, "buyer@customer-a.demo");
-  await expect(page).toHaveURL(/\/portal/);
-  await expect(page.getByRole("link", { name: /Q-\d{4}-\d{5}/ }).first()).toBeVisible();
-  await page.goto("/ops");
-  await expect(page).toHaveURL(/\/portal/);
-});
-
-test("privileged users must set up two-step verification with a QR code", async ({ page }) => {
-  await signIn(page, "exec@ses.demo");
-  await expect(page).toHaveURL(/\/account\/mfa/);
-  await expect(page.getByRole("img", { name: /QR code/ })).toBeVisible();
-});
-
-test("visitor fills a cart and sends it as a quotation request", async ({ page }) => {
-  await page.goto("/store/business-laptop-14");
-  await page.getByLabel(/^Quantity of Core i5/).fill("3");
-  await page.getByRole("button", { name: /Add to cart.*Core i5/ }).click();
+test("shopper orders as a guest and lands on the private order page", async ({ page }) => {
+  await page.goto("/shop/demo-wireless-mouse");
+  await page.getByRole("button", { name: /Add to cart/ }).first().click();
   await expect(page.getByRole("status")).toContainText("Added to your cart");
-  await expect(page.getByRole("link", { name: "Cart (3)" }).first()).toBeVisible();
-  await page.goto("/store/cart");
-  await expect(page.getByText("GHS 45,000.00")).toBeVisible(); // 3 × 12,500 + 20% taxes
-  await page.getByLabel("Your name").fill("E2E Cart Visitor");
-  await page.getByLabel("E-mail").fill("e2e.cart@example.com");
-  await page.getByRole("button", { name: "Request quotation" }).click();
-  await expect(page.getByRole("status")).toContainText(/reference is L-\d{4}-\d{5}/);
-  await expect(page.getByRole("link", { name: "Cart", exact: true }).first()).toBeVisible();
-});
-
-test("customer administrator orders from the store and receives an invoice", async ({ page }) => {
-  await signInWithMfa(page, "buyer.admin@customer-a.demo");
-  await page.goto("/store/business-laptop-14");
-  await page.getByRole("button", { name: /Add to cart.*Core i5/ }).click();
-  await expect(page.getByRole("status")).toContainText("Added to your cart");
-  await page.goto("/store/cart");
-  await page.getByLabel("Your purchase order or reference (optional)").fill("E2E-PO-1");
+  await page.goto("/shop/cart");
+  await page.getByLabel("Your name").fill("E2E Shopper");
+  await page.getByLabel("Phone or WhatsApp").fill("0240000002");
   await page.getByRole("button", { name: "Place order" }).click();
-  await page.waitForURL(/\/portal\/orders\/.+placed=1/);
-  await expect(page.getByText(/invoice INV-\d{4}-\d{5} has been issued/)).toBeVisible();
-  await page.getByRole("link", { name: /^INV-/ }).click();
-  await expect(page.getByRole("heading", { name: /^Invoice INV-/ }).first()).toBeVisible();
-  await expect(page.getByText("Your ref. E2E-PO-1")).toBeVisible();
-  await expectAccessible(page, "invoice page");
+  await page.waitForURL(/\/order\/[A-Za-z0-9_-]+\?placed=1/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(/Order O-\d{4}-\d{5}/);
+  await expect(page.getByText(/Invoice INV-\d{4}-\d{5}/).first()).toBeVisible();
+  await expectAccessible(page, "order page");
+  // A wrong link reveals nothing.
+  const res = await page.goto("/order/not-a-real-token-not-a-real-token");
+  expect(res?.status()).toBe(404);
 });
 
-test.describe("customer user", () => {
-  test.use({ storageState: STATE.customer });
-  test("reports a problem and sees the response target", async ({ page }) => {
-    await page.goto("/portal/support/new");
-    await page.getByLabel("Subject").fill("E2E: scanner not connecting");
-    await page.getByLabel("What is happening?").fill("The warehouse scanner will not join the Wi-Fi since this morning.");
-    await page.getByLabel("How serious is it?").selectOption("high");
-    await page.getByRole("button", { name: "Send to support" }).click();
-    await page.waitForURL(/\/portal\/support\/.+raised=1/);
-    await expect(page.getByRole("status")).toContainText(/ticket T-\d{4}-\d{5} has been received/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("E2E: scanner not connecting");
-    await expectAccessible(page, "ticket page");
+test.describe("store staff", () => {
+  test.use({ storageState: STATE.store });
+  test("see only their modules and cannot open finance", async ({ page }) => {
+    await page.goto("/admin");
+    const nav = page.getByRole("navigation", { name: "Back office" });
+    await expect(nav.getByRole("link", { name: "Orders" })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Invoices & payments" })).toHaveCount(0);
+    await page.goto("/admin/invoices");
+    await expect(page.getByText("You can't open this page")).toBeVisible();
   });
+});
+
+test("anonymous visitors are sent to sign in", async ({ page }) => {
+  for (const path of ["/admin", "/admin/orders", "/admin/invoices", "/admin/settings"]) {
+    await page.goto(path);
+    await expect(page).toHaveURL(/\/login/);
+  }
+});
+
+test("security headers are served", async ({ request }) => {
+  const h = (await request.get("/")).headers();
+  expect(h["content-security-policy"]).toMatch(/'nonce-[^']+' 'strict-dynamic'/);
+  expect(h["x-frame-options"]).toBe("DENY");
+  expect((await request.get("/.well-known/security.txt")).status()).toBe(200);
 });

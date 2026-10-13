@@ -30,7 +30,7 @@ export default async function MfaEnrollPage() {
           {/* eslint-disable-next-line @next/next/no-img-element -- inline data URI generated on the server */}
           <img
             src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}`}
-            alt="QR code to add your Synclytics account to an authenticator app"
+            alt="QR code to add your KingsView account to an authenticator app"
             width={200}
             height={200}
             className="mx-auto mt-3 block rounded-lg border border-slate-200"

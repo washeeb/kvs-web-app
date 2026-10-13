@@ -203,7 +203,7 @@ export async function requestPasswordReset(db: DB, email: string, appUrl: string
   });
   await sendMail(db, {
     to: user.email,
-    subject: "Reset your Synclytics password",
+    subject: "Reset your KingsView password",
     body: `A password reset was requested for your account.\n\nReset link (valid 30 minutes, single use):\n${appUrl}/reset-password?token=${token}\n\nIf you did not request this, ignore this message.`,
   });
   await audit(db, { actor: { userId: user.id, organizationId: user.organizationId }, action: "auth.reset_requested", ip });

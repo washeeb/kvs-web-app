@@ -11,71 +11,53 @@ export const settingsSchema = z.object({
   defaultCurrency: z.string().length(3),
   locale: z.string().min(2).max(20),
   timezone: z.string().min(3).max(60),
-  /** Quotations at or above this total need approval (minor units). */
-  quoteApprovalThresholdMinor: z.number().int().min(0),
-  /** Discounts above this need approval (basis points). */
-  maxDiscountBpWithoutApproval: z.number().int().min(0).max(10_000),
-  /** Purchase orders at or above this total need approval (minor units). */
-  poApprovalThresholdMinor: z.number().int().min(0),
-  /** Manual price changes at or above this need approval (basis points of the old price). */
-  sensitivePriceChangeBp: z.number().int().min(0).max(100_000),
   quoteValidityDays: z.number().int().min(1).max(365),
-  /** Days after fulfilment during which non-warranty returns may be requested. */
-  returnWindowDays: z.number().int().min(0).max(365),
-  /** How long stock is held for an accepted quotation awaiting confirmation. */
+  /** Stock is held this long for shop orders and accepted quotations awaiting confirmation. */
   reservationHoldHours: z.number().int().min(1).max(24 * 30),
   /** Days from issue until an invoice is due. */
   invoiceDueDays: z.number().int().min(0).max(120),
-  /** Store checkout is refused at or above this total (minor units); larger purchases go through a quotation. */
-  storeOrderLimitMinor: z.number().int().min(0),
-  /** Printed on invoices. */
+  /** Online shop orders at or above this total are refused; customers ask for a quotation instead. */
+  shopOrderLimitMinor: z.number().int().min(0),
+  /** Shown at checkout for delivery orders (fees and areas). */
+  deliveryNote: z.string().trim().max(500),
+  /** Printed on invoices and shown on the website. */
   companyAddress: z.string().trim().max(300),
   /** Ghana Revenue Authority taxpayer identification number (TIN), printed on invoices once set. */
   companyTin: z.string().trim().max(40),
-  /** Bank / mobile money details printed on invoices. */
+  /** Mobile money / bank details printed on invoices and shown after checkout. */
   paymentInstructions: z.string().trim().max(1000),
-  /** Renewal invoices are issued this many days before a subscription period ends. */
-  renewalNoticeDays: z.number().int().min(1).max(90),
-  /** Unpaid renewals lapse this many days after the period ends. */
-  renewalGraceDays: z.number().int().min(0).max(60),
-  /** Resolved tickets close automatically after this many days without a customer reply. */
-  ticketAutoCloseDays: z.number().int().min(1).max(60),
-  /** AI assistance is off until switched on here AND a provider key is configured on the server. */
-  aiEnabled: z.boolean(),
-  aiDailyLimitPerUser: z.number().int().min(0).max(500),
-  supportEmail: z.string().email(),
-  supportPhone: z.string().max(40),
+  contactEmail: z.string().email(),
+  contactPhone: z.string().max(40),
+  whatsappNumber: z.string().max(40),
+  openingHours: z.string().trim().max(200),
+  instagramUrl: z.union([z.literal(""), z.string().url().max(200)]),
+  facebookUrl: z.union([z.literal(""), z.string().url().max(200)]),
   /** Data Protection Commission (Ghana) registration — shown publicly once set. */
   dpcRegistrationNumber: z.string().trim().max(60),
-  /** ISO date (YYYY-MM-DD) the DPC certificate expires (certificates last two years), or "". */
+  /** ISO date (YYYY-MM-DD) the DPC certificate expires, or "". */
   dpcRegistrationExpires: z.union([z.literal(""), z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD.")]),
 });
 export type CompanySettings = z.infer<typeof settingsSchema>;
 
 export const DEFAULT_SETTINGS: CompanySettings = {
-  companyName: "Synclytics Enterprise Systems",
+  companyName: "KingsView Solutions",
   defaultCurrency: "GHS",
   locale: "en-GH",
   timezone: "Africa/Accra",
-  quoteApprovalThresholdMinor: 5_000_000, // GHS 50,000.00
-  maxDiscountBpWithoutApproval: 1000, // 10%
-  poApprovalThresholdMinor: 2_000_000, // GHS 20,000.00
-  sensitivePriceChangeBp: 1500, // 15%
-  quoteValidityDays: 30,
-  returnWindowDays: 14,
-  reservationHoldHours: 72,
-  invoiceDueDays: 14,
-  storeOrderLimitMinor: 5_000_000, // GHS 50,000.00
-  companyAddress: "Accra, Ghana",
+  quoteValidityDays: 14,
+  reservationHoldHours: 48,
+  invoiceDueDays: 7,
+  shopOrderLimitMinor: 2_000_000, // GHS 20,000.00
+  deliveryNote: "Delivery fees depend on your location; we will confirm the fee before dispatch.",
+  companyAddress: "",
   companyTin: "",
   paymentInstructions: "",
-  renewalNoticeDays: 30,
-  renewalGraceDays: 14,
-  ticketAutoCloseDays: 7,
-  aiEnabled: false,
-  aiDailyLimitPerUser: 20,
-  supportEmail: "support@synclyticsenterprisesystems.com",
-  supportPhone: "+233 00 000 0000",
+  contactEmail: "info@kingsviewsolutions.example",
+  contactPhone: "",
+  whatsappNumber: "",
+  openingHours: "",
+  instagramUrl: "https://www.instagram.com/kinxview/",
+  facebookUrl: "https://www.facebook.com/kinxview/",
   dpcRegistrationNumber: "",
   dpcRegistrationExpires: "",
 };

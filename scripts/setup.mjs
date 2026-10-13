@@ -10,8 +10,7 @@ if (!existsSync(file)) {
     .replace(/^APP_ENCRYPTION_KEY=.*$/m, `APP_ENCRYPTION_KEY=${randomBytes(32).toString("base64")}`)
     .replace(/^SEED_DEMO_PASSWORD=.*$/m, `SEED_DEMO_PASSWORD=Demo-${randomBytes(9).toString("base64url")}`)
     .replace(/^CRON_SECRET=.*$/m, `CRON_SECRET=${randomBytes(24).toString("base64url")}`);
-  const extra = `\n# Simulator-only webhook secret for the KingsView SIMULATOR connection.\nKINGSVIEW_SIM_SECRET=whsec_sim_${randomBytes(24).toString("base64url")}\n`;
-  writeFileSync(file, filled + extra, { mode: 0o600 });
+  writeFileSync(file, filled, { mode: 0o600 });
   console.log("Created .env.local with generated secrets.");
 } else {
   console.log(".env.local already exists — leaving it unchanged.");

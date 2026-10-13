@@ -66,7 +66,7 @@ export function verifyTotp(secretBase32: string, code: string, nowMs = Date.now(
   return null;
 }
 
-export function otpauthUri(secret: string, account: string, issuer = "Synclytics ES") {
+export function otpauthUri(secret: string, account: string, issuer = "KingsView") {
   const label = encodeURIComponent(`${issuer}:${account}`);
   return `otpauth://totp/${label}?secret=${secret}&issuer=${encodeURIComponent(issuer)}&algorithm=SHA1&digits=6&period=30`;
 }

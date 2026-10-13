@@ -1,47 +1,39 @@
-# Synclytics Enterprise Systems — Web Platform
+# KingsView Solutions — Web App
 
-Public website, store, customer portal, partner portal, operations platform and partner integration framework in one Next.js application.
-The specification, decisions and progress live in [PROJECT_MASTER_PLAN.md](PROJECT_MASTER_PLAN.md).
+Public website (nine service lines with request forms), online shop with guest checkout, and a staff back office
+(enquiries, customers, quotations, orders, service jobs, products and stock, invoices and payments, roles, audit),
+plus the partner link to Synclytics Enterprise Systems. Plan and status: [`KVS_MASTER_PLAN.md`](KVS_MASTER_PLAN.md).
 
-## Quick start (local)
+Built on the same foundation as the Synclytics platform (Next.js 16, PostgreSQL / PGlite, Drizzle, in-house auth with
+two-step verification, permission engine, nonce Content-Security-Policy, PostgreSQL job queue), as a separate codebase,
+database and deployment.
 
-Requires Node.js 22+ (developed on Node 24). No database install is needed: local development uses PGlite, an embedded PostgreSQL.
+## Run locally
 
 ```bash
-npm install
-npm run setup      # creates .env.local with fresh secrets, migrates, seeds demo data
-npm run dev        # http://localhost:3000
+npm ci
+```
+```bash
+npm run setup
+```
+```bash
+npm run dev
 ```
 
-Demo sign-ins: [docs/demo-accounts.md](docs/demo-accounts.md).
+`setup` creates `.env.local` with fresh secrets, migrates the embedded database and seeds demonstration data
+(accounts in [`docs/demo-accounts.md`](docs/demo-accounts.md)). E-mails appear at `/dev/mailbox`.
 
-## Scripts
+## Checks
 
-| Script | Purpose |
-|---|---|
-| `npm run dev` / `build` | Next.js (production output is a standalone server: `npm start` runs `.next/standalone/server.js`) |
-| `npm run package:shared` | Upload-ready zip for InMotion shared hosting — see [docs/deploy-inmotion.md](docs/deploy-inmotion.md) |
-| `npm test` | Vitest suites (auth, permissions, sales, integration contract) |
-| `npm run check` | typecheck + lint + tests |
-| `npm run db:generate` | Generate a migration after editing `src/server/db/schema.ts` |
-| `npm run db:migrate` / `db:seed` | Apply migrations / seed (idempotent) |
-| `npm run db:reset -- --yes` | Delete the local PGlite database |
-| `npm run worker` | Background worker (PostgreSQL only; with PGlite the web process runs jobs) |
-| `npm run sim:kingsview -- <connectionId> [initial\|price\|stock\|faults]` | Drive the KingsView **simulator** over HTTP against a running app |
-
-## Layout
-
+```bash
+npm run check
 ```
-src/app/            routes: (site) store portal partner ops api/v1 (auth)
-src/server/         db, auth, authz (permissions & policy), modules (business logic), web helpers
-src/simulators/     KingsView simulator (test only)
-tests/              Vitest suites on in-memory PGlite
-docs/               API contract, operations runbook, privacy draft
-```
+Typecheck, lint and the unit / contract tests (`tests/`). Browser and accessibility tests (`e2e/`, Playwright + axe) run in CI.
 
-## Notes
+## Docs
 
-- **PGlite and memory**: on machines with limited RAM, V8's optimising WebAssembly compiler can crash on PGlite ("Fatal process out of memory: Zone"). `src/server/db/wasm-flags.ts` switches V8 to its baseline compiler for PGlite only. Production uses PostgreSQL and is unaffected.
-- Stop the dev server with Ctrl+C rather than killing the process: PGlite can corrupt its files if stopped mid-write. If pages fail with `RuntimeError: Aborted()`, recreate the demo database: `npm run db:reset -- --yes && npm run db:migrate && npm run db:seed`.
-- Tests run one file at a time, because each file starts its own in-memory database (about 350 MB).
-- Operations: [docs/operations.md](docs/operations.md) · Partner contract: [docs/api/partner-integration-v1.md](docs/api/partner-integration-v1.md)
+- [`docs/deploy-inmotion.md`](docs/deploy-inmotion.md) — hosting next to Synclytics on InMotion
+- [`docs/ses-link.md`](docs/ses-link.md) — connecting to Synclytics (contract v1)
+- [`docs/demo-accounts.md`](docs/demo-accounts.md) — local demo users
+
+Brand masters are in `logo/` (from `Identity/`); `npm run brand:build` regenerates the web assets.

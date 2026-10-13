@@ -215,15 +215,15 @@ export const mailOutbox = pgTable("mail_outbox", {
   lastError: text("last_error"),
 });
 
-// ───────────────────────────── Catalogue & inventory ─────────────────────────────
-
-export const productType = pgEnum("product_type", ["hardware", "software_licence", "subscription", "service_package"]);
+// ───────────────────────────── Catalogue & stock ─────────────────────────────
 
 export const categories = pgTable("categories", {
   id: id(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
   description: text("description"),
+  /** Service line this category belongs to (see src/content/services.ts). */
+  serviceLine: text("service_line"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
@@ -233,11 +233,11 @@ export const products = pgTable("products", {
   name: text("name").notNull(),
   summary: text("summary"),
   description: text("description"),
-  type: productType("type").notNull(),
   categoryId: uuid("category_id").references(() => categories.id),
-  /** draft products are never shown publicly */
+  /** draft | active | retired — drafts are never shown publicly */
   status: text("status").notNull().default("draft"),
-  sourceConnectionId: uuid("source_connection_id"),
+  /** Offer this product to Synclytics (SES) through the partner link. */
+  sesSync: boolean("ses_sync").notNull().default(false),
   isDemo: boolean("is_demo").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
@@ -251,13 +251,11 @@ export const productVariants = pgTable(
     sku: text("sku").notNull().unique(),
     name: text("name").notNull(),
     priceMinor: money("price_minor").notNull(),
+    /** What KingsView pays; shared with SES as the partner cost when the product is synced. */
+    costMinor: money("cost_minor"),
     currency: text("currency").notNull().references(() => currencies.code),
     taxable: boolean("taxable").notNull().default(true),
-    /** physical items need stock; services and licences do not */
     tracksStock: boolean("tracks_stock").notNull().default(true),
-    billingPeriod: text("billing_period"),
-    /** Manufacturer/SES warranty from the fulfilment date; 0 = none. */
-    warrantyMonths: integer("warranty_months").notNull().default(0),
     active: boolean("active").notNull().default(true),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
@@ -270,8 +268,6 @@ export const stockLocations = pgTable("stock_locations", {
   code: text("code").notNull().unique(),
   name: text("name").notNull(),
   organizationId: uuid("organization_id").notNull().references(() => organizations.id),
-  /** set when stock at this location is supplied by a partner connection */
-  connectionId: uuid("connection_id"),
 });
 
 export const stockLevels = pgTable(
@@ -282,14 +278,9 @@ export const stockLevels = pgTable(
     locationId: uuid("location_id").notNull().references(() => stockLocations.id),
     onHand: integer("on_hand").notNull().default(0),
     reserved: integer("reserved").notNull().default(0),
-    sourceVersion: bigint("source_version", { mode: "number" }).notNull().default(0),
-    sourceUpdatedAt: ts("source_updated_at").notNull().defaultNow(),
     updatedAt: updatedAt(),
   },
-  (t) => [
-    unique().on(t.variantId, t.locationId),
-    check("stock_non_negative", sql`${t.onHand} >= 0 AND ${t.reserved} >= 0`),
-  ],
+  (t) => [unique().on(t.variantId, t.locationId), check("stock_non_negative", sql`${t.onHand} >= 0 AND ${t.reserved} >= 0`)],
 );
 
 export const stockReservations = pgTable(
@@ -300,6 +291,7 @@ export const stockReservations = pgTable(
     variantId: uuid("variant_id").notNull().references(() => productVariants.id),
     orderId: uuid("order_id").notNull(),
     quantity: integer("quantity").notNull(),
+    /** active | released | consumed */
     status: text("status").notNull().default("active"),
     expiresAt: ts("expires_at"),
     createdAt: createdAt(),
@@ -307,33 +299,79 @@ export const stockReservations = pgTable(
   (t) => [index().on(t.orderId), check("reservation_qty_positive", sql`${t.quantity} > 0`)],
 );
 
-// ───────────────────────────── Sales ─────────────────────────────
+/** Ledger of every stock change. */
+export const stockMovements = pgTable(
+  "stock_movements",
+  {
+    id: id(),
+    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
+    locationId: uuid("location_id").notNull().references(() => stockLocations.id),
+    /** Signed change to on-hand quantity. */
+    quantity: integer("quantity").notNull(),
+    /** receipt | adjustment | sale | return */
+    reason: text("reason").notNull(),
+    refType: text("ref_type"),
+    refId: text("ref_id"),
+    note: text("note"),
+    actorUserId: uuid("actor_user_id").references(() => users.id),
+    createdAt: createdAt(),
+  },
+  (t) => [index().on(t.variantId, t.createdAt)],
+);
 
-export const leads = pgTable("leads", {
-  id: id(),
-  number: text("number").notNull().unique(),
-  source: text("source").notNull().default("website"),
-  contactName: text("contact_name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  companyName: text("company_name"),
-  serviceInterest: text("service_interest"),
-  message: text("message"),
-  status: text("status").notNull().default("new"),
-  ownerUserId: uuid("owner_user_id").references(() => users.id),
-  departmentId: uuid("department_id").references(() => departments.id),
-  customerOrgId: uuid("customer_org_id").references(() => organizations.id),
-  isDemo: boolean("is_demo").notNull().default(false),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
+// ───────────────────────────── Customers & enquiries ─────────────────────────────
+
+/** People and businesses KingsView sells to. They do not sign in (shop checkout is by guest + tracking link). */
+export const customers = pgTable(
+  "customers",
+  {
+    id: id(),
+    number: text("number").notNull().unique(),
+    name: text("name").notNull(),
+    company: text("company"),
+    phone: text("phone"),
+    email: text("email"),
+    address: text("address"),
+    notes: text("notes"),
+    isDemo: boolean("is_demo").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index().on(t.email), index().on(t.phone)],
+);
+
+export const enquiries = pgTable(
+  "enquiries",
+  {
+    id: id(),
+    number: text("number").notNull().unique(),
+    serviceLine: text("service_line"),
+    name: text("name").notNull(),
+    company: text("company"),
+    phone: text("phone"),
+    email: text("email"),
+    message: text("message").notNull(),
+    /** new | contacted | quoted | won | lost */
+    status: text("status").notNull().default("new"),
+    assigneeUserId: uuid("assignee_user_id").references(() => users.id),
+    customerId: uuid("customer_id").references(() => customers.id),
+    source: text("source").notNull().default("website"),
+    isDemo: boolean("is_demo").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index().on(t.status)],
+);
+
+// ───────────────────────────── Quotations ─────────────────────────────
 
 export const quotes = pgTable("quotes", {
   id: id(),
   number: text("number").notNull().unique(),
-  customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-  leadId: uuid("lead_id").references(() => leads.id),
-  departmentId: uuid("department_id").references(() => departments.id),
+  customerId: uuid("customer_id").notNull().references(() => customers.id),
+  enquiryId: uuid("enquiry_id").references(() => enquiries.id),
+  serviceLine: text("service_line"),
+  /** draft | sent | accepted | declined | expired */
   status: text("status").notNull().default("draft"),
   currency: text("currency").notNull().references(() => currencies.code),
   subtotalMinor: money("subtotal_minor").notNull().default(0),
@@ -345,11 +383,8 @@ export const quotes = pgTable("quotes", {
   validUntil: ts("valid_until"),
   notes: text("notes"),
   createdBy: uuid("created_by").notNull().references(() => users.id),
-  approvedBy: uuid("approved_by").references(() => users.id),
-  approvedAt: ts("approved_at"),
   sentAt: ts("sent_at"),
-  acceptedBy: uuid("accepted_by").references(() => users.id),
-  acceptedAt: ts("accepted_at"),
+  decidedAt: ts("decided_at"),
   isDemo: boolean("is_demo").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
@@ -367,44 +402,76 @@ export const quoteLines = pgTable("quote_lines", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const orders = pgTable("orders", {
+// ───────────────────────────── Orders ─────────────────────────────
+
+export const orders = pgTable(
+  "orders",
+  {
+    id: id(),
+    number: text("number").notNull().unique(),
+    /** shop (website checkout) | quote (accepted quotation) | ses (order lines Synclytics asked KingsView to fulfil) */
+    source: text("source").notNull(),
+    customerId: uuid("customer_id").references(() => customers.id),
+    quoteId: uuid("quote_id").references(() => quotes.id),
+    /** Contact snapshot at the time of ordering (the customer record may change later). */
+    contactName: text("contact_name"),
+    contactPhone: text("contact_phone"),
+    contactEmail: text("contact_email"),
+    /** pickup | delivery */
+    fulfilmentMethod: text("fulfilment_method").notNull().default("pickup"),
+    deliveryAddress: text("delivery_address"),
+    /** pending | confirmed | ready | fulfilled | cancelled | expired */
+    status: text("status").notNull().default("pending"),
+    /** unpaid | part_paid | paid */
+    paymentStatus: text("payment_status").notNull().default("unpaid"),
+    currency: text("currency").notNull().references(() => currencies.code),
+    subtotalMinor: money("subtotal_minor").notNull(),
+    discountMinor: money("discount_minor").notNull().default(0),
+    taxMinor: money("tax_minor").notNull(),
+    totalMinor: money("total_minor").notNull(),
+    taxBreakdown: jsonb("tax_breakdown").$type<{ code: string; name: string; amountMinor: number }[]>().notNull().default([]),
+    /** SHA-256 of the private tracking token given to shop customers. */
+    trackingTokenHash: text("tracking_token_hash").unique(),
+    /** Synclytics order number for source = ses. */
+    sesOrderNumber: text("ses_order_number"),
+    notes: text("notes"),
+    createdBy: uuid("created_by").references(() => users.id),
+    fulfilledAt: ts("fulfilled_at"),
+    paidAt: ts("paid_at"),
+    isDemo: boolean("is_demo").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index().on(t.status), index().on(t.sesOrderNumber)],
+);
+
+export const orderLines = pgTable("order_lines", {
   id: id(),
-  number: text("number").notNull().unique(),
-  customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-  quoteId: uuid("quote_id").references(() => quotes.id),
-  /** quote (accepted quotation) | store (online checkout) */
-  source: text("source").notNull().default("quote"),
-  /** Customer's own purchase-order number or reference. */
-  customerReference: text("customer_reference"),
-  status: text("status").notNull().default("pending"),
-  currency: text("currency").notNull().references(() => currencies.code),
-  subtotalMinor: money("subtotal_minor").notNull(),
-  discountMinor: money("discount_minor").notNull().default(0),
-  taxMinor: money("tax_minor").notNull(),
-  totalMinor: money("total_minor").notNull(),
-  taxBreakdown: jsonb("tax_breakdown").$type<{ code: string; name: string; amountMinor: number }[]>().notNull().default([]),
-  createdBy: uuid("created_by").references(() => users.id),
-  /** unpaid | part_paid | paid — mirrors the order's invoice */
-  paymentStatus: text("payment_status").notNull().default("unpaid"),
-  fulfilledAt: ts("fulfilled_at"),
-  paidAt: ts("paid_at"),
-  isDemo: boolean("is_demo").notNull().default(false),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
+  orderId: uuid("order_id").notNull().references(() => orders.id),
+  variantId: uuid("variant_id").references(() => productVariants.id),
+  description: text("description").notNull(),
+  quantity: integer("quantity").notNull(),
+  unitPriceMinor: money("unit_price_minor").notNull(),
+  taxable: boolean("taxable").notNull().default(true),
+  lineTotalMinor: money("line_total_minor").notNull(),
+  /** Synclytics line id for SES orders (echoed in fulfilment.updated). */
+  sesLineId: text("ses_line_id"),
+  /** SES lines: requested | accepted | rejected | shipped | delivered | cancelled */
+  fulfilmentStatus: text("fulfilment_status"),
+  fulfilmentVersion: bigint("fulfilment_version", { mode: "number" }).notNull().default(0),
 });
 
-// ───────────────────────────── Invoices ─────────────────────────────
+// ───────────────────────────── Invoices & payments ─────────────────────────────
 
-/** One open (non-void) invoice per order, enforced in code under the order lock; standalone invoices have no order. */
 export const invoices = pgTable(
   "invoices",
   {
     id: id(),
     number: text("number").notNull().unique(),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
+    customerId: uuid("customer_id").references(() => customers.id),
     orderId: uuid("order_id").references(() => orders.id),
-    /** Set on renewal invoices. */
-    subscriptionId: uuid("subscription_id"),
+    billToName: text("bill_to_name").notNull(),
+    billToDetails: text("bill_to_details"),
     /** issued | part_paid | paid | void */
     status: text("status").notNull().default("issued"),
     currency: text("currency").notNull().references(() => currencies.code),
@@ -414,7 +481,6 @@ export const invoices = pgTable(
     totalMinor: money("total_minor").notNull(),
     taxBreakdown: jsonb("tax_breakdown").$type<{ code: string; name: string; amountMinor: number }[]>().notNull().default([]),
     paidMinor: money("paid_minor").notNull().default(0),
-    customerReference: text("customer_reference"),
     notes: text("notes"),
     issuedAt: ts("issued_at").notNull().defaultNow(),
     dueAt: ts("due_at").notNull(),
@@ -422,20 +488,12 @@ export const invoices = pgTable(
     voidedAt: ts("voided_at"),
     voidedBy: uuid("voided_by").references(() => users.id),
     voidReason: text("void_reason"),
-    remindersSent: integer("reminders_sent").notNull().default(0),
-    lastReminderAt: ts("last_reminder_at"),
-    /** null when issued automatically (e.g. on checkout) */
     createdBy: uuid("created_by").references(() => users.id),
     isDemo: boolean("is_demo").notNull().default(false),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [
-    index().on(t.customerOrgId),
-    index().on(t.orderId),
-    index().on(t.status, t.dueAt),
-    check("invoice_paid_range", sql`${t.paidMinor} >= 0 AND ${t.paidMinor} <= ${t.totalMinor}`),
-  ],
+  (t) => [index().on(t.orderId), index().on(t.status, t.dueAt), check("invoice_paid_range", sql`${t.paidMinor} >= 0 AND ${t.paidMinor} <= ${t.totalMinor}`)],
 );
 
 export const invoiceLines = pgTable("invoice_lines", {
@@ -449,53 +507,95 @@ export const invoiceLines = pgTable("invoice_lines", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-/**
- * Payments. Online (provider "paystack") rows only become successful from a verified provider response;
- * manual rows (provider "manual": bank transfer, mobile money, cash, cheque) are recorded by finance staff.
- */
+/** Manual payments are recorded by staff; online (Paystack) payments only succeed from a verified provider response. */
 export const payments = pgTable(
   "payments",
   {
     id: id(),
-    orderId: uuid("order_id").references(() => orders.id),
-    invoiceId: uuid("invoice_id").references(() => invoices.id),
+    invoiceId: uuid("invoice_id").notNull().references(() => invoices.id),
     provider: text("provider").notNull(),
-    /** card | mobile_money | bank_transfer | cash | cheque (manual), or the provider's channel */
-    method: text("method"),
-    /** Bank/MoMo transaction reference for manual payments. */
-    externalReference: text("external_reference"),
-    note: text("note"),
-    recordedBy: uuid("recorded_by").references(() => users.id),
     reference: text("reference").notNull().unique(),
     amountMinor: money("amount_minor").notNull(),
     currency: text("currency").notNull(),
-    /** initialized | success | failed | abandoned | amount_mismatch */
+    /** initialized | success | failed | abandoned | amount_mismatch | reversed */
     status: text("status").notNull().default("initialized"),
     mode: text("mode").notNull(),
+    method: text("method"),
+    externalReference: text("external_reference"),
     providerTransactionId: text("provider_transaction_id"),
-    channel: text("channel"),
-    paidAt: ts("paid_at"),
+    note: text("note"),
     failureReason: text("failure_reason"),
-    initiatedBy: uuid("initiated_by").references(() => users.id),
+    recordedBy: uuid("recorded_by").references(() => users.id),
+    paidAt: ts("paid_at"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [index().on(t.orderId), index().on(t.invoiceId), check("payment_amount_positive", sql`${t.amountMinor} > 0`)],
+  (t) => [index().on(t.invoiceId), check("payment_amount_positive", sql`${t.amountMinor} > 0`)],
 );
 
-export const orderLines = pgTable("order_lines", {
+// ───────────────────────────── Service jobs ─────────────────────────────
+
+/** Bookings for work done for a customer: installations, shoots, training, design and development work. */
+export const serviceJobs = pgTable(
+  "service_jobs",
+  {
+    id: id(),
+    number: text("number").notNull().unique(),
+    customerId: uuid("customer_id").notNull().references(() => customers.id),
+    serviceLine: text("service_line").notNull(),
+    title: text("title").notNull(),
+    description: text("description"),
+    /** requested | scheduled | in_progress | completed | cancelled */
+    status: text("status").notNull().default("requested"),
+    scheduledAt: ts("scheduled_at"),
+    location: text("location"),
+    assigneeUserId: uuid("assignee_user_id").references(() => users.id),
+    quoteId: uuid("quote_id").references(() => quotes.id),
+    orderId: uuid("order_id").references(() => orders.id),
+    completionNote: text("completion_note"),
+    completedAt: ts("completed_at"),
+    createdBy: uuid("created_by").notNull().references(() => users.id),
+    isDemo: boolean("is_demo").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index().on(t.status, t.scheduledAt), index().on(t.assigneeUserId)],
+);
+
+// ───────────────────────────── Synclytics (SES) link ─────────────────────────────
+
+/** Events KingsView sends to SES (contract v1), delivered by the job queue with retries. */
+export const sesOutbox = pgTable(
+  "ses_outbox",
+  {
+    id: id(),
+    eventId: text("event_id").notNull().unique(),
+    type: text("type").notNull(),
+    /** product/price: SKU · stock: SKU@location · fulfilment: SES line id */
+    entityKey: text("entity_key").notNull(),
+    version: bigint("version", { mode: "number" }).notNull(),
+    payload: jsonb("payload").notNull(),
+    /** queued | sent | dead */
+    status: text("status").notNull().default("queued"),
+    attempts: integer("attempts").notNull().default(0),
+    lastError: text("last_error"),
+    lastStatus: integer("last_status"),
+    createdAt: createdAt(),
+    sentAt: ts("sent_at"),
+  },
+  (t) => [index().on(t.status, t.createdAt)],
+);
+
+/** Events received from SES. Unique event id makes delivery idempotent. */
+export const sesInbound = pgTable("ses_inbound", {
   id: id(),
-  orderId: uuid("order_id").notNull().references(() => orders.id),
-  variantId: uuid("variant_id").references(() => productVariants.id),
-  description: text("description").notNull(),
-  quantity: integer("quantity").notNull(),
-  unitPriceMinor: money("unit_price_minor").notNull(),
-  taxable: boolean("taxable").notNull().default(true),
-  lineTotalMinor: money("line_total_minor").notNull(),
-  /** partner connection responsible for fulfilling this line, if any */
-  fulfilmentConnectionId: uuid("fulfilment_connection_id"),
-  fulfilmentStatus: text("fulfilment_status").notNull().default("not_started"),
-  fulfilmentVersion: bigint("fulfilment_version", { mode: "number" }).notNull().default(0),
+  eventId: text("event_id").notNull().unique(),
+  type: text("type").notNull(),
+  payload: jsonb("payload").notNull(),
+  /** processed | ignored | failed */
+  status: text("status").notNull(),
+  error: text("error"),
+  receivedAt: ts("received_at").notNull().defaultNow(),
 });
 
 // ───────────────────────────── Approvals ─────────────────────────────
@@ -527,83 +627,6 @@ export const approvalRequests = pgTable(
   ],
 );
 
-// ───────────────────────────── Integrations ─────────────────────────────
-
-export type FieldOwnership = Record<"name" | "description" | "cost" | "stock" | "status", "partner" | "ses">;
-export type PriceRule = { type: "markup"; bp: number } | { type: "fixed_margin"; minor: number };
-
-export const integrationConnections = pgTable("integration_connections", {
-  id: id(),
-  partnerOrgId: uuid("partner_org_id").notNull().references(() => organizations.id),
-  name: text("name").notNull(),
-  /** simulator connections never talk to real partner systems */
-  mode: text("mode").$type<"simulator" | "production">().notNull(),
-  status: text("status").notNull().default("active"),
-  inboundSecretEnc: text("inbound_secret_enc").notNull(),
-  outboundUrl: text("outbound_url"),
-  outboundSecretEnc: text("outbound_secret_enc"),
-  staleAfterSeconds: integer("stale_after_seconds").notNull().default(900),
-  sensitivePriceChangeBp: integer("sensitive_price_change_bp").notNull().default(1500),
-  defaultFieldOwnership: jsonb("default_field_ownership").$type<FieldOwnership>().notNull(),
-  defaultPriceRule: jsonb("default_price_rule").$type<PriceRule>().notNull(),
-  lastEventAt: ts("last_event_at"),
-  lastSyncAt: ts("last_sync_at"),
-  createdAt: createdAt(),
-});
-
-export const apiCredentials = pgTable("api_credentials", {
-  id: id(),
-  organizationId: uuid("organization_id").notNull().references(() => organizations.id),
-  connectionId: uuid("connection_id").references(() => integrationConnections.id),
-  name: text("name").notNull(),
-  prefix: text("prefix").notNull().unique(),
-  keyHash: text("key_hash").notNull(),
-  scopes: text("scopes").array().notNull(),
-  environment: text("environment").notNull(),
-  expiresAt: ts("expires_at"),
-  revokedAt: ts("revoked_at"),
-  lastUsedAt: ts("last_used_at"),
-  createdBy: uuid("created_by").references(() => users.id),
-  createdAt: createdAt(),
-});
-
-export const productMappings = pgTable(
-  "product_mappings",
-  {
-    id: id(),
-    connectionId: uuid("connection_id").notNull().references(() => integrationConnections.id),
-    partnerSku: text("partner_sku").notNull(),
-    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
-    fieldOwnership: jsonb("field_ownership").$type<FieldOwnership>().notNull(),
-    priceRule: jsonb("price_rule").$type<PriceRule>().notNull(),
-    partnerCostMinor: money("partner_cost_minor"),
-    partnerCurrency: text("partner_currency"),
-    sourceVersion: bigint("source_version", { mode: "number" }).notNull().default(0),
-    lastSyncedAt: ts("last_synced_at"),
-    createdAt: createdAt(),
-  },
-  (t) => [unique().on(t.connectionId, t.partnerSku)],
-);
-
-export const inboundEvents = pgTable(
-  "inbound_events",
-  {
-    id: id(),
-    connectionId: uuid("connection_id").notNull().references(() => integrationConnections.id),
-    eventId: text("event_id").notNull(),
-    type: text("type").notNull(),
-    occurredAt: ts("occurred_at").notNull(),
-    version: bigint("version", { mode: "number" }).notNull(),
-    payload: jsonb("payload").notNull(),
-    status: text("status").notNull().default("received"),
-    attempts: integer("attempts").notNull().default(0),
-    lastError: text("last_error"),
-    receivedAt: ts("received_at").notNull().defaultNow(),
-    processedAt: ts("processed_at"),
-  },
-  (t) => [unique().on(t.connectionId, t.eventId), index().on(t.connectionId, t.status)],
-);
-
 export const jobs = pgTable(
   "jobs",
   {
@@ -623,184 +646,6 @@ export const jobs = pgTable(
   (t) => [index().on(t.status, t.runAt)],
 );
 
-// ───────────────────────────── Procurement ─────────────────────────────
-
-export const suppliers = pgTable("suppliers", {
-  id: id(),
-  name: text("name").notNull(),
-  contactName: text("contact_name"),
-  email: text("email"),
-  phone: text("phone"),
-  address: text("address"),
-  taxId: text("tax_id"),
-  paymentTermsDays: integer("payment_terms_days").notNull().default(30),
-  currency: text("currency").notNull().default("GHS"),
-  /** Optional link when the supplier is also an integration partner. */
-  partnerOrgId: uuid("partner_org_id").references(() => organizations.id),
-  active: boolean("active").notNull().default(true),
-  notes: text("notes"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
-
-export const purchaseOrders = pgTable("purchase_orders", {
-  id: id(),
-  number: text("number").notNull().unique(),
-  supplierId: uuid("supplier_id").notNull().references(() => suppliers.id),
-  /** draft | pending_approval | approved | rejected | sent | partially_received | received | cancelled */
-  status: text("status").notNull().default("draft"),
-  currency: text("currency").notNull(),
-  totalMinor: money("total_minor").notNull().default(0),
-  locationId: uuid("location_id").notNull().references(() => stockLocations.id),
-  expectedAt: ts("expected_at"),
-  notes: text("notes"),
-  createdBy: uuid("created_by").notNull().references(() => users.id),
-  approvedBy: uuid("approved_by").references(() => users.id),
-  approvedAt: ts("approved_at"),
-  sentAt: ts("sent_at"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
-
-export const purchaseOrderLines = pgTable(
-  "purchase_order_lines",
-  {
-    id: id(),
-    purchaseOrderId: uuid("purchase_order_id").notNull().references(() => purchaseOrders.id),
-    variantId: uuid("variant_id").references(() => productVariants.id),
-    description: text("description").notNull(),
-    quantity: integer("quantity").notNull(),
-    unitCostMinor: money("unit_cost_minor").notNull(),
-    lineTotalMinor: money("line_total_minor").notNull(),
-    receivedQuantity: integer("received_quantity").notNull().default(0),
-    sortOrder: integer("sort_order").notNull().default(0),
-  },
-  (t) => [
-    check("po_line_qty_positive", sql`${t.quantity} > 0`),
-    check("po_line_received_range", sql`${t.receivedQuantity} >= 0 AND ${t.receivedQuantity} <= ${t.quantity}`),
-  ],
-);
-
-export const goodsReceipts = pgTable("goods_receipts", {
-  id: id(),
-  number: text("number").notNull().unique(),
-  purchaseOrderId: uuid("purchase_order_id").notNull().references(() => purchaseOrders.id),
-  locationId: uuid("location_id").notNull().references(() => stockLocations.id),
-  receivedBy: uuid("received_by").notNull().references(() => users.id),
-  notes: text("notes"),
-  createdAt: createdAt(),
-});
-
-export const goodsReceiptLines = pgTable("goods_receipt_lines", {
-  id: id(),
-  goodsReceiptId: uuid("goods_receipt_id").notNull().references(() => goodsReceipts.id),
-  purchaseOrderLineId: uuid("purchase_order_line_id").notNull().references(() => purchaseOrderLines.id),
-  quantity: integer("quantity").notNull(),
-});
-
-/** Ledger of every change to SES-managed stock (partner stock is owned by the partner feed). */
-export const stockMovements = pgTable(
-  "stock_movements",
-  {
-    id: id(),
-    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
-    locationId: uuid("location_id").notNull().references(() => stockLocations.id),
-    /** Signed change to on-hand quantity. */
-    quantity: integer("quantity").notNull(),
-    /** receipt | adjustment | fulfilment | return */
-    reason: text("reason").notNull(),
-    refType: text("ref_type"),
-    refId: text("ref_id"),
-    note: text("note"),
-    actorUserId: uuid("actor_user_id").references(() => users.id),
-    createdAt: createdAt(),
-  },
-  (t) => [index().on(t.variantId, t.createdAt)],
-);
-
-// ───────────────────────────── Documents ─────────────────────────────
-
-export const documents = pgTable(
-  "documents",
-  {
-    id: id(),
-    /** Organisation the record belongs to (customer org for customer-facing records, operator org otherwise). */
-    organizationId: uuid("organization_id").notNull().references(() => organizations.id),
-    /** order | quote | purchase_order | supplier */
-    entityType: text("entity_type").notNull(),
-    entityId: uuid("entity_id").notNull(),
-    fileName: text("file_name").notNull(),
-    contentType: text("content_type").notNull(),
-    sizeBytes: integer("size_bytes").notNull(),
-    sha256: text("sha256").notNull(),
-    /** Random name on disk; never derived from user input. */
-    storageKey: text("storage_key").notNull().unique(),
-    /** internal: SES staff only; customer: also visible to the customer organisation */
-    visibility: text("visibility").notNull().default("internal"),
-    uploadedBy: uuid("uploaded_by").notNull().references(() => users.id),
-    deletedAt: ts("deleted_at"),
-    deletedBy: uuid("deleted_by").references(() => users.id),
-    createdAt: createdAt(),
-  },
-  (t) => [index().on(t.entityType, t.entityId)],
-);
-
-// ───────────────────────────── After-sales ─────────────────────────────
-
-/** Created when an order is fulfilled, for lines whose product carries a warranty. */
-export const warranties = pgTable(
-  "warranties",
-  {
-    id: id(),
-    orderId: uuid("order_id").notNull().references(() => orders.id),
-    orderLineId: uuid("order_line_id").notNull().references(() => orderLines.id),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
-    quantity: integer("quantity").notNull(),
-    startsAt: ts("starts_at").notNull(),
-    endsAt: ts("ends_at").notNull(),
-    createdAt: createdAt(),
-  },
-  (t) => [index().on(t.customerOrgId)],
-);
-
-/** Return / warranty claim (RMA). */
-export const returnRequests = pgTable(
-  "return_requests",
-  {
-    id: id(),
-    number: text("number").notNull().unique(),
-    orderId: uuid("order_id").notNull().references(() => orders.id),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    /** return (change of mind / wrong item, within the return window) | warranty (fault under warranty) */
-    kind: text("kind").notNull(),
-    /** refund | replacement | repair */
-    resolution: text("resolution").notNull(),
-    reason: text("reason").notNull(),
-    /** requested | approved | rejected | received | refund_pending | completed | cancelled */
-    status: text("status").notNull().default("requested"),
-    requestedBy: uuid("requested_by").notNull().references(() => users.id),
-    decidedBy: uuid("decided_by").references(() => users.id),
-    decisionNote: text("decision_note"),
-    receivedBy: uuid("received_by").references(() => users.id),
-    receivedAt: ts("received_at"),
-    restocked: boolean("restocked").notNull().default(false),
-    refundMinor: money("refund_minor"),
-    completedAt: ts("completed_at"),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), index().on(t.status)],
-);
-
-export const returnLines = pgTable("return_lines", {
-  id: id(),
-  returnId: uuid("return_id").notNull().references(() => returnRequests.id),
-  orderLineId: uuid("order_line_id").notNull().references(() => orderLines.id),
-  variantId: uuid("variant_id").references(() => productVariants.id),
-  quantity: integer("quantity").notNull(),
-});
-
 // ───────────────────────────── Notifications ─────────────────────────────
 
 export const notifications = pgTable(
@@ -816,260 +661,4 @@ export const notifications = pgTable(
     createdAt: createdAt(),
   },
   (t) => [index().on(t.userId, t.readAt)],
-);
-
-// ───────────────────────────── Subscriptions & service contracts ─────────────────────────────
-
-/** Recurring products (variants with a billing period). Renewal: T-notice → renewal invoice → paid = renewed, unpaid past grace = lapsed. */
-export const subscriptions = pgTable(
-  "subscriptions",
-  {
-    id: id(),
-    number: text("number").notNull().unique(),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    variantId: uuid("variant_id").references(() => productVariants.id),
-    description: text("description").notNull(),
-    quantity: integer("quantity").notNull(),
-    unitPriceMinor: money("unit_price_minor").notNull(),
-    currency: text("currency").notNull().references(() => currencies.code),
-    taxable: boolean("taxable").notNull().default(true),
-    /** month | year */
-    billingPeriod: text("billing_period").notNull(),
-    /** active | ended | lapsed | cancelled */
-    status: text("status").notNull().default("active"),
-    autoRenew: boolean("auto_renew").notNull().default(true),
-    currentPeriodStart: ts("current_period_start").notNull(),
-    currentPeriodEnd: ts("current_period_end").notNull(),
-    /** Open renewal invoice for the next period, if issued. */
-    renewalInvoiceId: uuid("renewal_invoice_id"),
-    sourceOrderId: uuid("source_order_id").references(() => orders.id),
-    sourceOrderLineId: uuid("source_order_line_id").references(() => orderLines.id),
-    endedAt: ts("ended_at"),
-    endReason: text("end_reason"),
-    createdBy: uuid("created_by").references(() => users.id),
-    isDemo: boolean("is_demo").notNull().default(false),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), index().on(t.status, t.currentPeriodEnd), check("subscription_qty_positive", sql`${t.quantity} > 0`)],
-);
-
-export type SlaTargets = Record<"urgent" | "high" | "normal" | "low", { responseMinutes: number; resolutionMinutes: number }>;
-
-/** Support terms for a customer: coverage hours and response/resolution targets per priority. */
-export const serviceContracts = pgTable(
-  "service_contracts",
-  {
-    id: id(),
-    number: text("number").notNull().unique(),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    name: text("name").notNull(),
-    /** business_hours (Mon–Fri 08:00–17:00 Accra) | 24x7 */
-    coverage: text("coverage").notNull().default("business_hours"),
-    slaTargets: jsonb("sla_targets").$type<SlaTargets>().notNull(),
-    startsAt: ts("starts_at").notNull(),
-    endsAt: ts("ends_at").notNull(),
-    /** active | cancelled (expiry is derived from ends_at) */
-    status: text("status").notNull().default("active"),
-    notes: text("notes"),
-    createdBy: uuid("created_by").references(() => users.id),
-    isDemo: boolean("is_demo").notNull().default(false),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), check("contract_dates", sql`${t.endsAt} > ${t.startsAt}`)],
-);
-
-// ───────────────────────────── Assets ─────────────────────────────
-
-/** Installed base: equipment SES supplied or supports for a customer. */
-export const assets = pgTable(
-  "assets",
-  {
-    id: id(),
-    tag: text("tag").notNull().unique(),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    variantId: uuid("variant_id").references(() => productVariants.id),
-    name: text("name").notNull(),
-    serialNumber: text("serial_number"),
-    location: text("location"),
-    /** active | in_repair | retired */
-    status: text("status").notNull().default("active"),
-    orderId: uuid("order_id").references(() => orders.id),
-    orderLineId: uuid("order_line_id").references(() => orderLines.id),
-    contractId: uuid("contract_id").references(() => serviceContracts.id),
-    installedAt: ts("installed_at"),
-    notes: text("notes"),
-    isDemo: boolean("is_demo").notNull().default(false),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), index().on(t.serialNumber)],
-);
-
-// ───────────────────────────── Support tickets ─────────────────────────────
-
-export const tickets = pgTable(
-  "tickets",
-  {
-    id: id(),
-    number: text("number").notNull().unique(),
-    customerOrgId: uuid("customer_org_id").notNull().references(() => organizations.id),
-    contractId: uuid("contract_id").references(() => serviceContracts.id),
-    assetId: uuid("asset_id").references(() => assets.id),
-    subject: text("subject").notNull(),
-    /** low | normal | high | urgent */
-    priority: text("priority").notNull().default("normal"),
-    category: text("category").notNull().default("general"),
-    /** new | open | pending_customer | resolved | closed */
-    status: text("status").notNull().default("new"),
-    /** 1 = first line, 2 = second line, 3 = engineering */
-    level: integer("level").notNull().default(1),
-    coverage: text("coverage").notNull(),
-    requesterUserId: uuid("requester_user_id").notNull().references(() => users.id),
-    assigneeUserId: uuid("assignee_user_id").references(() => users.id),
-    responseDueAt: ts("response_due_at").notNull(),
-    resolutionDueAt: ts("resolution_due_at").notNull(),
-    firstRespondedAt: ts("first_responded_at"),
-    responseBreached: boolean("response_breached").notNull().default(false),
-    resolutionBreached: boolean("resolution_breached").notNull().default(false),
-    /** Set while waiting on the customer: the resolution clock is paused. */
-    pausedAt: ts("paused_at"),
-    resolvedAt: ts("resolved_at"),
-    closedAt: ts("closed_at"),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), index().on(t.status), check("ticket_level_range", sql`${t.level} BETWEEN 1 AND 3`)],
-);
-
-export const ticketMessages = pgTable(
-  "ticket_messages",
-  {
-    id: id(),
-    ticketId: uuid("ticket_id").notNull().references(() => tickets.id),
-    authorUserId: uuid("author_user_id").references(() => users.id),
-    body: text("body").notNull(),
-    /** Internal notes are never shown to the customer. */
-    internal: boolean("internal").notNull().default(false),
-    createdAt: createdAt(),
-  },
-  (t) => [index().on(t.ticketId, t.createdAt)],
-);
-
-// ───────────────────────────── Projects ─────────────────────────────
-
-export const projects = pgTable(
-  "projects",
-  {
-    id: id(),
-    number: text("number").notNull().unique(),
-    /** null for internal projects */
-    customerOrgId: uuid("customer_org_id").references(() => organizations.id),
-    orderId: uuid("order_id").references(() => orders.id),
-    name: text("name").notNull(),
-    description: text("description"),
-    /** planning | active | on_hold | completed | cancelled */
-    status: text("status").notNull().default("planning"),
-    managerUserId: uuid("manager_user_id").notNull().references(() => users.id),
-    startDate: ts("start_date"),
-    dueDate: ts("due_date"),
-    completedAt: ts("completed_at"),
-    createdBy: uuid("created_by").notNull().references(() => users.id),
-    isDemo: boolean("is_demo").notNull().default(false),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.customerOrgId), index().on(t.status)],
-);
-
-export const projectMilestones = pgTable(
-  "project_milestones",
-  {
-    id: id(),
-    projectId: uuid("project_id").notNull().references(() => projects.id),
-    name: text("name").notNull(),
-    dueDate: ts("due_date"),
-    /** open | awaiting_signoff | signed_off */
-    status: text("status").notNull().default("open"),
-    signoffRequestedBy: uuid("signoff_requested_by").references(() => users.id),
-    signoffRequestedAt: ts("signoff_requested_at"),
-    signedOffBy: uuid("signed_off_by").references(() => users.id),
-    signedOffAt: ts("signed_off_at"),
-    /** Last sign-off decision note (approval comment or reason for rejection). */
-    signoffNote: text("signoff_note"),
-    sortOrder: integer("sort_order").notNull().default(0),
-    createdAt: createdAt(),
-  },
-  (t) => [
-    index().on(t.projectId),
-    check("milestone_no_self_signoff", sql`${t.signedOffBy} IS NULL OR ${t.signoffRequestedBy} IS NULL OR ${t.signedOffBy} <> ${t.signoffRequestedBy}`),
-  ],
-);
-
-export const projectTasks = pgTable(
-  "project_tasks",
-  {
-    id: id(),
-    projectId: uuid("project_id").notNull().references(() => projects.id),
-    milestoneId: uuid("milestone_id").references(() => projectMilestones.id),
-    title: text("title").notNull(),
-    /** todo | in_progress | done */
-    status: text("status").notNull().default("todo"),
-    assigneeUserId: uuid("assignee_user_id").references(() => users.id),
-    dueDate: ts("due_date"),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [index().on(t.projectId)],
-);
-
-// ───────────────────────────── Knowledge base ─────────────────────────────
-
-export const kbArticles = pgTable(
-  "kb_articles",
-  {
-    id: id(),
-    slug: text("slug").notNull().unique(),
-    title: text("title").notNull(),
-    summary: text("summary"),
-    body: text("body").notNull(),
-    category: text("category").notNull().default("general"),
-    /** public (website) | customers (signed-in customers and staff) | internal (staff only) */
-    audience: text("audience").notNull().default("customers"),
-    /** draft | published */
-    status: text("status").notNull().default("draft"),
-    updatedBy: uuid("updated_by").references(() => users.id),
-    publishedAt: ts("published_at"),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [
-    index().on(t.status, t.audience),
-    index("kb_articles_search").using("gin", sql`to_tsvector('english', ${t.title} || ' ' || coalesce(${t.summary}, '') || ' ' || ${t.body})`),
-  ],
-);
-
-// ───────────────────────────── AI assistance ─────────────────────────────
-
-/** One row per AI call: for daily limits, audit and showing the result. Prompts are not stored. */
-export const aiRequests = pgTable(
-  "ai_requests",
-  {
-    id: id(),
-    userId: uuid("user_id").notNull().references(() => users.id),
-    feature: text("feature").notNull(),
-    subjectType: text("subject_type"),
-    subjectId: text("subject_id"),
-    provider: text("provider").notNull(),
-    model: text("model").notNull(),
-    /** ok | error */
-    status: text("status").notNull(),
-    output: jsonb("output"),
-    error: text("error"),
-    inputTokens: integer("input_tokens"),
-    outputTokens: integer("output_tokens"),
-    createdAt: createdAt(),
-  },
-  (t) => [index().on(t.userId, t.createdAt), index().on(t.subjectType, t.subjectId)],
 );

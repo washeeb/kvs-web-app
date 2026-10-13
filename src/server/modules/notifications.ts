@@ -47,7 +47,7 @@ export async function notifyPermission(db: DB, perm: Permission, n: Notification
 export async function notifyApprovers(db: DB, type: string, subjectId: string, summary: string, requestedBy: string | null) {
   const t = APPROVAL_TYPES[type];
   if (!t) return 0;
-  return notifyPermission(db, t.permission, { title: `${t.label} awaiting your approval`, body: summary, link: "/ops/approvals" }, { exclude: requestedBy });
+  return notifyPermission(db, t.permission, { title: `${t.label} awaiting your approval`, body: summary, link: "/admin/approvals" }, { exclude: requestedBy });
 }
 
 /** Call after the transaction commits so open pages refresh their bell. */
@@ -72,11 +72,4 @@ export async function markRead(db: DB, actor: Actor, id: string | null) {
   if (id) conds.push(eq(notifications.id, id));
   await db.update(notifications).set({ readAt: new Date() }).where(and(...conds));
 }
-
-/** Customer-organisation users who may see orders/quotes (for status updates). */
-export async function customerRecipients(db: DB, perm: "customer.orders.read" | "customer.quotes.read" | "customer.invoices.read", organizationId: string, exclude?: string) {
-  const ids = await usersWithPermission(db, perm, organizationId);
-  return exclude ? ids.filter((i) => i !== exclude) : ids;
-}
-
 

@@ -2,15 +2,25 @@
 
 @theme {
   --font-sans: "Segoe UI", "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  /* Taken from the Synclytics logo: navy #002253, teal #00a6a6 */
-  --color-brand-50: #eef3fb;
-  --color-brand-100: #d6e2f5;
-  --color-brand-600: #0b3a82;
-  --color-brand-700: #062c66;
-  --color-brand-900: #002253;
-  --color-accent-500: #00a6a6;
-  --color-accent-600: #008b8b;
-  /* Darker than Tailwind's default slate-500 so secondary text meets WCAG AA (4.5:1) on the page background too. */
+  /* From the KingsView crowned-lion logo: red #B00101 and black. */
+  --color-brand-50: #fdf2f2;
+  --color-brand-100: #fbe3e3;
+  --color-brand-600: #2b2b2b;
+  --color-brand-700: #1c1c1c;
+  --color-brand-900: #111111;
+  --color-accent-500: #d11a1a;
+  --color-accent-600: #b00101;
+  /* The UI kit uses "teal" for links and highlights; KingsView maps it to the brand red. */
+  --color-teal-50: #fdf2f2;
+  --color-teal-100: #fbe3e3;
+  --color-teal-200: #f6c4c4;
+  --color-teal-300: #ee9a9a;
+  --color-teal-500: #d93030;
+  --color-teal-600: #c01616;
+  --color-teal-700: #b00101;
+  --color-teal-800: #8f0101;
+  --color-teal-900: #6d0000;
+  /* Darker than Tailwind default slate-500 so secondary text meets WCAG AA (4.5:1) on the page background too. */
   --color-slate-500: #556275;
 }
 
@@ -28,7 +38,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid #0ea5a4;
+  outline: 3px solid #b00101;
   outline-offset: 2px;
 }
 
@@ -82,8 +92,8 @@ main dd a:not(.btn) {
   font-size: 0.95rem;
 }
 .field:focus {
-  border-color: #0ea5a4;
-  outline: 2px solid #99f6e4;
+  border-color: #b00101;
+  outline: 2px solid #f6c4c4;
   outline-offset: 0;
 }
 .btn {
@@ -103,18 +113,18 @@ main dd a:not(.btn) {
   cursor: progress;
 }
 .btn-primary {
-  background: #002253;
+  background: #111111;
   color: white;
 }
 .btn-primary:hover {
-  background: #0b3a82;
+  background: #2b2b2b;
 }
 .btn-accent {
-  background: #007a7a;
+  background: #b00101;
   color: white;
 }
 .btn-accent:hover {
-  background: #006666;
+  background: #8f0101;
 }
 .btn-ghost {
   background: white;

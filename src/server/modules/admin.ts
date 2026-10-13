@@ -170,7 +170,7 @@ export const departmentInput = z.object({
 });
 
 export async function createDepartment(db: DB, actor: Actor, input: z.input<typeof departmentInput>) {
-  authorize(actor, "departments.manage");
+  authorize(actor, "settings.manage");
   const data = departmentInput.parse(input);
   const orgId = await operatorOrgId(db);
   const [row] = await db.insert(departments).values({ ...data, organizationId: orgId }).onConflictDoNothing().returning();
@@ -180,7 +180,7 @@ export async function createDepartment(db: DB, actor: Actor, input: z.input<type
 }
 
 export async function setDepartmentActive(db: DB, actor: Actor, id: string, active: boolean) {
-  authorize(actor, "departments.manage");
+  authorize(actor, "settings.manage");
   await db.update(departments).set({ active }).where(eq(departments.id, id));
   await audit(db, { actor, action: active ? "department.activated" : "department.deactivated", targetType: "department", targetId: id });
 }

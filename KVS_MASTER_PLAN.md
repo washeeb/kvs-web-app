@@ -1,7 +1,7 @@
 # KingsView Solutions (KVS) — Web App Master Plan
 
 > Living specification. Update **Status**, **Decisions** and **Progress log** as work lands.
-> Last updated: 2026-10-13 · **K1 and K2 built and tested** (website, shop, back office, SES link, Paystack in test mode) · Next: K3 go-live on `kingsviewsolutions.com`
+> Last updated: 2026-10-13 · **Live at https://kingsviewsolutions.com** (K1 + K2; Paystack off until keys; SES link off until Synclytics creates the connection) · Next: owner sign-in, real products, SES production connection
 
 ---
 
@@ -82,7 +82,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 - Found while building: SES line ids are UUIDs (the contract doc does not say so) and SES limits product names to 200 characters — both handled
 
 ### K3 — Go live
-- [ ] Domain + InMotion add-on domain, database, Node app, cron; GitHub repo and deploy pipeline
+- [x] Domain + InMotion add-on domain, database, Node app, cron; GitHub repo and deploy pipeline (2026-10-13)
 - [ ] Connect to SES production (SES creates the connection and shares secrets)
 
 ## 7. Open items
@@ -97,6 +97,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 8. Progress log
 
+- 2026-10-13 — **Live** at https://kingsviewsolutions.com (InMotion, same account as Synclytics; Node 24, PostgreSQL `n789825_kvs`, own deploy key). Verified from outside: all public pages 200, /admin → sign-in, /dev/mailbox 404, security headers (HSTS, nonce CSP, COOP, X-Frame-Options), /api/health ok with the database, cron tick 200. Shop empty (no demo data in production). Found while deploying: cPanel Git will not clone via an SSH alias (clone in Terminal, then register), nginx cache held the old directory listing (cleared), firewall 406 for curl user agent and body-less POST (cron lines send a browser user agent and GET). Pending: owner account sign-in + two-step, test e-mail, real products.
 - 2026-10-13 — Domain `kingsviewsolutions.com` and company details received: address, two phones, e-mail, TIN, MoMo and Absa bank details are the defaults and editable in Settings (separate mobile money and bank fields, second phone); used on the website, invoices, quotations, order page and e-mails.
 - 2026-10-13 — GitHub billing fixed by owner; CI green on `main` (checks, e2e, deploy bundle).
 - 2026-10-13 — K1 + K2 built: 32 tests passing (shop/orders/payments, quotations/jobs/roles, Paystack, SES link behaviour, SES contract, sign-in security). Local browser check: all public pages 200, guest checkout → order page with invoice and taxes, store and sales back office, no console errors.

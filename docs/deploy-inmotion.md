@@ -1,17 +1,17 @@
 # Deploying KingsView to InMotion (same Power plan as Synclytics)
 
-> Status: **not deployed yet.** Domain: `kingsviewsolutions.com`. The bundle, deploy hook and pipeline are the same ones that run Synclytics in production, adapted to a separate folder, database and repository.
+> Status: **live since 2026-10-13** at https://kingsviewsolutions.com. The bundle, deploy hook and pipeline are the same ones that run Synclytics in production, adapted to a separate folder, database and repository.
 
 KingsView runs as a **second Node.js app on the same cPanel account** as Synclytics, with its **own** domain, PostgreSQL database, settings file, repository and folder (`~/kvs-app`). Nothing is shared with Synclytics except the hosting account; the two systems talk only through the partner link (`docs/ses-link.md`).
 
 ## 1. Domain
 
-cPanel → **Domains → Create a new domain**: add `kingsviewsolutions.com` with its own document root, e.g. `kvs.public_html` (Passenger serves the app; the folder just needs to exist). Point the domain's DNS at InMotion if it is registered elsewhere, then run **SSL/TLS Status → Run AutoSSL**.
+**Done.** `kingsviewsolutions.com` is an addon domain on the account (document root `~/kingsviewsolutions.com`; Passenger serves the app, the folder just needs to exist), on InMotion nameservers with AutoSSL issued. Its existing e-mail is unaffected.
 
 ## 2. Database
 
-cPanel → **PostgreSQL Databases**: create database `kvs`, user `kvsapp` (letters and numbers only in the password), add the user with **ALL PRIVILEGES**, then **Synchronize Grants**.
-`DATABASE_URL=postgres://<cpuser>_kvsapp:<password>@127.0.0.1:5432/<cpuser>_kvs`
+cPanel → **PostgreSQL Databases**: database `n789825_kvs`, user `n789825_kvsadmin` (letters and numbers only in the password), added with **ALL PRIVILEGES**, then **Synchronize Grants**.
+`DATABASE_URL=postgres://n789825_kvsadmin:<password>@127.0.0.1:5432/n789825_kvs`
 
 ## 3. Repository and cPanel Git
 
@@ -30,7 +30,11 @@ cat ~/.ssh/id_ed25519_kvs.pub
 ```
 GitHub → **washeeb/kvs-web-app → Settings → Deploy keys → Add deploy key**: paste it, title `InMotion cPanel`, **no** write access. Then `ssh -T github-kvs` (answer `yes`).
 
-cPanel → **Git Version Control → Create**: Clone URL `github-kvs:washeeb/kvs-web-app.git`, path `repositories/kvs-web-app`. Then **Manage → Checked-Out Branch: `deploy`** → **Pull or Deploy → Deploy HEAD Commit**. The hook copies the app to `~/kvs-app`, runs migrations, refreshes the system roles and restarts the app.
+cPanel's Create form does not accept the `github-kvs:` alias as a clone URL, so clone in Terminal and register the folder:
+```bash
+git clone -b deploy github-kvs:washeeb/kvs-web-app.git ~/repositories/kvs-web-app
+```
+cPanel → **Git Version Control → Create** with **Clone a Repository off**, path `repositories/kvs-web-app`, name `kvs-web-app`. Then **Manage → Checked-Out Branch: `deploy`** → **Pull or Deploy → Deploy HEAD Commit**. The hook copies the app to `~/kvs-app`, runs migrations, refreshes the system roles and restarts the app.
 
 ## 4. Settings file `~/kvs-app/.env.production` (permissions 600)
 
@@ -63,17 +67,20 @@ Never reuse Synclytics's `APP_ENCRYPTION_KEY`, `CRON_SECRET` or database.
 
 cPanel → **Setup Node.js App → Create**: Node 24, mode Production, application root `kvs-app`, URL the KingsView domain, startup file `passenger.cjs`. Start it, then **Deploy HEAD Commit** again so migrations run.
 
+If the bare domain still shows the old "Index of /" page, InMotion's nginx cache is holding it: cPanel → **NGINX Manager → Clear Cache**. The app sends `no-store`, so this is needed once.
+
 ## 6. First administrator and cron
 
 ```bash
-cd ~/kvs-app && source ~/nodevenv/kvs-app/24/bin/activate && node ops/create-admin.mjs owner@kingsviewsolutions.com "Owner Name"
+cd ~/kvs-app && set -a && . ./.env.production && set +a && ~/nodevenv/kvs-app/24/bin/node ops/create-admin.mjs info@kingsviewsolutions.com "Owner Name"; cd ~
 ```
 This account gets the **Owner / Administrator** role and must set up two-step verification at first sign-in.
 
-cPanel → **Cron Jobs** (every 5 minutes):
+cPanel → **Cron Jobs** → *Once Per Five Minutes*:
 ```
-*/5 * * * * curl -fsS -m 50 -H "Authorization: Bearer <CRON_SECRET>" https://kingsviewsolutions.com/api/cron/tick >/dev/null 2>&1
+curl -fsS -m 50 -A "Mozilla/5.0 (cron)" -H "Authorization: Bearer $(grep ^CRON_SECRET= $HOME/kvs-app/.env.production | cut -d= -f2)" https://kingsviewsolutions.com/api/cron/tick >/dev/null 2>&1
 ```
+InMotion's firewall (ModSecurity) answers **406** to requests that identify as `curl`, and to a `POST` with no body, so the line sends a browser user agent and a plain GET. The secret is read from the settings file, so it never appears in the cron list. Add the job in the cPanel screen (piping into `crontab -` from Terminal replaced an existing line once). Test by hand: the same command without `>/dev/null 2>&1`, plus `-o /dev/null -w "%{http_code}\n"` — expect `200`.
 
 ## 7. After go-live
 

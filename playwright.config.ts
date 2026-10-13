@@ -29,7 +29,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `npx next start -p ${PORT}`,
-    url: `http://localhost:${PORT}/api/v1/health`,
+    url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     env: { WORKER_MODE: "inline", MAIL_ADAPTER: "console" },

@@ -1,10 +1,11 @@
 import { Field } from "./ui";
 
-type Loc = { id: string; name: string; active: boolean; sellable: boolean; isDefault: boolean };
+type Loc = { id: string; name: string; active: boolean; sellable: boolean; isDefault: boolean; connectionId?: string | null };
 export type ItemOption = { sku: string; name: string };
 
 export function LocationSelect({ id, name = "locationId", label, locations, defaultValue, required = true, includeAny = false }: { id: string; name?: string; label: string; locations: Loc[]; defaultValue?: string; required?: boolean; includeAny?: boolean }) {
-  const active = locations.filter((l) => l.active);
+  // Partner locations (fed by a connection) are never chosen for manual stock work.
+  const active = locations.filter((l) => l.active && !l.connectionId);
   return (
     <Field label={label} htmlFor={id}>
       <select id={id} name={name} className="field" defaultValue={defaultValue ?? (includeAny ? "" : active.find((l) => l.isDefault)?.id)} required={required}>

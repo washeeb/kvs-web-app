@@ -1,7 +1,7 @@
 var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/dev/mailbox/page.js")
 R.c("server/chunks/ssr/[root-of-the-server]__1vhg8piss-ipy._.js")
 R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_1v3rx3e-221aq.js")
-R.c("server/chunks/ssr/[root-of-the-server]__1q0mb-p870-w6._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1tqhhi-u14yrp._.js")
 R.c("server/chunks/ssr/src_components_ui_tsx_1ph0b_8sjd0ld._.js")
 R.c("server/chunks/ssr/node_modules_next_dist_compiled_@edge-runtime_cookies_index_1kiz_an963mbg.js")
 R.c("server/chunks/ssr/node_modules_next_dist_compiled_@opentelemetry_api_index_1oy1nwhip-98t.js")

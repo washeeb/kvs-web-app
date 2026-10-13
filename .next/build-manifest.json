@@ -7,9 +7,9 @@
     "static/chunks/0cz1d0mv5g_q7.js"
   ],
   "lowPriorityFiles": [
-    "static/TTlpSyQ0qnRStAFTLS4eY/_buildManifest.js",
-    "static/TTlpSyQ0qnRStAFTLS4eY/_ssgManifest.js",
-    "static/TTlpSyQ0qnRStAFTLS4eY/_clientMiddlewareManifest.js"
+    "static/3apNS8CqNPYRBJwzmTv23/_buildManifest.js",
+    "static/3apNS8CqNPYRBJwzmTv23/_ssgManifest.js",
+    "static/3apNS8CqNPYRBJwzmTv23/_clientMiddlewareManifest.js"
   ],
   "rootMainFiles": [
     "static/chunks/1ckvzn7sfprko.js",
@@ -637,6 +637,83 @@
       ]
     },
     "/admin/quotes/new/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/finance/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/forecast/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/inventory/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/pipeline/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/products/page": {
+      "otherChunks": [
+        "static/chunks/1ckvzn7sfprko.js",
+        "static/chunks/2gs9k2bmz4jgn.js",
+        "static/chunks/0s7mvllxht1mo.js",
+        "static/chunks/00l0re8e4qog_.js"
+      ],
+      "runtimeModuleIds": [
+        94553
+      ]
+    },
+    "/admin/reports/purchasing/page": {
       "otherChunks": [
         "static/chunks/1ckvzn7sfprko.js",
         "static/chunks/2gs9k2bmz4jgn.js",

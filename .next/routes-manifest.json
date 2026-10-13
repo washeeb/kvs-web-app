@@ -204,6 +204,14 @@
       "namedRegex": "^/api/exports/(?<nxtPkind>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/reports/[name]",
+      "regex": "^/api/reports/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPname": "nxtPname"
+      },
+      "namedRegex": "^/api/reports/(?<nxtPname>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/media/[id]/[file]",
       "regex": "^/media/([^/]+?)/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -435,6 +443,48 @@
       "regex": "^/admin/quotes/new(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/quotes/new(?:/)?$"
+    },
+    {
+      "page": "/admin/reports",
+      "regex": "^/admin/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/finance",
+      "regex": "^/admin/reports/finance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/finance(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/forecast",
+      "regex": "^/admin/reports/forecast(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/forecast(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/inventory",
+      "regex": "^/admin/reports/inventory(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/inventory(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/pipeline",
+      "regex": "^/admin/reports/pipeline(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/pipeline(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/products",
+      "regex": "^/admin/reports/products(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/products(?:/)?$"
+    },
+    {
+      "page": "/admin/reports/purchasing",
+      "regex": "^/admin/reports/purchasing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports/purchasing(?:/)?$"
     },
     {
       "page": "/admin/services",

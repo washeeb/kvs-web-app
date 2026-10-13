@@ -40,6 +40,8 @@ export const settingsSchema = z.object({
   openingHours: z.string().trim().max(200),
   instagramUrl: z.union([z.literal(""), z.string().url().max(200)]),
   facebookUrl: z.union([z.literal(""), z.string().url().max(200)]),
+  /** Monday e-mail summary of the past week to staff who can read reports. */
+  weeklyReport: z.boolean(),
   /** Data Protection Commission (Ghana) registration — shown publicly once set. */
   dpcRegistrationNumber: z.string().trim().max(60),
   /** ISO date (YYYY-MM-DD) the DPC certificate expires, or "". */
@@ -73,6 +75,7 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   openingHours: "",
   instagramUrl: "https://www.instagram.com/kinxview/",
   facebookUrl: "https://www.facebook.com/kinxview/",
+  weeklyReport: true,
   dpcRegistrationNumber: "",
   dpcRegistrationExpires: "",
 };

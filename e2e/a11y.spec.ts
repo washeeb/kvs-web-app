@@ -39,3 +39,16 @@ test.describe("staff pages (store)", () => {
     });
   }
 });
+
+test.describe("reports (manager)", () => {
+  test.use({ storageState: STATE.manager });
+  for (const path of ["/admin/reports", "/admin/reports?range=12m", "/admin/reports/products", "/admin/reports/inventory", "/admin/reports/forecast", "/admin/reports/finance", "/admin/reports/purchasing", "/admin/reports/pipeline"]) {
+    test(`${path} is accessible`, async ({ page }) => {
+      const csp = watchCsp(page);
+      await page.goto(path);
+      await expect(page.locator("main h1")).toBeVisible();
+      await expectAccessible(page, path);
+      expect(csp).toEqual([]);
+    });
+  }
+});

@@ -141,3 +141,20 @@ test("security headers are served", async ({ request }) => {
   expect(h["x-frame-options"]).toBe("DENY");
   expect((await request.get("/.well-known/security.txt")).status()).toBe(200);
 });
+
+test.describe("manager reports", () => {
+  test.use({ storageState: STATE.manager });
+  test("switches period, highlights the tab and downloads CSV", async ({ page }) => {
+    await page.goto("/admin/reports/products");
+    await expect(page.getByRole("navigation", { name: "Reports" }).getByRole("link", { name: "Products" })).toHaveAttribute("aria-current", "page");
+    await page.getByRole("combobox", { name: "Period" }).selectOption("12m");
+    await page.getByRole("button", { name: "Show" }).click();
+    await expect(page).toHaveURL(/range=12m/);
+    await expect(page.getByText("Last 12 months.", { exact: false }).first()).toBeVisible();
+    const csv = await page.request.get("/api/reports/products?range=12m");
+    expect(csv.status()).toBe(200);
+    expect(await csv.text()).toContain("sku,item,category,brand,abc");
+    const denied = await page.request.get("/api/reports/nope");
+    expect(denied.status()).toBe(404);
+  });
+});

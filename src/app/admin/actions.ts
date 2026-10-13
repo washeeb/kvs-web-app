@@ -59,6 +59,7 @@ export async function updateSettingsAction(_: Prev, fd: FormData) {
       quoteValidityDays: int(fd, "quoteValidityDays"),
       reservationHoldHours: int(fd, "reservationHoldHours"),
       invoiceDueDays: int(fd, "invoiceDueDays"),
+      weeklyReport: bool(fd, "weeklyReport"),
       dpcRegistrationNumber: str(fd, "dpcRegistrationNumber"),
       dpcRegistrationExpires: str(fd, "dpcRegistrationExpires"),
     });

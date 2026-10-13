@@ -53,7 +53,13 @@ const NAV: { label: string | null; items: Entry[] }[] = [
     ],
   },
   { label: "Finance", items: [{ href: "/admin/invoices", label: "Invoices & payments", perm: "finance.read" }] },
-  { label: "Reports", items: [{ href: "/admin/exports", label: "Data exports", perm: "data.export" }] },
+  {
+    label: "Reports",
+    items: [
+      { href: "/admin/reports", label: "Reports", perm: "reports.read" },
+      { href: "/admin/exports", label: "Data exports", perm: "data.export" },
+    ],
+  },
   {
     label: "Administration",
     items: [

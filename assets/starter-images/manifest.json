@@ -1,0 +1,123 @@
+{
+  "services": [
+    {
+      "slug": "web-software-development",
+      "image": "web-light",
+      "alt": "Illustration of a website, its code and a phone app"
+    },
+    {
+      "slug": "branding-advertising",
+      "image": "branding-light",
+      "alt": "Illustration of colour swatches, business cards and a megaphone"
+    },
+    {
+      "slug": "design-printing",
+      "image": "printing-light",
+      "alt": "Illustration of a printer, ink drops, business cards and paper"
+    },
+    {
+      "slug": "cctv-installation",
+      "image": "cctv-light",
+      "alt": "Illustration of security cameras and a monitor showing four camera views"
+    },
+    {
+      "slug": "office-supplies",
+      "image": "office-light",
+      "alt": "Illustration of binders, paper, pens, a notebook and a stapler"
+    },
+    {
+      "slug": "photography-videography",
+      "image": "photo-light",
+      "alt": "Illustration of a camera, a video camera on a tripod and a studio light"
+    },
+    {
+      "slug": "computer-training-consultancy",
+      "image": "training-light",
+      "alt": "Illustration of a presentation screen, a laptop and chairs"
+    },
+    {
+      "slug": "souvenirs-uniforms-promotional",
+      "image": "souvenirs-light",
+      "alt": "Illustration of a branded T-shirt, mug, cap and tote bag"
+    },
+    {
+      "slug": "tech-networking-it-supplies",
+      "image": "network-light",
+      "alt": "Illustration of a router, network switches, cables and a laptop"
+    }
+  ],
+  "categories": [
+    {
+      "slug": "computers-accessories",
+      "image": "computers-light",
+      "alt": "Illustration of a laptop, keyboard, mouse and phone"
+    },
+    {
+      "slug": "networking",
+      "image": "networkingCat-light",
+      "alt": "Illustration of a router and a network switch"
+    },
+    {
+      "slug": "cctv",
+      "image": "cctvCat-light",
+      "alt": "Illustration of a bullet camera, a dome camera and a monitor"
+    },
+    {
+      "slug": "office-supplies",
+      "image": "office-light",
+      "alt": "Illustration of binders, paper, pens, a notebook and a stapler"
+    },
+    {
+      "slug": "souvenirs-promotional",
+      "image": "souvenirs-light",
+      "alt": "Illustration of a branded T-shirt, mug, cap and tote bag"
+    }
+  ],
+  "slides": [
+    {
+      "key": "hero",
+      "headline": "Technology, design and supplies — handled in one place.",
+      "body": "Websites, branding, printing, CCTV, training, branded items, office and IT supplies for businesses, schools, churches and homes.",
+      "ctaLabel": "Request a quotation",
+      "ctaHref": "/contact",
+      "alt": "Illustration of a website, camera, printer, router and branded items",
+      "image": "hero-dark"
+    },
+    {
+      "key": "cctv",
+      "headline": "CCTV installed, explained and supported",
+      "body": "We survey your site, recommend the right cameras and recorder, install them neatly and show you how to view them on your phone.",
+      "ctaLabel": "CCTV installation",
+      "ctaHref": "/services/cctv-installation",
+      "alt": "Illustration of security cameras and a monitor showing four camera views",
+      "image": "cctv-dark"
+    },
+    {
+      "key": "web",
+      "headline": "Websites and software that work for your business",
+      "body": "From a clear company website to online shops and custom systems that save your team time.",
+      "ctaLabel": "Website & software",
+      "ctaHref": "/services/web-software-development",
+      "alt": "Illustration of a website, its code and a phone app",
+      "image": "web-dark"
+    },
+    {
+      "key": "office",
+      "headline": "Office and IT supplies, ready when you are",
+      "body": "Order online for pickup or delivery and pay by mobile money, card or transfer.",
+      "ctaLabel": "Visit the shop",
+      "ctaHref": "/shop",
+      "alt": "Illustration of binders, paper, pens, a notebook and a stapler",
+      "image": "office-dark"
+    },
+    {
+      "key": "souvenirs",
+      "headline": "Your brand on uniforms, mugs and gifts",
+      "body": "Branded T-shirts, caps, mugs and bags for staff, events and customers.",
+      "ctaLabel": "Branded items",
+      "ctaHref": "/services/souvenirs-uniforms-promotional",
+      "alt": "Illustration of a branded T-shirt, mug, cap and tote bag",
+      "image": "souvenirs-dark"
+    }
+  ]
+}

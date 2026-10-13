@@ -5,13 +5,15 @@ import { mainImages } from "@/server/modules/media";
 import { Picture } from "@/components/picture";
 import { SERVICE_LINES } from "@/content/services";
 import { Logo } from "@/components/logo";
+import { HeroSlider } from "@/components/hero-slider";
+import { liveSlides } from "@/server/modules/slides";
 
 export default async function Home() {
   const db = getDb();
   const cats = (await listCategoriesTree(db)).filter(
     (c) => c.active && c.depth === 0,
   );
-  const [serviceImages, catImages] = await Promise.all([
+  const [serviceImages, catImages, slides] = await Promise.all([
     mainImages(
       db,
       "service",
@@ -22,37 +24,42 @@ export default async function Home() {
       "category",
       cats.map((c) => c.id),
     ),
+    liveSlides(db),
   ]);
   return (
     <>
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-[1.3fr_1fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-teal-700">
-              KingsView Solutions
-            </p>
-            <h1 className="mt-2 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
-              Technology, design and supplies — handled in one place.
-            </h1>
-            <p className="mt-4 max-w-xl text-lg text-slate-700">
-              Websites and software, branding and printing, CCTV installation,
-              photography, training, branded items, office supplies and IT
-              equipment for businesses, schools, churches and homes.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/contact" className="btn btn-accent">
-                Request a quotation
-              </Link>
-              <Link href="/shop" className="btn btn-primary">
-                Visit the shop
-              </Link>
+      {slides.length > 0 ? (
+        <HeroSlider slides={slides} />
+      ) : (
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-[1.3fr_1fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-teal-700">
+                KingsView Solutions
+              </p>
+              <h1 className="mt-2 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
+                Technology, design and supplies — handled in one place.
+              </h1>
+              <p className="mt-4 max-w-xl text-lg text-slate-700">
+                Websites and software, branding and printing, CCTV installation,
+                photography, training, branded items, office supplies and IT
+                equipment for businesses, schools, churches and homes.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/contact" className="btn btn-accent">
+                  Request a quotation
+                </Link>
+                <Link href="/shop" className="btn btn-primary">
+                  Visit the shop
+                </Link>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <Logo variant="stacked" href={null} height={240} />
             </div>
           </div>
-          <div className="flex justify-center">
-            <Logo variant="stacked" href={null} height={240} />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section
         className="mx-auto max-w-6xl px-4 py-14"

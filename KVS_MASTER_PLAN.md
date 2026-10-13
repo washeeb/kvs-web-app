@@ -90,6 +90,12 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 - [x] Reports: sales, products (ABC, margin), inventory health, demand forecast, finance & tax (GRA VAT/NHIL/GETFund), purchasing, enquiries/quotations/jobs; CSVs; Monday summary e-mail (switch in Settings)
 - Tests: 58 unit/integration, 112 browser. Migrations `0001_catalogue_media`, `0002_inventory_purchasing` run on deploy; new purchasing permissions reach the system roles on deploy.
 
+### K5 — Home page slider and starter pictures *(built 2026-10-13; deploy from cPanel, then run the starter command once)*
+- [x] Home page slides managed in admin (Catalogue → Home page slides): headline, text, one button (site path or https only), picture, order, optional show-from/until dates; accessible carousel (pause, previous/next, slide picker, stops on hover/focus, no motion for reduced-motion users, text is real page text)
+- [x] Starter illustrations drawn as vector art in the brand colours (no text, people or real brands): 5 slides, 9 service pages, 5 shop categories. Sources in `assets/illustrations` (`npm run images:build`); installed with `ops/starter-images.mjs <staff e-mail>`, which only fills gaps
+- Real products keep real photos (owner's own or manufacturer media kits); no generated product pictures
+- Tests: 62 unit/integration, 115 browser. Migration `0003_slides`.
+
 ### K3 — Go live
 - [x] Domain + InMotion add-on domain, database, Node app, cron; GitHub repo and deploy pipeline (2026-10-13)
 - [ ] Connect to SES production (SES creates the connection and shares secrets)
@@ -106,6 +112,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 8. Progress log
 
+- 2026-10-13 — K5 completed (see K5): home page slider with admin, and 17 starter illustrations (slides, services, categories). Owner chose: vector illustrations plus their own / manufacturer photos for products; no people (real staff photos later).
 - 2026-10-13 — K4 completed (see K4). GitHub Actions builds the deploy bundle again (the repository is now public — confirm that is intended).
 - 2026-10-13 — K4 (catalogue, inventory, reporting) started. Done: grouped side menu with current page highlighted; pictures for products, categories, brands and service pages (browser-side resize to WebP, server checks by content, stored in ~/kvs-data/uploads/media, long-cache serving); categories with sub-categories and SKU codes, brands, tags, specifications; shop filters, sorting, SKU/brand search, product galleries and schema.org data; service banners and galleries. 42 unit tests, 66 browser tests passing locally.
 - 2026-10-13 — **Live** at https://kingsviewsolutions.com (InMotion, same account as Synclytics; Node 24, PostgreSQL `n789825_kvs`, own deploy key). Verified from outside: all public pages 200, /admin → sign-in, /dev/mailbox 404, security headers (HSTS, nonce CSP, COOP, X-Frame-Options), /api/health ok with the database, cron tick 200. Shop empty (no demo data in production). Found while deploying: cPanel Git will not clone via an SSH alias (clone in Terminal, then register), nginx cache held the old directory listing (cleared), firewall 406 for curl user agent and body-less POST (cron lines send a browser user agent and GET). Pending: owner account sign-in + two-step, test e-mail, real products.

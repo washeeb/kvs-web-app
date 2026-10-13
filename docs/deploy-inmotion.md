@@ -87,5 +87,10 @@ InMotion's firewall (ModSecurity) answers **406** to requests that identify as `
 - Settings → company details, TIN, **payment instructions** (MoMo / bank), opening hours; confirm KingsView's **VAT status** and switch the taxes off if it is not VAT-registered.
 - Add real products (Products & stock) and remove nothing from the demo — production never contains demo data.
 - Pictures are stored in `~/kvs-data/uploads` (next to the app, so deploys never delete them). Set `UPLOAD_DIR` only to move them.
+- Starter pictures (once, after the deploy that adds slides): installs the home page slides and the illustrations for service pages and shop categories. It only fills gaps (anything that already has a picture is skipped, and slides are only added when there are none), so it is safe to run again. The e-mail is the staff member recorded as uploading them.
+  ```bash
+  cd ~/kvs-app && set -a && . ./.env.production && set +a && ~/nodevenv/kvs-app/24/bin/node ops/starter-images.mjs info@kingsviewsolutions.com; cd ~
+  ```
+  Then edit the slide wording under **Catalogue → Home page slides**, and replace any illustration with a real photo from the same page when one is available.
 - Backups: InMotion Backup Manager already covers the home directory (incl. `~/kvs-app/.env.production` and `~/kvs-data`) and all PostgreSQL databases.
 - Paystack webhook (when keys exist): `https://kingsviewsolutions.com/api/webhooks/paystack`.

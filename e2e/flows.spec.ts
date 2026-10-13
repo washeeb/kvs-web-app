@@ -65,6 +65,48 @@ test.describe("store staff", () => {
     expect(res.headers()["cache-control"]).toContain("immutable");
     await expectAccessible(page, "product page");
   });
+  test("add a home page slide with a picture, see it in the slider, then delete it", async ({ page }) => {
+    const headline = `E2E slide ${Date.now()}`;
+    await page.goto("/admin/slides");
+    await page.getByLabel("Headline").fill(headline);
+    await page.getByLabel("Button label").fill("See the shop");
+    await page.getByLabel("Button link").fill("//evil.example");
+    await page.getByRole("button", { name: "Create slide" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "Use a page on this site" })).toBeVisible();
+    // The form starts again after a refused save.
+    await page.getByLabel("Headline").fill(headline);
+    await page.getByLabel("Button label").fill("See the shop");
+    await page.getByLabel("Button link").fill("/shop");
+    await page.getByRole("button", { name: "Create slide" }).click();
+    await page.waitForURL(/\/admin\/slides\/[0-9a-f-]{36}$/);
+    await page.getByLabel("Pictures").setInputFiles({ name: "slide.png", mimeType: "image/png", buffer: makePng(1600, 1067) });
+    await page.getByRole("button", { name: "Upload" }).click();
+    await expect(page.locator('img[src^="/media/"]').first()).toBeVisible();
+    const slideUrl = page.url();
+
+    await page.goto("/");
+    const slider = page.getByRole("region", { name: "Highlights" });
+    const next = slider.getByRole("button", { name: "Next slide" });
+    if (await next.isVisible()) {
+      // Other slides exist: stop the rotation, pick ours, then move on from it.
+      await slider.getByRole("button", { name: "Stop the slides" }).click();
+      await expect(slider.getByRole("button", { name: "Start the slides" })).toBeVisible();
+      await slider.getByRole("button", { name: `: ${headline}` }).click();
+      await expect(slider.getByRole("heading", { name: headline })).toBeVisible();
+      await next.click();
+      await expect(slider.getByRole("heading", { name: headline })).toBeHidden();
+    } else {
+      await expect(slider.getByRole("heading", { name: headline })).toBeVisible();
+    }
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    await expectAccessible(page, "home page slider");
+
+    await page.goto(slideUrl);
+    page.once("dialog", (d) => d.accept());
+    await page.getByRole("button", { name: "Delete slide" }).click();
+    await page.waitForURL(/\/admin\/slides$/);
+    await expect(page.getByRole("link", { name: headline })).toHaveCount(0);
+  });
 });
 
 test.describe("stock and purchasing", () => {

@@ -9,7 +9,7 @@ import { audit } from "./audit";
 import { publish } from "./events";
 import { sendMail } from "./mail";
 import { announce, notifyUsers, usersWithPermission } from "./notifications";
-import { getSettings, nextNumber } from "./settings";
+import { getSettings, nextNumber, phoneNumbers } from "./settings";
 
 /** Bookings for work: CCTV installations, shoots, training sessions, design and development work. */
 const SLUGS = SERVICE_LINES.map((s) => s.slug) as [string, ...string[]];
@@ -88,7 +88,7 @@ export async function scheduleJob(db: DB, actor: Actor, id: string, input: { sch
       await sendMail(tx, {
         to: c.email,
         subject: `Booking confirmed: ${j.title} — ${s.companyName}`,
-        body: [`Hello ${c.name},`, "", `Your booking (${j.number}) is scheduled for ${when.toISOString().slice(0, 16).replace("T", " ")} (Accra time)${data.location || j.location ? ` at ${data.location || j.location}` : ""}.`, "", "Call us if you need to change it.", s.companyName, s.contactPhone].join("\n"),
+        body: [`Hello ${c.name},`, "", `Your booking (${j.number}) is scheduled for ${when.toISOString().slice(0, 16).replace("T", " ")} (Accra time)${data.location || j.location ? ` at ${data.location || j.location}` : ""}.`, "", "Call us if you need to change it.", s.companyName, phoneNumbers(s).join(" / ")].join("\n"),
       });
     }
   });

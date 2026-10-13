@@ -24,10 +24,18 @@ export const settingsSchema = z.object({
   companyAddress: z.string().trim().max(300),
   /** Ghana Revenue Authority taxpayer identification number (TIN), printed on invoices once set. */
   companyTin: z.string().trim().max(40),
-  /** Mobile money / bank details printed on invoices and shown after checkout. */
+  /** Mobile money and bank details, printed on invoices and shown after checkout (see paymentDetails). */
+  momoNumber: z.string().trim().max(40),
+  momoName: z.string().trim().max(120),
+  bankName: z.string().trim().max(120),
+  bankAccountName: z.string().trim().max(120),
+  bankAccountNumber: z.string().trim().max(40),
+  bankBranch: z.string().trim().max(120),
+  /** Any other payment notes, shown after the mobile money and bank details. */
   paymentInstructions: z.string().trim().max(1000),
   contactEmail: z.string().email(),
-  contactPhone: z.string().max(40),
+  contactPhone: z.string().trim().max(40),
+  contactPhoneAlt: z.string().trim().max(40),
   whatsappNumber: z.string().max(40),
   openingHours: z.string().trim().max(200),
   instagramUrl: z.union([z.literal(""), z.string().url().max(200)]),
@@ -49,11 +57,18 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   invoiceDueDays: 7,
   shopOrderLimitMinor: 2_000_000, // GHS 20,000.00
   deliveryNote: "Delivery fees depend on your location; we will confirm the fee before dispatch.",
-  companyAddress: "",
-  companyTin: "",
+  companyAddress: "House No. A31/3585, Adam House, Accra",
+  companyTin: "P0010441387",
+  momoNumber: "0552225441",
+  momoName: "",
+  bankName: "Absa Bank",
+  bankAccountName: "KingsView Solutions",
+  bankAccountNumber: "0341071744",
+  bankBranch: "Ring Road Central Branch",
   paymentInstructions: "",
-  contactEmail: "info@kingsviewsolutions.example",
-  contactPhone: "",
+  contactEmail: "info@kingsviewsolutions.com",
+  contactPhone: "0552225441",
+  contactPhoneAlt: "0245636889",
   whatsappNumber: "",
   openingHours: "",
   instagramUrl: "https://www.instagram.com/kinxview/",
@@ -141,6 +156,23 @@ export async function upsertTax(db: DB, actor: Actor, id: string | null, input: 
     const [row] = await db.insert(taxRates).values({ ...data, organizationId: orgId }).returning();
     await audit(db, { actor, action: "tax.created", targetType: "tax_rate", targetId: row!.id, data });
   }
+}
+
+/** The company's phone numbers, main first. */
+export function phoneNumbers(s: Pick<CompanySettings, "contactPhone" | "contactPhoneAlt">) {
+  return [s.contactPhone, s.contactPhoneAlt].filter(Boolean);
+}
+
+/** Mobile money and bank details as display lines; empty when none are set. */
+export function paymentDetails(s: CompanySettings): string[] {
+  const lines: string[] = [];
+  if (s.momoNumber) lines.push(`Mobile money: ${s.momoNumber}${s.momoName ? ` (${s.momoName})` : ""}`);
+  if (s.bankAccountNumber) {
+    const bank = [s.bankName, s.bankBranch].filter(Boolean).join(", ");
+    lines.push(`Bank transfer: ${bank ? `${bank} — ` : ""}account ${s.bankAccountNumber}${s.bankAccountName ? ` (${s.bankAccountName})` : ""}`);
+  }
+  if (s.paymentInstructions) lines.push(s.paymentInstructions);
+  return lines;
 }
 
 /** Registration status for reminders: missing, expiring within 60 days, or valid. */

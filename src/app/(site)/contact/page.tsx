@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getDb } from "@/server/db/client";
-import { getSettings } from "@/server/modules/settings";
+import { getSettings, phoneNumbers } from "@/server/modules/settings";
 import { EnquiryForm } from "@/components/enquiry-form";
 
 export const metadata: Metadata = { title: "Contact & quotations" };
@@ -13,7 +13,7 @@ export default async function ContactPage() {
         <h1 className="text-3xl font-bold text-slate-900">Contact us</h1>
         <p className="mt-3 text-slate-600">Ask for a quotation, book a service or ask a question. We reply within one working day.</p>
         <dl className="mt-6 space-y-3 text-sm">
-          {s.contactPhone && <div><dt className="font-semibold">Phone</dt><dd><a href={`tel:${s.contactPhone.replace(/\s+/g, "")}`} className="text-teal-700">{s.contactPhone}</a></dd></div>}
+          {s.contactPhone && <div><dt className="font-semibold">Phone</dt><dd>{phoneNumbers(s).map((p, i) => <span key={p}>{i > 0 && ", "}<a href={`tel:${p.replace(/\s+/g, "")}`} className="text-teal-700">{p}</a></span>)}</dd></div>}
           {s.whatsappNumber && <div><dt className="font-semibold">WhatsApp</dt><dd>{s.whatsappNumber}</dd></div>}
           <div><dt className="font-semibold">E-mail</dt><dd><a href={`mailto:${s.contactEmail}`} className="text-teal-700">{s.contactEmail}</a></dd></div>
           {s.companyAddress && <div><dt className="font-semibold">Visit us</dt><dd>{s.companyAddress}</dd></div>}

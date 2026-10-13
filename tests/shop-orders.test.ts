@@ -6,6 +6,7 @@ import { customers, invoices, mailOutbox, orders, stockLevels, stockMovements } 
 import { cartCount, parseCart, placeShopOrder, priceCart, setCartLine } from "@/server/modules/shop";
 import { cancelOrder, confirmOrder, fulfilOrder, getOrderByTracking, markReady } from "@/server/modules/orders";
 import { expireReservations } from "@/server/modules/inventory";
+import { DEFAULT_SETTINGS, getSettings, paymentDetails, phoneNumbers, updateSettings } from "@/server/modules/settings";
 import { recordManualPayment, reverseManualPayment, getInvoice, voidInvoice } from "@/server/modules/invoices";
 
 let db: DB;
@@ -20,6 +21,18 @@ const cartWith = async (lines: [string, number][]) => {
   for (const [sku, q] of lines) c = setCartLine(c, (await variant(db, sku)).id, q, "add");
   return c;
 };
+
+describe("company details", () => {
+  it("are editable in settings and drive the payment and phone lines", async () => {
+    const owner = await as("owner@kingsview.demo");
+    const s = await updateSettings(db, owner, { momoName: "KingsView Solutions", bankAccountNumber: "", paymentInstructions: "Cash at the office." });
+    expect(paymentDetails(s)).toEqual(["Mobile money: 0552225441 (KingsView Solutions)", "Cash at the office."]);
+    expect(phoneNumbers({ ...s, contactPhoneAlt: "" })).toEqual(["0552225441"]);
+    await expect(updateSettings(db, await as("sales@kingsview.demo"), { companyTin: "X" })).rejects.toThrow();
+    await updateSettings(db, owner, { momoName: "", bankAccountNumber: DEFAULT_SETTINGS.bankAccountNumber, paymentInstructions: "" });
+    expect(paymentDetails(await getSettings(db))).toHaveLength(2);
+  });
+});
 
 describe("cart", () => {
   it("rejects tampered cookies and merges repeated lines", () => {
@@ -54,6 +67,9 @@ describe("guest checkout", () => {
     expect(await getOrderByTracking(db, "../../etc")).toBeNull();
     const [mail] = await db.select().from(mailOutbox).where(eq(mailOutbox.to, guest.email));
     expect(mail!.body).toContain(`/order/${token}`);
+    expect(mail!.body).toContain("Mobile money: 0552225441");
+    expect(mail!.body).toContain("Absa Bank, Ring Road Central Branch — account 0341071744 (KingsView Solutions)");
+    expect(mail!.body).toContain("0552225441 / 0245636889");
   });
 
   it("matches returning customers by phone and requires an address for delivery", async () => {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { getSessionState } from "@/server/web/session";
 import { getDb } from "@/server/db/client";
-import { getSettings } from "@/server/modules/settings";
+import { getSettings, phoneNumbers } from "@/server/modules/settings";
 import { cartCount } from "@/server/modules/shop";
 import { readCart } from "@/server/web/cart";
 import { SERVICE_LINES } from "@/content/services";
@@ -61,7 +61,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           <div>
             <h2 className="text-sm font-semibold text-white">Contact</h2>
             <ul className="mt-2 space-y-1 text-sm">
-              {s.contactPhone && <li>Phone: <a href={`tel:${s.contactPhone.replace(/\s+/g, "")}`} className="hover:text-white">{s.contactPhone}</a></li>}
+              {s.contactPhone && <li>Phone: {phoneNumbers(s).map((p, i) => <span key={p}>{i > 0 && ", "}<a href={`tel:${p.replace(/\s+/g, "")}`} className="hover:text-white">{p}</a></span>)}</li>}
               {s.whatsappNumber && <li>WhatsApp: {s.whatsappNumber}</li>}
               <li>E-mail: <a href={`mailto:${s.contactEmail}`} className="hover:text-white">{s.contactEmail}</a></li>
               {s.companyAddress && <li>{s.companyAddress}</li>}

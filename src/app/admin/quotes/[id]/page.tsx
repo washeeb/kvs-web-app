@@ -6,7 +6,7 @@ import { requireActor } from "@/server/web/session";
 import { can } from "@/server/authz/policy";
 import { AppError } from "@/server/lib/errors";
 import { getQuote } from "@/server/modules/quotes";
-import { getSettings } from "@/server/modules/settings";
+import { getSettings, phoneNumbers } from "@/server/modules/settings";
 import { SERVICE_LINES, serviceTitle } from "@/content/services";
 import { ActionForm } from "@/components/action-form";
 import { PrintButton } from "@/components/print-button";
@@ -39,7 +39,7 @@ export default async function QuotePage({ params }: { params: Promise<{ id: stri
             <div>
               <p className="text-lg font-bold">{s.companyName}</p>
               {s.companyAddress && <p className="text-sm text-slate-600">{s.companyAddress}</p>}
-              <p className="text-sm text-slate-600">{[s.contactPhone, s.contactEmail].filter(Boolean).join(" · ")}</p>
+              <p className="text-sm text-slate-600">{[...phoneNumbers(s), s.contactEmail].join(" · ")}</p>
               {s.companyTin && <p className="text-sm text-slate-600">TIN {s.companyTin}</p>}
             </div>
             <div className="text-right">

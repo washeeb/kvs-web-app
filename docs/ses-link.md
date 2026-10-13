@@ -20,7 +20,7 @@ Customer personal data never crosses: SES sends order numbers, SKUs and quantiti
 
 ## Turning it on
 
-1. **In SES** (Partner integrations → KingsView): create a **production** connection for KingsView, set its outbound URL to `https://<kingsview-domain>/api/ses/events`, and copy the connection id and the two secrets shown once.
+1. **In SES** (Partner integrations → KingsView): create a **production** connection for KingsView, set its outbound URL to `https://kingsviewsolutions.com/api/ses/events`, and copy the connection id and the two secrets shown once.
 2. **In KingsView** `.env.production`:
    - `SES_BASE_URL=https://synclyticsenterprisesystems.com`
    - `SES_CONNECTION_ID=<connection id>`

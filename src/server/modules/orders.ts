@@ -12,7 +12,7 @@ import { invoiceForOrder, issueInvoiceForOrder, settleInvoicesForClosedOrder } f
 import { sendMail } from "./mail";
 import { notifyPermission } from "./notifications";
 import { queueFulfilment } from "./ses-link";
-import { getSettings, nextNumber } from "./settings";
+import { getSettings, nextNumber, phoneNumbers } from "./settings";
 
 export const ORDER_STATUS_LABEL: Record<string, string> = {
   pending: "Received — awaiting confirmation",
@@ -36,7 +36,7 @@ async function lockOrder(tx: DB, id: string) {
 async function emailCustomer(tx: DB, o: Order, subject: string, lines: string[]) {
   if (!o.contactEmail) return;
   const s = await getSettings(tx);
-  await sendMail(tx, { to: o.contactEmail, subject: `${subject} — ${s.companyName}`, body: [`Hello ${o.contactName ?? ""},`, "", ...lines, "", s.companyName, s.contactPhone].filter((l) => l !== undefined).join("\n") });
+  await sendMail(tx, { to: o.contactEmail, subject: `${subject} — ${s.companyName}`, body: [`Hello ${o.contactName ?? ""},`, "", ...lines, "", s.companyName, phoneNumbers(s).join(" / ")].filter((l) => l !== undefined).join("\n") });
 }
 
 // ───────────────────────────── Reading ─────────────────────────────

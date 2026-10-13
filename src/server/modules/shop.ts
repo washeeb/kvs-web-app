@@ -14,7 +14,7 @@ import { issueInvoiceForOrder } from "./invoices";
 import { sendMail } from "./mail";
 import { announce, notifyPermission } from "./notifications";
 import { trackingUrl } from "./orders";
-import { activeTaxes, getSettings, nextNumber } from "./settings";
+import { activeTaxes, getSettings, nextNumber, paymentDetails, phoneNumbers } from "./settings";
 
 /**
  * Online shop. The cart lives in a cookie as variant ids and quantities only; prices, taxes and stock are
@@ -163,10 +163,10 @@ export async function placeShopOrder(db: DB, input: z.input<typeof checkoutInput
           "",
           `Thank you for your order ${o!.number} (${formatMoney(o!.totalMinor, o!.currency)}). We will confirm it shortly.`,
           `Follow your order and pay online here (keep this link private): ${trackingUrl(token)}`,
-          s.paymentInstructions ? `\nTo pay by mobile money or bank transfer:\n${s.paymentInstructions}\nUse ${invoice.number} as the reference.` : "",
+          paymentDetails(s).length ? `\nTo pay by mobile money or bank transfer:\n${paymentDetails(s).join("\n")}\nUse ${invoice.number} as the reference.` : "",
           "",
           s.companyName,
-          s.contactPhone,
+          phoneNumbers(s).join(" / "),
         ].join("\n"),
       });
     }

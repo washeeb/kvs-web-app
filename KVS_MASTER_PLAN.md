@@ -1,7 +1,7 @@
 # KingsView Solutions (KVS) — Web App Master Plan
 
 > Living specification. Update **Status**, **Decisions** and **Progress log** as work lands.
-> Last updated: 2026-10-13 · **K1 and K2 built and tested** (website, shop, back office, SES link, Paystack in test mode) · Next: K3 go-live (needs the KingsView domain)
+> Last updated: 2026-10-13 · **K1 and K2 built and tested** (website, shop, back office, SES link, Paystack in test mode) · Next: K3 go-live on `kingsviewsolutions.com`
 
 ---
 
@@ -89,14 +89,15 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 | # | Item | Status |
 |---|---|---|
-| Q1 | KingsView domain name | Waiting for owner |
-| Q2 | Company details for invoices (address, phone, e-mail, GRA TIN), payment instructions (MoMo number, bank) | Waiting for owner |
+| Q1 | KingsView domain name | **Done** — `kingsviewsolutions.com` (2026-10-13) |
+| Q2 | Company details for invoices (address, phone, e-mail, GRA TIN), payment instructions (MoMo number, bank) | **Done** 2026-10-13 — set as defaults, editable in Settings. VAT registration still to confirm |
 | Q3 | Real product list, prices, stock | Waiting for owner (demo data until then, clearly labelled) |
 | Q4 | KingsView Paystack account | Waiting for owner |
 | Q5 | Data Protection Commission registration for KingsView | Waiting for owner |
 
 ## 8. Progress log
 
+- 2026-10-13 — Domain `kingsviewsolutions.com` and company details received: address, two phones, e-mail, TIN, MoMo and Absa bank details are the defaults and editable in Settings (separate mobile money and bank fields, second phone); used on the website, invoices, quotations, order page and e-mails.
 - 2026-10-13 — GitHub billing fixed by owner; CI green on `main` (checks, e2e, deploy bundle).
 - 2026-10-13 — K1 + K2 built: 32 tests passing (shop/orders/payments, quotations/jobs/roles, Paystack, SES link behaviour, SES contract, sign-in security). Local browser check: all public pages 200, guest checkout → order page with invoice and taxes, store and sales back office, no console errors.
 - 2026-10-13 — Plan created. Foundation copied from SES (commit `ac7f5e0`) into `E:\Businesses\1.KingsView\KVS-Web-App`.

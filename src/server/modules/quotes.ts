@@ -11,7 +11,7 @@ import { publish } from "./events";
 import { reserveForOrder } from "./inventory";
 import { issueInvoiceForOrder } from "./invoices";
 import { sendMail } from "./mail";
-import { activeTaxes, getSettings, nextNumber } from "./settings";
+import { activeTaxes, getSettings, nextNumber, phoneNumbers } from "./settings";
 
 const SLUGS = SERVICE_LINES.map((s) => s.slug) as [string, ...string[]];
 
@@ -126,7 +126,7 @@ export async function sendQuote(db: DB, actor: Actor, id: string) {
           "",
           "Reply to this e-mail or call us to accept.",
           s.companyName,
-          s.contactPhone,
+          phoneNumbers(s).join(" / "),
         ].filter((l) => l !== "").join("\n"),
       });
     }

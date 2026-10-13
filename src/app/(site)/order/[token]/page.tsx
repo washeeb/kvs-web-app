@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDb } from "@/server/db/client";
 import { getOrderByTracking, ORDER_STATUS_LABEL } from "@/server/modules/orders";
-import { getSettings } from "@/server/modules/settings";
+import { getSettings, paymentDetails, phoneNumbers } from "@/server/modules/settings";
 import { paystackConfig, verifyAndApplyPayment } from "@/server/modules/payments/paystack";
 import { balanceOf, OPEN_STATUSES } from "@/server/modules/invoices";
 import { log } from "@/server/lib/log";
@@ -72,7 +72,7 @@ export default async function OrderTrackingPage({ params, searchParams }: { para
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm">
             <h2 className="text-lg font-semibold">Mobile money or bank transfer</h2>
-            {s.paymentInstructions ? <p className="mt-2 whitespace-pre-line text-slate-700">{s.paymentInstructions}</p> : <p className="mt-2 text-slate-700">Call us{s.contactPhone ? ` on ${s.contactPhone}` : ""} for payment details.</p>}
+            {paymentDetails(s).length > 0 ? <ul className="mt-2 space-y-0.5 whitespace-pre-line text-slate-700">{paymentDetails(s).map((l) => <li key={l}>{l}</li>)}</ul> : <p className="mt-2 text-slate-700">Call us{s.contactPhone ? ` on ${phoneNumbers(s).join(" or ")}` : ""} for payment details.</p>}
             <p className="mt-2 text-slate-600">Use <strong>{invoice.number}</strong> as the reference.</p>
           </div>
         </section>

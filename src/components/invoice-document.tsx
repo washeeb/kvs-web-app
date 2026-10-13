@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { invoices, invoiceLines } from "@/server/db/schema";
 import { balanceOf, isOverdue } from "@/server/modules/invoices";
-import type { CompanySettings } from "@/server/modules/settings";
+import { paymentDetails, phoneNumbers, type CompanySettings } from "@/server/modules/settings";
 import { Badge, DateTime, Money, StatusBadge } from "./ui";
 
 type InvoiceView = typeof invoices.$inferSelect & { lines: (typeof invoiceLines.$inferSelect)[]; orderNumber?: string | null };
@@ -16,7 +16,7 @@ export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: Invoic
         <div>
           <p className="text-lg font-bold text-slate-900">{settings.companyName}</p>
           {settings.companyAddress && <p className="text-sm text-slate-600">{settings.companyAddress}</p>}
-          <p className="text-sm text-slate-600">{[settings.contactPhone, settings.contactEmail].filter(Boolean).join(" · ")}</p>
+          <p className="text-sm text-slate-600">{[...phoneNumbers(settings), settings.contactEmail].join(" · ")}</p>
           {settings.companyTin && <p className="text-sm text-slate-600">TIN {settings.companyTin}</p>}
         </div>
         <div className="text-right">
@@ -97,10 +97,10 @@ export function InvoiceDocument({ inv, settings, orderHref, now }: { inv: Invoic
           Void <DateTime value={inv.voidedAt} dateOnly />{inv.voidReason ? ` — ${inv.voidReason}` : ""}. Nothing is owed on this invoice.
         </p>
       )}
-      {settings.paymentInstructions && inv.status !== "void" && inv.status !== "paid" && (
+      {paymentDetails(settings).length > 0 && inv.status !== "void" && inv.status !== "paid" && (
         <div className="mt-6 rounded-lg bg-slate-50 p-4 text-sm">
           <h3 className="font-semibold">How to pay</h3>
-          <p className="mt-1 whitespace-pre-line text-slate-700">{settings.paymentInstructions}</p>
+          <ul className="mt-1 space-y-0.5 whitespace-pre-line text-slate-700">{paymentDetails(settings).map((l) => <li key={l}>{l}</li>)}</ul>
           <p className="mt-1 text-slate-600">Please quote <strong>{inv.number}</strong> as the payment reference.</p>
         </div>
       )}

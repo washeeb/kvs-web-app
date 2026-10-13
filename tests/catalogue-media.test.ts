@@ -109,7 +109,7 @@ describe("categories, brands, tags and specifications", () => {
     const twin = await saveCategory(db, store, null, { name: "Printers & ink" });
     expect(twin.slug).toBe("printers-ink-2");
     const { product, variant } = await createProduct(db, store, { name: "HP 305 black", categoryId: child.id, status: "active" }, { name: "Std", priceMinor: 9_000 });
-    expect(variant.sku).toMatch(/^KV-GEN-|^KV-INK-/); // sub-category without its own code falls back to its slug
+    expect(variant.sku).toMatch(/^KV-INK-\d{5}$/); // a sub-category without its own code uses its slug
     // Filtering by the parent includes its sub-category's products.
     expect((await listShopProducts(db, { category: "printers-ink" })).map((p) => p.id)).toContain(product.id);
     await expect(deleteCategory(db, store, child.id)).rejects.toThrow(/Move it first/);

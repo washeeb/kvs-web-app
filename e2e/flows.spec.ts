@@ -38,6 +38,17 @@ test.describe("store staff", () => {
     await page.goto("/admin/invoices");
     await expect(page.getByText("You can't open this page")).toBeVisible();
   });
+  test("create a product and get an automatic SKU", async ({ page }) => {
+    await page.goto("/admin/products/new");
+    await expect(page.getByLabel(/SKU/)).toHaveCount(0);
+    await page.getByLabel("Product name").fill(`E2E network switch ${Date.now()}`);
+    await page.getByLabel("Category").selectOption({ label: "Networking & IT supplies" });
+    await page.getByLabel(/Selling price/).fill("300.00");
+    await page.getByRole("button", { name: "Create product" }).click();
+    await page.waitForURL(/\/admin\/products\/[0-9a-f-]{36}$/);
+    await expect(page.getByText(/KV-NET-\d{5}/).first()).toBeVisible();
+    await expectAccessible(page, "product page");
+  });
 });
 
 test("anonymous visitors are sent to sign in", async ({ page }) => {

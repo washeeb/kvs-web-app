@@ -1,6 +1,6 @@
 {
   "node": {
-    "00f735372789b4696468adeddbe82d8b65e1fbd8c6": {
+    "00dcd3a72bfcd472d10cf63aed9997723a4d43707d": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -10,7 +10,7 @@
       "exportedName": "logout",
       "filename": "src/app/(auth)/actions.ts"
     },
-    "6024bad759e4fdae72bb0b620cc9aaca22fba60255": {
+    "601bf2fec5206f2a0500417e564d6bc46e3928fc87": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -20,27 +20,7 @@
       "exportedName": "forgotPassword",
       "filename": "src/app/(auth)/actions.ts"
     },
-    "606be2c9755d62a279d4e4671a77167a853d6fcc24": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "confirmEnrollmentAction",
-      "filename": "src/app/(auth)/actions.ts"
-    },
-    "6091420e60a50435710a80e7ec94d44ebfbc6eca1e": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "login",
-      "filename": "src/app/(auth)/actions.ts"
-    },
-    "60dd3891fb002aa539471edd064fa96d49970a3a2c": {
+    "602c1d42bf67526c85e462044f371d1f09fb022ff4": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -50,7 +30,7 @@
       "exportedName": "resetPasswordAction",
       "filename": "src/app/(auth)/actions.ts"
     },
-    "60eea9efef77ebbbc11be34c7103319aca3b839bd0": {
+    "6064d82ba4bb8ab917f1cd3357a5eae9716100d706": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -60,7 +40,27 @@
       "exportedName": "verifyMfaAction",
       "filename": "src/app/(auth)/actions.ts"
     },
-    "60ab895168faaba990bd05c3af39bbe4475e04a191": {
+    "60c33301d31a0ee9fa0769ef599ff02a939a170a78": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "confirmEnrollmentAction",
+      "filename": "src/app/(auth)/actions.ts"
+    },
+    "60f8fdf2b65f3b3246b37e404fb80955997677ec54": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "login",
+      "filename": "src/app/(auth)/actions.ts"
+    },
+    "606849bd692877866672638ff332fecea55abeddac": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -70,187 +70,7 @@
       "exportedName": "markNotificationsRead",
       "filename": "src/app/notification-actions.ts"
     },
-    "6006d2a75d53ddaa3f9af5e5585e066e4b0e0d985a": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "uploadImageAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "600a5656b4b528ebf0d046841ff5b876c7a94949af": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "orderAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "600ad1cf4e8a39e8a6c150a1875a887126955ba19e": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "enquiryAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "6011651e01458011448891bd042378907f073eded4": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "createUserAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "6022eff54e75cba7a8e5b5b08af9f08560c2e638f5": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "createQuoteAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "602f7c628feb3a0a355d67cc30da91f23f46245107": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "updateSettingsAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "60348baf9a3aa2fb51372a89c9943526156c8b74a2": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "createJobAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "60368dcb79a6e68ffff6c1b1824b5262090c320db3": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "createProductAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "603903111fdc1cbd0b92edbebb24a3b4dd5a9c5194": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "upsertTaxAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "603d84a803815e0b52c87000d37dc7f048f4bd389a": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "userStatusAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "6049068351d43c35f521406d3edb157a7e3806c67b": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "paymentAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "604dd8a79fd1fba5abc4f445c0acde191ecf5fb8dd": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "sesAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "605c7d99bd5f57a7fb5fe81d65fc604b40f7880213": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "saveCustomerAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "6065c85a62134e490e20945d00dbac78855409e88d": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "assignRoleAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "60665583e08662f3051441aad9f857caecdf34321d": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "imageAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "607903311b724a9bc8ec3be2660887fe992871f98e": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "quoteAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "607c0cb18f5ee7d44cdce278431aa71c964b98ccb6": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "categoryAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "607db2351ab658f13aad6088975510e55b177f468b": {
-      "workers": {
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        }
-      },
-      "exportedName": "jobAction",
-      "filename": "src/app/admin/actions.ts"
-    },
-    "60807a74c5be4c0c46b1540bc806f5e9b99a5a9536": {
+    "600dd04c4283f89693303d04c4b63640ce1b09356e": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -260,17 +80,27 @@
       "exportedName": "brandAction",
       "filename": "src/app/admin/actions.ts"
     },
-    "60b58399525fa838fa4b561b3e50cc26fb8c145111": {
+    "6015fceaf562978b83d6e63c8cca0daaac1a8e5eba": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
           "async": true
         }
       },
-      "exportedName": "productAction",
+      "exportedName": "assignRoleAction",
       "filename": "src/app/admin/actions.ts"
     },
-    "60b8c79a9260fabe6459921445b5b90aa5e47821c4": {
+    "604a16d20c3d24b71cef036cc5d32b6f4116e9dbec": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "quoteAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "6055fa0a4dfa6048c7b285c9bc04ec42bfa316fb04": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -280,7 +110,47 @@
       "exportedName": "decideApprovalAction",
       "filename": "src/app/admin/actions.ts"
     },
-    "60df968a2d9649ae33c7f1ab77fb22468b3b9da85e": {
+    "6066265c340591d5b2a33898635fcc13f4dfabeb49": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "createProductAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "6075695554ee693ea34aa62e3505965d0d03facf9a": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "saveCustomerAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "607eacedf8b28de38ab4a9bacf1f9695649dd7e5c4": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "jobAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "608a15025b3624fe7bc9caca7e8f2938e219b22950": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "orderAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "608aeb824825c3754070dd652f9ae77864c530616e": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -290,7 +160,17 @@
       "exportedName": "revokeAssignmentAction",
       "filename": "src/app/admin/actions.ts"
     },
-    "60ff54b298d70d47e7eaf00bc5db77c404bd8b990e": {
+    "6093ade3150a32514d2a22ffd847dbbca99698e72f": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "uploadImageAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "6098211b9e5c52dfc789b37d878d75002261d01c4f": {
       "workers": {
         "app/admin/quotes/[id]/page": {
           "moduleId": 80181,
@@ -298,6 +178,126 @@
         }
       },
       "exportedName": "tagAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "6098d3711b17ba817458cb1206726c8ce563f65624": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "userStatusAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60a901be292946cad8395472e1e4eb5eaa18d0b9f3": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "paymentAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60ae35005e72d125abe2d9f03f0ce8b46fba72b840": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "sesAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60b11d57949e2278e325574cbadbb917a0c77b64b4": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "imageAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60c44e359974b16e4c7b2985f36bfb9bb007c2e768": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "createUserAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60caa962b3e6d2e82534e7d6b5e468fa951e90f206": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "categoryAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60d629e5c8e12106053080df784d7901030f42c7be": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "createQuoteAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60ecc2c2c7e9f4a8119f382fe7b6565cd8a2f40529": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "enquiryAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60ee249ee16219151917bd9129d3cd82ced333a091": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "productAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60f2cdb3b1be56c23a3fb339ff37836a8823aa091a": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "updateSettingsAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60f3a2bec7cdc7a909c265773164aadeaa18593fdb": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "upsertTaxAction",
+      "filename": "src/app/admin/actions.ts"
+    },
+    "60fcea5ccf2cc75a34ca955ef885d00c781c3932c4": {
+      "workers": {
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        }
+      },
+      "exportedName": "createJobAction",
       "filename": "src/app/admin/actions.ts"
     }
   },

@@ -31,9 +31,13 @@ test("shopper orders as a guest and lands on the private order page", async ({ p
 test.describe("store staff", () => {
   test.use({ storageState: STATE.store });
   test("see only their modules and cannot open finance", async ({ page }) => {
-    await page.goto("/admin");
+    await page.goto("/admin/orders");
     const nav = page.getByRole("navigation", { name: "Back office" });
-    await expect(nav.getByRole("link", { name: "Orders" })).toBeVisible();
+    const menu = nav.getByRole("button", { name: /^Menu/ });
+    if (await menu.isVisible()) await menu.click();
+    await expect(nav.getByRole("link", { name: "Orders" })).toHaveAttribute("aria-current", "page");
+    await expect(nav.getByRole("link", { name: "Dashboard" })).not.toHaveAttribute("aria-current", "page");
+    await expect(nav.getByText("Sales", { exact: true })).toBeVisible();
     await expect(nav.getByRole("link", { name: "Invoices & payments" })).toHaveCount(0);
     await page.goto("/admin/invoices");
     await expect(page.getByText("You can't open this page")).toBeVisible();

@@ -84,6 +84,22 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/admin/brands/[id]",
+      "regex": "^/admin/brands/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/brands/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/categories/[id]",
+      "regex": "^/admin/categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/categories/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/admin/customers/[id]",
       "regex": "^/admin/customers/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -140,12 +156,29 @@
       "namedRegex": "^/admin/quotes/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/admin/services/[slug]",
+      "regex": "^/admin/services/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/admin/services/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/exports/[kind]",
       "regex": "^/api/exports/([^/]+?)(?:/)?$",
       "routeKeys": {
         "nxtPkind": "nxtPkind"
       },
       "namedRegex": "^/api/exports/(?<nxtPkind>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/media/[id]/[file]",
+      "regex": "^/media/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPfile": "nxtPfile"
+      },
+      "namedRegex": "^/media/(?<nxtPid>[^/]+?)/(?<nxtPfile>[^/]+?)(?:/)?$"
     },
     {
       "page": "/order/[token]",
@@ -214,6 +247,18 @@
       "regex": "^/admin/audit(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/audit(?:/)?$"
+    },
+    {
+      "page": "/admin/brands",
+      "regex": "^/admin/brands(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/brands(?:/)?$"
+    },
+    {
+      "page": "/admin/categories",
+      "regex": "^/admin/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/categories(?:/)?$"
     },
     {
       "page": "/admin/customers",
@@ -294,6 +339,12 @@
       "namedRegex": "^/admin/quotes/new(?:/)?$"
     },
     {
+      "page": "/admin/services",
+      "regex": "^/admin/services(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/services(?:/)?$"
+    },
+    {
       "page": "/admin/ses",
       "regex": "^/admin/ses(?:/)?$",
       "routeKeys": {},
@@ -304,6 +355,12 @@
       "regex": "^/admin/settings(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/tags",
+      "regex": "^/admin/tags(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/tags(?:/)?$"
     },
     {
       "page": "/admin/users",

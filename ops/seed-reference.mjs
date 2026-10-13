@@ -12510,6 +12510,7 @@ var schema_exports = {};
 __export(schema_exports, {
   approvalRequests: () => approvalRequests,
   auditLog: () => auditLog,
+  brands: () => brands,
   categories: () => categories,
   currencies: () => currencies,
   customers: () => customers,
@@ -12519,6 +12520,7 @@ __export(schema_exports, {
   invoices: () => invoices,
   jobs: () => jobs,
   mailOutbox: () => mailOutbox,
+  media: () => media,
   notifications: () => notifications,
   orderLines: () => orderLines,
   orders: () => orders,
@@ -12527,6 +12529,7 @@ __export(schema_exports, {
   passwordResetTokens: () => passwordResetTokens,
   payments: () => payments,
   permissionSets: () => permissionSets,
+  productTags: () => productTags,
   productVariants: () => productVariants,
   products: () => products,
   quoteLines: () => quoteLines,
@@ -12543,6 +12546,7 @@ __export(schema_exports, {
   stockLocations: () => stockLocations,
   stockMovements: () => stockMovements,
   stockReservations: () => stockReservations,
+  tags: () => tags,
   taxRates: () => taxRates,
   users: () => users
 });
@@ -12720,10 +12724,58 @@ var categories = pgTable("categories", {
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
   description: text("description"),
+  /** Optional parent for sub-categories (one level deep keeps the shop menu simple). */
+  parentId: uuid("parent_id"),
   /** Service line this category belongs to (see src/content/services.ts). */
   serviceLine: text("service_line"),
+  /** Three-letter code used in new SKUs (KV-<code>-00001); defaults from the slug. */
+  skuCode: text("sku_code"),
+  /** Hidden categories stay on their products but are not offered in the shop. */
+  active: boolean("active").notNull().default(true),
   sortOrder: integer("sort_order").notNull().default(0)
 });
+var brands = pgTable("brands", {
+  id: id(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  description: text("description"),
+  website: text("website"),
+  active: boolean("active").notNull().default(true),
+  createdAt: createdAt()
+});
+var tags = pgTable("tags", {
+  id: id(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  createdAt: createdAt()
+});
+var media = pgTable(
+  "media",
+  {
+    id: id(),
+    /** product | category | brand | service */
+    ownerType: text("owner_type").notNull(),
+    /** Row id, or the service slug for service pages. */
+    ownerId: text("owner_id").notNull(),
+    /** Widths stored, ascending (e.g. 320, 800, 1600). */
+    widths: integer("widths").array().notNull(),
+    /** webp | jpg | png */
+    ext: text("ext").notNull(),
+    /** Size of the largest stored copy. */
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    bytes: integer("bytes").notNull(),
+    sha256: text("sha256").notNull(),
+    /** Text alternative for screen readers and search engines. */
+    alt: text("alt").notNull().default(""),
+    /** 0 = main image. */
+    sortOrder: integer("sort_order").notNull().default(0),
+    uploadedBy: uuid("uploaded_by").references(() => users.id),
+    deletedAt: ts("deleted_at"),
+    createdAt: createdAt()
+  },
+  (t) => [index().on(t.ownerType, t.ownerId)]
+);
 var products = pgTable("products", {
   id: id(),
   slug: text("slug").notNull().unique(),
@@ -12731,6 +12783,9 @@ var products = pgTable("products", {
   summary: text("summary"),
   description: text("description"),
   categoryId: uuid("category_id").references(() => categories.id),
+  brandId: uuid("brand_id").references(() => brands.id),
+  /** Specification sheet shown on the product page: [{ name: "Resolution", value: "4 MP" }, …]. */
+  specs: jsonb("specs").$type().notNull().default([]),
   /** draft | active | retired — drafts are never shown publicly */
   status: text("status").notNull().default("draft"),
   /** Offer this product to Synclytics (SES) through the partner link. */
@@ -12739,6 +12794,14 @@ var products = pgTable("products", {
   createdAt: createdAt(),
   updatedAt: updatedAt()
 });
+var productTags = pgTable(
+  "product_tags",
+  {
+    productId: uuid("product_id").notNull().references(() => products.id),
+    tagId: uuid("tag_id").notNull().references(() => tags.id)
+  },
+  (t) => [primaryKey({ columns: [t.productId, t.tagId] }), index().on(t.tagId)]
+);
 var productVariants = pgTable(
   "product_variants",
   {

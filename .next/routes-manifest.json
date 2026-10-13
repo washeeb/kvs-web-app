@@ -32,7 +32,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+          "value": "camera=(self), microphone=(), geolocation=(), payment=()"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -116,6 +116,22 @@
       "namedRegex": "^/admin/enquiries/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/admin/inventory/counts/[id]",
+      "regex": "^/admin/inventory/counts/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/inventory/counts/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/transfers/[id]",
+      "regex": "^/admin/inventory/transfers/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/inventory/transfers/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/admin/invoices/[id]",
       "regex": "^/admin/invoices/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -148,6 +164,14 @@
       "namedRegex": "^/admin/products/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/admin/purchasing/[id]",
+      "regex": "^/admin/purchasing/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/purchasing/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/admin/quotes/[id]",
       "regex": "^/admin/quotes/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -162,6 +186,14 @@
         "nxtPslug": "nxtPslug"
       },
       "namedRegex": "^/admin/services/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/suppliers/[id]",
+      "regex": "^/admin/suppliers/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/suppliers/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
       "page": "/api/exports/[kind]",
@@ -285,6 +317,60 @@
       "namedRegex": "^/admin/exports(?:/)?$"
     },
     {
+      "page": "/admin/inventory",
+      "regex": "^/admin/inventory(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/counts",
+      "regex": "^/admin/inventory/counts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/counts(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/labels",
+      "regex": "^/admin/inventory/labels(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/labels(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/locations",
+      "regex": "^/admin/inventory/locations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/locations(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/movements",
+      "regex": "^/admin/inventory/movements(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/movements(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/receive",
+      "regex": "^/admin/inventory/receive(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/receive(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/reorder",
+      "regex": "^/admin/inventory/reorder(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/reorder(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/serials",
+      "regex": "^/admin/inventory/serials(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/serials(?:/)?$"
+    },
+    {
+      "page": "/admin/inventory/transfers",
+      "regex": "^/admin/inventory/transfers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/inventory/transfers(?:/)?$"
+    },
+    {
       "page": "/admin/invoices",
       "regex": "^/admin/invoices(?:/)?$",
       "routeKeys": {},
@@ -327,6 +413,18 @@
       "namedRegex": "^/admin/products/new(?:/)?$"
     },
     {
+      "page": "/admin/purchasing",
+      "regex": "^/admin/purchasing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/purchasing(?:/)?$"
+    },
+    {
+      "page": "/admin/purchasing/new",
+      "regex": "^/admin/purchasing/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/purchasing/new(?:/)?$"
+    },
+    {
       "page": "/admin/quotes",
       "regex": "^/admin/quotes(?:/)?$",
       "routeKeys": {},
@@ -355,6 +453,12 @@
       "regex": "^/admin/settings(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/suppliers",
+      "regex": "^/admin/suppliers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/suppliers(?:/)?$"
     },
     {
       "page": "/admin/tags",

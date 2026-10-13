@@ -12516,6 +12516,8 @@ __export(schema_exports, {
   customers: () => customers,
   departments: () => departments,
   enquiries: () => enquiries,
+  goodsReceiptLines: () => goodsReceiptLines,
+  goodsReceipts: () => goodsReceipts,
   invoiceLines: () => invoiceLines,
   invoices: () => invoices,
   jobs: () => jobs,
@@ -12532,6 +12534,8 @@ __export(schema_exports, {
   productTags: () => productTags,
   productVariants: () => productVariants,
   products: () => products,
+  purchaseOrderLines: () => purchaseOrderLines,
+  purchaseOrders: () => purchaseOrders,
   quoteLines: () => quoteLines,
   quotes: () => quotes,
   rateLimits: () => rateLimits,
@@ -12542,10 +12546,16 @@ __export(schema_exports, {
   sesOutbox: () => sesOutbox,
   sessions: () => sessions,
   settings: () => settings,
+  stockCountLines: () => stockCountLines,
+  stockCounts: () => stockCounts,
   stockLevels: () => stockLevels,
   stockLocations: () => stockLocations,
   stockMovements: () => stockMovements,
   stockReservations: () => stockReservations,
+  stockSerials: () => stockSerials,
+  stockTransferLines: () => stockTransferLines,
+  stockTransfers: () => stockTransfers,
+  suppliers: () => suppliers,
   tags: () => tags,
   taxRates: () => taxRates,
   users: () => users
@@ -12810,8 +12820,21 @@ var productVariants = pgTable(
     sku: text("sku").notNull().unique(),
     name: text("name").notNull(),
     priceMinor: money("price_minor").notNull(),
-    /** What KingsView pays; shared with SES as the partner cost when the product is synced. */
+    /** Average cost per unit (weighted on each receipt); shared with SES as the partner cost when synced. */
     costMinor: money("cost_minor"),
+    /** Manufacturer barcode (EAN/UPC) if the item has one; labels use the SKU otherwise. */
+    barcode: text("barcode"),
+    /** Alert and suggest a purchase when sellable stock falls to this level. */
+    reorderPoint: integer("reorder_point"),
+    /** Usual quantity to order. */
+    reorderQty: integer("reorder_qty"),
+    /** Each unit has a serial number, recorded on receipt and on sale (CCTV cameras, laptops …). */
+    serialTracked: boolean("serial_tracked").notNull().default(false),
+    preferredSupplierId: uuid("preferred_supplier_id"),
+    /** Days from ordering to delivery, for reorder suggestions. */
+    leadTimeDays: integer("lead_time_days"),
+    /** Set when a low-stock alert was sent; cleared when stock recovers. */
+    lowStockNotifiedAt: ts("low_stock_notified_at"),
     currency: text("currency").notNull().references(() => currencies.code),
     taxable: boolean("taxable").notNull().default(true),
     tracksStock: boolean("tracks_stock").notNull().default(true),
@@ -12819,13 +12842,21 @@ var productVariants = pgTable(
     createdAt: createdAt(),
     updatedAt: updatedAt()
   },
-  (t) => [check("price_non_negative", sql`${t.priceMinor} >= 0`)]
+  (t) => [check("price_non_negative", sql`${t.priceMinor} >= 0`), uniqueIndex("product_variants_barcode_unique").on(t.barcode).where(sql`${t.barcode} IS NOT NULL`)]
 );
 var stockLocations = pgTable("stock_locations", {
   id: id(),
   code: text("code").notNull().unique(),
   name: text("name").notNull(),
-  organizationId: uuid("organization_id").notNull().references(() => organizations.id)
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id),
+  /** shop | warehouse | van | other */
+  kind: text("kind").notNull().default("shop"),
+  /** Stock here counts towards what the shop and Synclytics can sell. */
+  sellable: boolean("sellable").notNull().default(true),
+  /** Where deliveries go unless another location is chosen. */
+  isDefault: boolean("is_default").notNull().default(false),
+  active: boolean("active").notNull().default(true),
+  address: text("address")
 });
 var stockLevels = pgTable(
   "stock_levels",
@@ -12862,8 +12893,13 @@ var stockMovements = pgTable(
     locationId: uuid("location_id").notNull().references(() => stockLocations.id),
     /** Signed change to on-hand quantity. */
     quantity: integer("quantity").notNull(),
-    /** receipt | adjustment | sale | return */
+    /**
+     * receipt | sale | return | transfer_out | transfer_in | count | damaged | lost | expired | internal_use |
+     * supplier_return | found | correction (older rows: adjustment)
+     */
     reason: text("reason").notNull(),
+    /** Average cost per unit when the movement happened (for valuation and cost of sales). */
+    unitCostMinor: money("unit_cost_minor"),
     refType: text("ref_type"),
     refId: text("ref_id"),
     note: text("note"),
@@ -12872,6 +12908,149 @@ var stockMovements = pgTable(
   },
   (t) => [index().on(t.variantId, t.createdAt)]
 );
+var stockSerials = pgTable(
+  "stock_serials",
+  {
+    id: id(),
+    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
+    serial: text("serial").notNull(),
+    /** in_stock | in_transit | sold | written_off | returned_to_supplier */
+    status: text("status").notNull().default("in_stock"),
+    locationId: uuid("location_id").references(() => stockLocations.id),
+    orderId: uuid("order_id"),
+    receivedAt: ts("received_at").notNull().defaultNow(),
+    soldAt: ts("sold_at"),
+    note: text("note")
+  },
+  (t) => [unique().on(t.variantId, t.serial), index().on(t.serial)]
+);
+var stockTransfers = pgTable("stock_transfers", {
+  id: id(),
+  number: text("number").notNull().unique(),
+  fromLocationId: uuid("from_location_id").notNull().references(() => stockLocations.id),
+  toLocationId: uuid("to_location_id").notNull().references(() => stockLocations.id),
+  /** draft | in_transit | received | cancelled */
+  status: text("status").notNull().default("draft"),
+  note: text("note"),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  dispatchedBy: uuid("dispatched_by").references(() => users.id),
+  dispatchedAt: ts("dispatched_at"),
+  receivedBy: uuid("received_by").references(() => users.id),
+  receivedAt: ts("received_at"),
+  createdAt: createdAt()
+});
+var stockTransferLines = pgTable(
+  "stock_transfer_lines",
+  {
+    id: id(),
+    transferId: uuid("transfer_id").notNull().references(() => stockTransfers.id),
+    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
+    quantity: integer("quantity").notNull(),
+    /** Serial numbers moved (serial-tracked items). */
+    serials: text("serials").array().notNull().default(sql`'{}'::text[]`)
+  },
+  (t) => [unique().on(t.transferId, t.variantId), check("transfer_qty_positive", sql`${t.quantity} > 0`)]
+);
+var stockCounts = pgTable("stock_counts", {
+  id: id(),
+  number: text("number").notNull().unique(),
+  locationId: uuid("location_id").notNull().references(() => stockLocations.id),
+  categoryId: uuid("category_id").references(() => categories.id),
+  /** Counters do not see expected quantities. */
+  blind: boolean("blind").notNull().default(true),
+  /** open | completed | cancelled */
+  status: text("status").notNull().default("open"),
+  note: text("note"),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  completedBy: uuid("completed_by").references(() => users.id),
+  completedAt: ts("completed_at"),
+  /** Value of the differences posted (negative = shortage). */
+  varianceValueMinor: money("variance_value_minor"),
+  createdAt: createdAt()
+});
+var stockCountLines = pgTable(
+  "stock_count_lines",
+  {
+    id: id(),
+    countId: uuid("count_id").notNull().references(() => stockCounts.id),
+    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
+    /** System quantity when the count started (shown to counters unless the count is blind). */
+    expected: integer("expected").notNull(),
+    counted: integer("counted"),
+    /** System quantity at the moment this line was counted; the adjustment is counted − this. */
+    systemAtCount: integer("system_at_count"),
+    countedAt: ts("counted_at"),
+    unitCostMinor: money("unit_cost_minor")
+  },
+  (t) => [unique().on(t.countId, t.variantId)]
+);
+var suppliers = pgTable("suppliers", {
+  id: id(),
+  name: text("name").notNull(),
+  contactName: text("contact_name"),
+  email: text("email"),
+  phone: text("phone"),
+  address: text("address"),
+  taxId: text("tax_id"),
+  paymentTermsDays: integer("payment_terms_days").notNull().default(30),
+  /** Typical days from order to delivery. */
+  leadTimeDays: integer("lead_time_days"),
+  active: boolean("active").notNull().default(true),
+  notes: text("notes"),
+  createdAt: createdAt(),
+  updatedAt: updatedAt()
+});
+var purchaseOrders = pgTable("purchase_orders", {
+  id: id(),
+  number: text("number").notNull().unique(),
+  supplierId: uuid("supplier_id").notNull().references(() => suppliers.id),
+  status: text("status").notNull().default("draft"),
+  currency: text("currency").notNull().default("GHS"),
+  totalMinor: money("total_minor").notNull().default(0),
+  locationId: uuid("location_id").notNull().references(() => stockLocations.id),
+  expectedAt: ts("expected_at"),
+  notes: text("notes"),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  sentAt: ts("sent_at"),
+  createdAt: createdAt(),
+  updatedAt: updatedAt()
+});
+var purchaseOrderLines = pgTable(
+  "purchase_order_lines",
+  {
+    id: id(),
+    purchaseOrderId: uuid("purchase_order_id").notNull().references(() => purchaseOrders.id),
+    variantId: uuid("variant_id").notNull().references(() => productVariants.id),
+    description: text("description").notNull(),
+    quantity: integer("quantity").notNull(),
+    unitCostMinor: money("unit_cost_minor").notNull(),
+    lineTotalMinor: money("line_total_minor").notNull(),
+    receivedQuantity: integer("received_quantity").notNull().default(0),
+    sortOrder: integer("sort_order").notNull().default(0)
+  },
+  (t) => [
+    check("po_line_qty_positive", sql`${t.quantity} > 0`),
+    check("po_line_received_range", sql`${t.receivedQuantity} >= 0 AND ${t.receivedQuantity} <= ${t.quantity}`)
+  ]
+);
+var goodsReceipts = pgTable("goods_receipts", {
+  id: id(),
+  number: text("number").notNull().unique(),
+  purchaseOrderId: uuid("purchase_order_id").notNull().references(() => purchaseOrders.id),
+  locationId: uuid("location_id").notNull().references(() => stockLocations.id),
+  receivedBy: uuid("received_by").notNull().references(() => users.id),
+  /** Supplier's delivery note or invoice number. */
+  reference: text("reference"),
+  notes: text("notes"),
+  createdAt: createdAt()
+});
+var goodsReceiptLines = pgTable("goods_receipt_lines", {
+  id: id(),
+  goodsReceiptId: uuid("goods_receipt_id").notNull().references(() => goodsReceipts.id),
+  purchaseOrderLineId: uuid("purchase_order_line_id").notNull().references(() => purchaseOrderLines.id),
+  quantity: integer("quantity").notNull(),
+  serials: text("serials").array().notNull().default(sql`'{}'::text[]`)
+});
 var customers = pgTable(
   "customers",
   {
@@ -13240,7 +13419,9 @@ var PERMISSIONS = {
   "catalogue.read": op("View products"),
   "catalogue.write": op("Create and edit products and prices"),
   "inventory.read": op("View stock"),
-  "inventory.adjust": op("Adjust stock levels"),
+  "inventory.adjust": op("Receive, adjust, transfer and count stock"),
+  "purchasing.read": op("View suppliers and purchase orders"),
+  "purchasing.write": op("Manage suppliers, raise and receive purchase orders"),
   // Service jobs
   "jobs.read": op("View service jobs"),
   "jobs.write": op("Schedule, assign and complete service jobs"),

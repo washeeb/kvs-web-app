@@ -16,7 +16,7 @@ import { acceptQuote, createQuote, declineQuote, sendQuote } from "@/server/modu
 import { cancelOrder, confirmOrder, fulfilOrder, markReady } from "@/server/modules/orders";
 import { createJob, scheduleJob, setJobStatus } from "@/server/modules/service-jobs";
 import { addVariant, createProduct, updateProduct, updateVariant } from "@/server/modules/catalogue";
-import { changeStock } from "@/server/modules/inventory";
+import { changeStock, parseSerials } from "@/server/modules/inventory";
 import { issueInvoice, recordManualPayment, reverseManualPayment, voidInvoice } from "@/server/modules/invoices";
 import { resyncAll, retryDead } from "@/server/modules/ses-link";
 import { addImage, deleteImage, inspectImage, OWNER_TYPES, updateImage, type OwnerType } from "@/server/modules/media";
@@ -208,9 +208,15 @@ export async function orderAction(_: Prev, fd: FormData) {
       case "ready":
         await markReady(db, actor, id, str(fd, "trackingReference"));
         break;
-      case "fulfil":
-        await fulfilOrder(db, actor, id);
+      case "fulfil": {
+        // Serial numbers arrive as serials_<itemId> fields, one per line or comma-separated.
+        const serials: Record<string, string[]> = {};
+        for (const [key, value] of fd.entries()) {
+          if (key.startsWith("serials_") && typeof value === "string" && value.trim()) serials[key.slice(8)] = parseSerials(value);
+        }
+        await fulfilOrder(db, actor, id, serials);
         break;
+      }
       case "cancel":
         await cancelOrder(db, actor, id, str(fd, "reason"));
         break;

@@ -19,3 +19,16 @@ describe("menu highlighting", () => {
     expect(activeHref("/admin/ordersx", items)).toBeNull();
   });
 });
+
+describe("barcode labels", () => {
+  it("encode Code 128 with the right checksum and module count", async () => {
+    const { code128B, code128Svg } = await import("@/server/lib/code128");
+    const w = code128B("ABC");
+    // start + 3 characters + checksum = 5 symbols of 11 modules, plus a 13-module stop.
+    expect(w.reduce((a, b) => a + b, 0)).toBe(5 * 11 + 13);
+    // Checksum for "ABC" in subset B: (104 + 33·1 + 34·2 + 35·3) mod 103 = 1 → pattern 222122.
+    expect(w.slice(4 * 6, 5 * 6).join("")).toBe("222122");
+    expect(code128Svg("KV-NET-00001").svg).toMatch(/^<svg [^>]*viewBox/);
+    expect(() => code128B("é")).toThrow(/not allowed/);
+  });
+});

@@ -164,7 +164,7 @@ export async function getProductAdmin(db: DB, actor: Actor, id: string) {
     tags: tagMap.get(id) ?? [],
     variants: variants.map((v) => {
       const ls = levels.filter((l) => l.variantId === v.id);
-      return { ...v, onHand: ls.reduce((a, l) => a + l.onHand, 0), reserved: ls.reduce((a, l) => a + l.reserved, 0), availability: computeAvailability(ls, v.tracksStock) };
+      return { ...v, levels: ls, onHand: ls.reduce((a, l) => a + l.onHand, 0), reserved: ls.reduce((a, l) => a + l.reserved, 0), availability: computeAvailability(ls, v.tracksStock, v.reorderPoint ?? undefined) };
     }),
   };
 }

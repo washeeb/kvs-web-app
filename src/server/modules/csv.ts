@@ -1,11 +1,12 @@
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import type { DB } from "../db/client";
-import { categories, customers, enquiries, invoices, orders, payments, products, productVariants, quotes, serviceJobs, stockLevels } from "../db/schema";
+import { categories, customers, enquiries, invoices, orders, payments, products, productVariants, purchaseOrders, quotes, serviceJobs, stockLevels, suppliers } from "../db/schema";
 import { authorize, type Actor } from "../authz/policy";
 import type { Permission } from "../authz/permissions";
 import { invalid } from "../lib/errors";
 import { serviceTitle } from "@/content/services";
 import { audit } from "./audit";
+import { MOVEMENT_LABELS, searchMovements, stockOverview } from "./inventory";
 
 /**
  * One CSV cell. Values a spreadsheet would treat as a formula (= + - @, tab, CR) are prefixed with an apostrophe,
@@ -32,12 +33,19 @@ export const EXPORTS: Record<string, { label: string; perm: Permission }> = {
   enquiries: { label: "Enquiries", perm: "enquiries.read" },
   quotes: { label: "Quotations", perm: "quotes.read" },
   jobs: { label: "Service jobs", perm: "jobs.read" },
+  stock: { label: "Stock levels and value", perm: "inventory.read" },
+  movements: { label: "Stock movements (ledger)", perm: "inventory.read" },
+  "purchase-orders": { label: "Purchase orders", perm: "purchasing.read" },
+  suppliers: { label: "Suppliers", perm: "purchasing.read" },
 };
+
+/** Optional filters from the page the export was started on (?q=&location=&category=&low=1, ?from=&to=&reason=). */
+const day = (v: string | null) => (v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? new Date(`${v}T00:00:00Z`) : undefined);
 
 const money = (minor: number | null | undefined) => (minor === null || minor === undefined ? "" : (minor / 100).toFixed(2));
 
 /** Needs data.export plus read access to the data itself. Every export is audited. */
-export async function exportCsv(db: DB, actor: Actor, kind: string) {
+export async function exportCsv(db: DB, actor: Actor, kind: string, params: URLSearchParams = new URLSearchParams()) {
   const def = EXPORTS[kind];
   if (!def) throw invalid("Unknown export.");
   authorize(actor, "data.export");
@@ -94,6 +102,31 @@ export async function exportCsv(db: DB, actor: Actor, kind: string) {
       const r = await db.select({ q: quotes, customer: customers.name }).from(quotes).innerJoin(customers, eq(customers.id, quotes.customerId)).orderBy(desc(quotes.createdAt));
       header = ["number", "created_at", "customer", "service", "status", "subtotal", "discount", "tax", "total", "valid_until"];
       rows = r.map(({ q, customer }) => [q.number, q.createdAt, customer, serviceTitle(q.serviceLine), q.status, money(q.subtotalMinor), money(q.discountMinor), money(q.taxMinor), money(q.totalMinor), q.validUntil]);
+      break;
+    }
+    case "stock": {
+      const r = await stockOverview(db, actor, { q: params.get("q") ?? undefined, locationId: params.get("location") || undefined, categoryId: params.get("category") || undefined, lowOnly: params.get("low") === "1" });
+      header = ["sku", "barcode", "item", "category", "on_hand", "reserved", "available", "status", "reorder_point", "reorder_qty", "average_cost", "value", "locations"];
+      rows = r.map((x) => [x.sku, x.barcode, x.name, x.categoryName, x.onHand, x.reserved, x.available, x.status, x.reorderPoint, x.reorderQty, money(x.costMinor), money(x.valueMinor), x.levels.map((l) => `${l.locationName}: ${l.onHand}`).join("; ")]);
+      break;
+    }
+    case "movements": {
+      const to = day(params.get("to"));
+      const r = await searchMovements(db, actor, { from: day(params.get("from")), to: to && new Date(to.getTime() + 86_400_000), reason: params.get("reason") || undefined, locationId: params.get("location") || undefined, q: params.get("q") ?? undefined, limit: 5000 });
+      header = ["when", "sku", "item", "location", "change", "reason", "unit_cost", "value", "reference", "note", "by"];
+      rows = r.map((x) => [x.m.createdAt, x.sku, x.productName, x.locationName, x.m.quantity, MOVEMENT_LABELS[x.m.reason] ?? x.m.reason, money(x.m.unitCostMinor), money(x.m.unitCostMinor === null ? null : x.m.unitCostMinor * x.m.quantity), x.m.refType ? `${x.m.refType}:${x.m.refId}` : "", x.m.note, x.actorName]);
+      break;
+    }
+    case "purchase-orders": {
+      const r = await db.select({ po: purchaseOrders, supplier: suppliers.name }).from(purchaseOrders).innerJoin(suppliers, eq(suppliers.id, purchaseOrders.supplierId)).orderBy(desc(purchaseOrders.createdAt));
+      header = ["number", "created_at", "supplier", "status", "total", "expected_at", "sent_at"];
+      rows = r.map(({ po, supplier }) => [po.number, po.createdAt, supplier, po.status, money(po.totalMinor), po.expectedAt, po.sentAt]);
+      break;
+    }
+    case "suppliers": {
+      const r = await db.select().from(suppliers).orderBy(asc(suppliers.name));
+      header = ["name", "contact", "phone", "email", "address", "tax_id", "payment_terms_days", "lead_time_days", "active"];
+      rows = r.map((s) => [s.name, s.contactName, s.phone, s.email, s.address, s.taxId, s.paymentTermsDays, s.leadTimeDays, s.active ? "yes" : "no"]);
       break;
     }
     default: {

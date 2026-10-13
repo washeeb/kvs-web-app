@@ -94,7 +94,7 @@ export async function seedReference(db: DB) {
   }
 
   const [loc] = await db.select().from(stockLocations).where(eq(stockLocations.code, "SHOP"));
-  if (!loc) await db.insert(stockLocations).values({ code: "SHOP", name: "KingsView shop", organizationId: org.id });
+  if (!loc) await db.insert(stockLocations).values({ code: "SHOP", name: "KingsView shop", kind: "shop", isDefault: true, organizationId: org.id });
   for (const [i, [slug, name, serviceLine]] of CATEGORIES.entries()) {
     await db.insert(categories).values({ slug, name, serviceLine, sortOrder: i }).onConflictDoNothing();
   }

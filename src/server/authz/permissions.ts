@@ -31,7 +31,9 @@ export const PERMISSIONS = {
   "catalogue.read": op("View products"),
   "catalogue.write": op("Create and edit products and prices"),
   "inventory.read": op("View stock"),
-  "inventory.adjust": op("Adjust stock levels"),
+  "inventory.adjust": op("Receive, adjust, transfer and count stock"),
+  "purchasing.read": op("View suppliers and purchase orders"),
+  "purchasing.write": op("Manage suppliers, raise and receive purchase orders"),
   // Service jobs
   "jobs.read": op("View service jobs"),
   "jobs.write": op("Schedule, assign and complete service jobs"),

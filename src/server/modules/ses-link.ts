@@ -2,7 +2,7 @@ import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { createHmac, randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { DB } from "../db/client";
-import { orderLines, orders, products, productVariants, sesInbound, sesOutbox, stockLevels } from "../db/schema";
+import { orderLines, orders, products, productVariants, sesInbound, sesOutbox, stockLevels, stockLocations } from "../db/schema";
 import { authorize, type Actor } from "../authz/policy";
 import { safeEqual } from "../lib/crypto";
 import { conflict, notFound } from "../lib/errors";
@@ -101,7 +101,12 @@ export async function queueStockSync(tx: DB, variantId: string) {
     .innerJoin(products, eq(products.id, productVariants.productId))
     .where(eq(productVariants.id, variantId));
   if (!row || !row.p.sesSync || !row.v.tracksStock) return;
-  const levels = await tx.select().from(stockLevels).where(eq(stockLevels.variantId, variantId));
+  // Only sellable, open locations count (not a damaged-goods shelf or a closed store room).
+  const levels = await tx
+    .select({ onHand: stockLevels.onHand, reserved: stockLevels.reserved })
+    .from(stockLevels)
+    .innerJoin(stockLocations, eq(stockLocations.id, stockLevels.locationId))
+    .where(and(eq(stockLevels.variantId, variantId), eq(stockLocations.sellable, true), eq(stockLocations.active, true)));
   const available = levels.reduce((a, l) => a + Math.max(0, l.onHand - l.reserved), 0);
   await queue(tx, { type: "stock.updated", entityKey: `${row.v.sku}@main`, data: { sku: row.v.sku, on_hand: available, location: "main" } });
 }

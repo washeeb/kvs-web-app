@@ -31,7 +31,7 @@ test.describe("staff pages (sales)", () => {
 
 test.describe("staff pages (store)", () => {
   test.use({ storageState: STATE.store });
-  for (const path of ["/admin/products", "/admin/products/new", "/admin/categories", "/admin/brands", "/admin/tags", "/admin/services", "/admin/services/cctv-installation", "/admin/ses"]) {
+  for (const path of ["/admin/products", "/admin/products/new", "/admin/categories", "/admin/brands", "/admin/tags", "/admin/services", "/admin/services/cctv-installation", "/admin/ses", "/admin/inventory", "/admin/inventory/receive", "/admin/inventory/transfers", "/admin/inventory/counts", "/admin/inventory/reorder", "/admin/inventory/serials?q=CAM", "/admin/inventory/labels?code_0=KVS-MOUSE-WL&qty_0=2", "/admin/inventory/movements", "/admin/inventory/locations", "/admin/purchasing", "/admin/purchasing/new", "/admin/suppliers"]) {
     test(`${path} is accessible`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator("main h1")).toBeVisible();

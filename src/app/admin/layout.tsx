@@ -31,6 +31,27 @@ const NAV: { label: string | null; items: Entry[] }[] = [
       { href: "/admin/services", label: "Service pages", perm: "catalogue.read" },
     ],
   },
+  {
+    label: "Inventory",
+    items: [
+      { href: "/admin/inventory", label: "Stock levels", perm: "inventory.read", exact: true },
+      { href: "/admin/inventory/receive", label: "Receive & adjust", perm: "inventory.adjust" },
+      { href: "/admin/inventory/transfers", label: "Transfers", perm: "inventory.read" },
+      { href: "/admin/inventory/counts", label: "Stocktakes", perm: "inventory.read" },
+      { href: "/admin/inventory/reorder", label: "Reorder", perm: "inventory.read" },
+      { href: "/admin/inventory/serials", label: "Serial numbers", perm: "inventory.read" },
+      { href: "/admin/inventory/labels", label: "Labels", perm: "inventory.read" },
+      { href: "/admin/inventory/movements", label: "Movements", perm: "inventory.read" },
+      { href: "/admin/inventory/locations", label: "Locations", perm: "inventory.read" },
+    ],
+  },
+  {
+    label: "Purchasing",
+    items: [
+      { href: "/admin/purchasing", label: "Purchase orders", perm: "purchasing.read" },
+      { href: "/admin/suppliers", label: "Suppliers", perm: "purchasing.read" },
+    ],
+  },
   { label: "Finance", items: [{ href: "/admin/invoices", label: "Invoices & payments", perm: "finance.read" }] },
   { label: "Reports", items: [{ href: "/admin/exports", label: "Data exports", perm: "data.export" }] },
   {

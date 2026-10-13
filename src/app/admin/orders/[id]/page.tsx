@@ -7,6 +7,7 @@ import { can } from "@/server/authz/policy";
 import { AppError } from "@/server/lib/errors";
 import { getOrder, ORDER_STATUS_LABEL } from "@/server/modules/orders";
 import { balanceOf, invoiceForOrder } from "@/server/modules/invoices";
+import { serialsInStock, serialsNeeded } from "@/server/modules/inventory";
 import { ActionForm } from "@/components/action-form";
 import { Card, DateTime, Field, Money, PageHeader, StatusBadge, TableWrap } from "@/components/ui";
 import { LiveRefresh } from "@/components/live-refresh";
@@ -23,6 +24,8 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
     throw e;
   });
   const invoice = await invoiceForOrder(db, o.id);
+  const needSerials = ["confirmed", "ready"].includes(o.status) ? await serialsNeeded(db, o.id) : [];
+  const serialChoices = await Promise.all(needSerials.map((n) => serialsInStock(db, n.variantId, n.locationId)));
   const write = can(actor, "orders.write");
   const hidden = (op: string) => <><input type="hidden" name="id" value={o.id} /><input type="hidden" name="op" value={op} /></>;
   const ses = o.source === "ses";
@@ -94,7 +97,16 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
                     {ses && <Field label="Dispatch reference (optional)" htmlFor="trackingReference"><input id="trackingReference" name="trackingReference" className="field" maxLength={120} /></Field>}
                   </ActionForm>
                 )}
-                {["confirmed", "ready"].includes(o.status) && <ActionForm action={orderAction} submitLabel={o.fulfilmentMethod === "delivery" ? "Delivered — complete" : "Collected — complete"} submitClassName="btn btn-accent w-full">{hidden("fulfil")}</ActionForm>}
+                {["confirmed", "ready"].includes(o.status) && (
+                  <ActionForm action={orderAction} submitLabel={o.fulfilmentMethod === "delivery" ? "Delivered — complete" : "Collected — complete"} submitClassName="btn btn-accent w-full">
+                    {hidden("fulfil")}
+                    {needSerials.map((n, i) => (
+                      <Field key={n.variantId + n.locationId} label={`Serial numbers: ${n.name} (${n.sku}) × ${n.quantity}`} htmlFor={`serials-${n.variantId}`} hint={serialChoices[i]!.length ? `In stock: ${serialChoices[i]!.slice(0, 12).map((s) => s.serial).join(", ")}${serialChoices[i]!.length > 12 ? " …" : ""}` : "No serials recorded in stock at this location."}>
+                        <textarea id={`serials-${n.variantId}`} name={`serials_${n.variantId}`} rows={Math.min(4, n.quantity)} className="field font-mono text-sm uppercase" required placeholder="One per line, or scan" />
+                      </Field>
+                    ))}
+                  </ActionForm>
+                )}
                 <ActionForm action={orderAction} submitLabel="Cancel order" submitClassName="btn btn-danger w-full" confirm="Cancel this order and release its stock?">
                   {hidden("cancel")}
                   <Field label="Reason" htmlFor="reason"><input id="reason" name="reason" className="field" required minLength={3} maxLength={300} /></Field>

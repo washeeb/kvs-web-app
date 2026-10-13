@@ -7,7 +7,7 @@ import { randomUUID } from "node:crypto";
  * relays them through LISTEN/NOTIFY so every app process — several Passenger workers, or several servers — sees them.
  */
 export interface LiveEvent {
-  topic: "catalogue" | "stock" | "orders" | "quotes" | "approvals" | "integrations" | "leads" | "notifications" | "invoices" | "jobs";
+  topic: "catalogue" | "stock" | "orders" | "quotes" | "approvals" | "integrations" | "leads" | "notifications" | "invoices" | "jobs" | "purchasing";
   /** Organisations allowed to receive the event in addition to operator staff. */
   orgIds?: string[];
   data?: Record<string, unknown>;

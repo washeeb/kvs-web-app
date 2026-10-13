@@ -4,7 +4,7 @@ import { sesOutbox } from "./db/schema";
 import { log } from "./lib/log";
 import { enqueue, runDueJobs, type JobHandlers } from "./modules/jobs";
 import { runMaintenance } from "./modules/maintenance";
-import { expireReservations } from "./modules/inventory";
+import { checkLowStock, expireReservations } from "./modules/inventory";
 import { deliverMail } from "./modules/mail";
 import { verifyAndApplyPayment } from "./modules/payments/paystack";
 import { deliverSesEvent } from "./modules/ses-link";
@@ -14,6 +14,7 @@ export const JOB_HANDLERS: JobHandlers = {
   "mail.send": (db, payload) => deliverMail(db, payload),
   "maintenance.hourly": async (db) => {
     await runMaintenance(db);
+    await checkLowStock(db);
   },
   "payment.paystack.verify": async (db, payload) => {
     await verifyAndApplyPayment(db, String(payload.reference));

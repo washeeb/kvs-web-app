@@ -108,12 +108,13 @@ export async function markReady(db: DB, actor: Actor, id: string, trackingRefere
   publish({ topic: "orders" });
 }
 
-export async function fulfilOrder(db: DB, actor: Actor, id: string) {
+/** Completes an order. Serial-tracked items need their serial numbers (by item id), which are marked sold. */
+export async function fulfilOrder(db: DB, actor: Actor, id: string, serialsByVariant: Record<string, string[]> = {}) {
   authorize(actor, "orders.write");
   await db.transaction(async (tx) => {
     const o = await lockOrder(tx, id);
     if (!["confirmed", "ready"].includes(o.status)) throw conflict("Only confirmed or ready orders can be completed.");
-    await consumeReservations(tx, id);
+    await consumeReservations(tx, id, serialsByVariant);
     await tx.update(orders).set({ status: "fulfilled", fulfilledAt: new Date() }).where(eq(orders.id, id));
     if (o.source === "ses") {
       const lines = await tx.select().from(orderLines).where(and(eq(orderLines.orderId, id), inArray(orderLines.fulfilmentStatus, ["accepted", "shipped"])));

@@ -247,7 +247,7 @@ export async function jobAction(_: Prev, fd: FormData) {
 // ── Products & stock ──
 
 const productFields = (fd: FormData) => ({ name: str(fd, "name"), summary: str(fd, "summary"), description: str(fd, "description"), categoryId: str(fd, "categoryId") || null, status: (str(fd, "status") || "draft") as never, sesSync: bool(fd, "sesSync") });
-const variantFields = (fd: FormData) => ({ sku: str(fd, "sku"), name: str(fd, "variantName") || "Standard", priceMinor: money(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), tracksStock: bool(fd, "tracksStock") });
+const variantFields = (fd: FormData) => ({ name: str(fd, "variantName") || "Standard", priceMinor: money(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), tracksStock: bool(fd, "tracksStock") });
 
 export async function createProductAction(_: Prev, fd: FormData) {
   const actor = await staff();

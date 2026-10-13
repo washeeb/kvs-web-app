@@ -24,8 +24,8 @@ export default async function NewProductPage() {
           <ProductFields p={null} categories={categories} />
           <fieldset className="rounded-lg border border-slate-200 p-3">
             <legend className="px-1 text-sm font-semibold">First option</legend>
+            <p className="mb-3 text-xs text-slate-600">The SKU (product code) is assigned automatically when you save, e.g. KV-NET-00012, and never changes.</p>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="SKU (product code)" htmlFor="sku"><input id="sku" name="sku" className="field uppercase" required pattern="[A-Za-z0-9][A-Za-z0-9-]{2,40}" placeholder="KVS-MOUSE-WL" /></Field>
               <Field label="Option name" htmlFor="variantName"><input id="variantName" name="variantName" className="field" defaultValue="Standard" maxLength={120} /></Field>
               <Field label="Selling price, excl. taxes (GHS)" htmlFor="price"><input id="price" name="price" className="field" inputMode="decimal" required /></Field>
               <Field label="Cost price (GHS, optional)" htmlFor="cost" hint="Shared with Synclytics as the partner cost."><input id="cost" name="cost" className="field" inputMode="decimal" /></Field>

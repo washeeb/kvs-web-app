@@ -1,13 +1,48 @@
-import { and, asc, desc, eq, ilike, inArray, or } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import type { DB } from "../db/client";
-import { categories, products, productVariants } from "../db/schema";
+import { categories, products, productVariants, sequences } from "../db/schema";
 import { authorize, type Actor } from "../authz/policy";
 import { conflict, notFound } from "../lib/errors";
 import { audit } from "./audit";
 import { publish } from "./events";
 import { computeAvailability, levelsForVariants, type Availability } from "./inventory";
 import { queueProductSync } from "./ses-link";
+
+/** Short category codes used in SKUs; other categories use the first three letters of their slug. */
+const SKU_CATEGORY_CODES: Record<string, string> = {
+  "computers-accessories": "CMP",
+  networking: "NET",
+  cctv: "CTV",
+  "office-supplies": "OFF",
+  "souvenirs-promotional": "PRO",
+};
+
+export function skuCategoryCode(categorySlug: string | null | undefined) {
+  if (!categorySlug) return "GEN";
+  return SKU_CATEGORY_CODES[categorySlug] ?? (categorySlug.replace(/[^a-z]/gi, "").slice(0, 3).toUpperCase().padEnd(3, "X"));
+}
+
+/**
+ * Assigns the next SKU, e.g. KV-NET-00012. One counter for all categories, so the number alone is unique and a SKU
+ * stays valid if the product later moves category. Runs inside the caller's transaction (the counter row is locked
+ * until it commits, so two staff saving at once get different numbers). SKUs never change once assigned.
+ */
+export async function nextSku(db: DB, categoryId: string | null | undefined) {
+  const [cat] = categoryId ? await db.select({ slug: categories.slug }).from(categories).where(eq(categories.id, categoryId)) : [];
+  const code = skuCategoryCode(cat?.slug);
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const [row] = await db
+      .insert(sequences)
+      .values({ key: "SKU", value: 1 })
+      .onConflictDoUpdate({ target: sequences.key, set: { value: sql`${sequences.value} + 1` } })
+      .returning();
+    const sku = `KV-${code}-${String(row!.value).padStart(5, "0")}`;
+    const [clash] = await db.select({ id: productVariants.id }).from(productVariants).where(eq(productVariants.sku, sku));
+    if (!clash) return sku;
+  }
+  throw conflict("Could not assign a free SKU. Try again.");
+}
 
 export async function listCategories(db: DB) {
   return db.select().from(categories).orderBy(asc(categories.sortOrder), asc(categories.name));
@@ -125,7 +160,8 @@ export const productInput = z.object({
 
 const money = z.number().int().min(0).max(100_000_000_000);
 export const variantInput = z.object({
-  sku: z.string().trim().toUpperCase().regex(/^[A-Z0-9][A-Z0-9-]{2,40}$/, "SKU: 3–41 capital letters, digits or dashes."),
+  /** Normally left out: the system assigns the next SKU (see nextSku). */
+  sku: z.string().trim().toUpperCase().regex(/^[A-Z0-9][A-Z0-9-]{2,40}$/, "SKU: 3–41 capital letters, digits or dashes.").optional(),
   name: z.string().trim().min(1).max(120),
   priceMinor: money,
   costMinor: money.nullable().optional(),
@@ -143,11 +179,12 @@ export async function createProduct(db: DB, actor: Actor, input: z.input<typeof 
     let slug = slugify(p.name) || "product";
     const [clash] = await tx.select({ id: products.id }).from(products).where(eq(products.slug, slug));
     if (clash || RESERVED_SLUGS.has(slug)) slug = `${slug}-${Date.now().toString(36)}`;
-    const [skuClash] = await tx.select({ id: productVariants.id }).from(productVariants).where(eq(productVariants.sku, v.sku));
-    if (skuClash) throw conflict(`SKU ${v.sku} is already in use.`);
+    const sku = v.sku ?? (await nextSku(tx, p.categoryId));
+    const [skuClash] = await tx.select({ id: productVariants.id }).from(productVariants).where(eq(productVariants.sku, sku));
+    if (skuClash) throw conflict(`SKU ${sku} is already in use.`);
     const [product] = await tx.insert(products).values({ ...p, summary: p.summary || null, description: p.description || null, slug, categoryId: p.categoryId ?? null }).returning();
-    const [variant] = await tx.insert(productVariants).values({ ...v, costMinor: v.costMinor ?? null, productId: product!.id }).returning();
-    await audit(tx, { actor, action: "product.created", targetType: "product", targetId: product!.id, data: { name: p.name, sku: v.sku, priceMinor: v.priceMinor } });
+    const [variant] = await tx.insert(productVariants).values({ ...v, sku, costMinor: v.costMinor ?? null, productId: product!.id }).returning();
+    await audit(tx, { actor, action: "product.created", targetType: "product", targetId: product!.id, data: { name: p.name, sku, priceMinor: v.priceMinor } });
     await queueProductSync(tx, product!.id);
     return { product: product!, variant: variant! };
   });
@@ -175,10 +212,11 @@ export async function addVariant(db: DB, actor: Actor, productId: string, input:
   await db.transaction(async (tx) => {
     const [p] = await tx.select().from(products).where(eq(products.id, productId));
     if (!p) throw notFound("Product not found.");
-    const [skuClash] = await tx.select({ id: productVariants.id }).from(productVariants).where(eq(productVariants.sku, v.sku));
-    if (skuClash) throw conflict(`SKU ${v.sku} is already in use.`);
-    const [row] = await tx.insert(productVariants).values({ ...v, costMinor: v.costMinor ?? null, productId }).returning();
-    await audit(tx, { actor, action: "variant.created", targetType: "variant", targetId: row!.id, data: { sku: v.sku, priceMinor: v.priceMinor } });
+    const sku = v.sku ?? (await nextSku(tx, p.categoryId));
+    const [skuClash] = await tx.select({ id: productVariants.id }).from(productVariants).where(eq(productVariants.sku, sku));
+    if (skuClash) throw conflict(`SKU ${sku} is already in use.`);
+    const [row] = await tx.insert(productVariants).values({ ...v, sku, costMinor: v.costMinor ?? null, productId }).returning();
+    await audit(tx, { actor, action: "variant.created", targetType: "variant", targetId: row!.id, data: { sku, priceMinor: v.priceMinor } });
     await queueProductSync(tx, productId);
   });
   publish({ topic: "catalogue" });

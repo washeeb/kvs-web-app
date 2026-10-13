@@ -91,7 +91,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             <Card title="Add an option">
               <ActionForm action={productAction} submitLabel="Add option" submitClassName="btn btn-ghost" resetOnSuccess>
                 {hidden("add_variant")}
-                <Field label="SKU" htmlFor="sku"><input id="sku" name="sku" className="field uppercase" required pattern="[A-Za-z0-9][A-Za-z0-9-]{2,40}" /></Field>
+                <p className="text-xs text-slate-600">A new SKU is assigned automatically.</p>
                 <Field label="Option name" htmlFor="variantName"><input id="variantName" name="variantName" className="field" required maxLength={120} /></Field>
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Price (GHS)" htmlFor="price"><input id="price" name="price" className="field" inputMode="decimal" required /></Field>

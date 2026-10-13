@@ -2,7 +2,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { and, eq } from "drizzle-orm";
 import { actorFor, guest, setupDb, variant } from "./helpers";
 import type { DB } from "@/server/db/client";
-import { customers, invoices, mailOutbox, orders, stockLevels, stockMovements } from "@/server/db/schema";
+import { categories, customers, invoices, mailOutbox, orders, productVariants, stockLevels, stockMovements } from "@/server/db/schema";
+import { addVariant, createProduct, skuCategoryCode } from "@/server/modules/catalogue";
 import { cartCount, parseCart, placeShopOrder, priceCart, setCartLine } from "@/server/modules/shop";
 import { cancelOrder, confirmOrder, fulfilOrder, getOrderByTracking, markReady } from "@/server/modules/orders";
 import { expireReservations } from "@/server/modules/inventory";
@@ -31,6 +32,24 @@ describe("company details", () => {
     await expect(updateSettings(db, await as("sales@kingsview.demo"), { companyTin: "X" })).rejects.toThrow();
     await updateSettings(db, owner, { momoName: "", bankAccountNumber: DEFAULT_SETTINGS.bankAccountNumber, paymentInstructions: "" });
     expect(paymentDetails(await getSettings(db))).toHaveLength(2);
+  });
+});
+
+describe("automatic SKUs", () => {
+  it("are assigned on save, never repeat, carry the category code and ignore later category moves", async () => {
+    const store = await as("store@kingsview.demo");
+    const [net] = await db.select().from(categories).where(eq(categories.slug, "networking"));
+    const a = await createProduct(db, store, { name: "Switch 8-port", categoryId: net!.id }, { name: "Standard", priceMinor: 30_000 });
+    const b = await createProduct(db, store, { name: "No category item" }, { name: "Standard", priceMinor: 1_000 });
+    expect(a.variant.sku).toMatch(/^KV-NET-\d{5}$/);
+    expect(b.variant.sku).toMatch(/^KV-GEN-\d{5}$/);
+    const n = (sku: string) => Number(sku.slice(-5));
+    expect(n(b.variant.sku)).toBe(n(a.variant.sku) + 1);
+    await addVariant(db, store, a.product.id, { name: "PoE", priceMinor: 45_000 });
+    const skus = (await db.select().from(productVariants).where(eq(productVariants.productId, a.product.id))).map((v) => v.sku);
+    expect(new Set(skus).size).toBe(2);
+    expect(skus.every((s) => s.startsWith("KV-NET-"))).toBe(true);
+    expect(skuCategoryCode("printing-media")).toBe("PRI");
   });
 });
 

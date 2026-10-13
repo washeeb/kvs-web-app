@@ -31,7 +31,7 @@ test.describe("staff pages (sales)", () => {
 
 test.describe("staff pages (store)", () => {
   test.use({ storageState: STATE.store });
-  for (const path of ["/admin/products", "/admin/products/new", "/admin/ses"]) {
+  for (const path of ["/admin/products", "/admin/products/new", "/admin/categories", "/admin/brands", "/admin/tags", "/admin/services", "/admin/services/cctv-installation", "/admin/ses"]) {
     test(`${path} is accessible`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator("main h1")).toBeVisible();

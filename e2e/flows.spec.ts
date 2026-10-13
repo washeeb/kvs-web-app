@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { expectAccessible } from "./helpers";
+import { expectAccessible, makePng } from "./helpers";
 import { STATE } from "./auth.setup";
 
 test("visitor sends a service request and gets a reference", async ({ page }) => {
@@ -37,7 +37,7 @@ test.describe("store staff", () => {
     if (await menu.isVisible()) await menu.click();
     await expect(nav.getByRole("link", { name: "Orders" })).toHaveAttribute("aria-current", "page");
     await expect(nav.getByRole("link", { name: "Dashboard" })).not.toHaveAttribute("aria-current", "page");
-    await expect(nav.getByText("Sales", { exact: true })).toBeVisible();
+    await expect(nav.locator("summary", { hasText: "Sales" })).toBeVisible();
     await expect(nav.getByRole("link", { name: "Invoices & payments" })).toHaveCount(0);
     await page.goto("/admin/invoices");
     await expect(page.getByText("You can't open this page")).toBeVisible();
@@ -51,6 +51,18 @@ test.describe("store staff", () => {
     await page.getByRole("button", { name: "Create product" }).click();
     await page.waitForURL(/\/admin\/products\/[0-9a-f-]{36}$/);
     await expect(page.getByText(/KV-NET-\d{5}/).first()).toBeVisible();
+    // A picture is resized and converted in the browser, checked and stored by the server, then served.
+    await page.getByLabel("Pictures").setInputFiles({ name: "switch.png", mimeType: "image/png", buffer: makePng(1200, 800) });
+    await page.getByLabel("Describe the picture").fill("Front of the switch");
+    await page.getByRole("button", { name: "Upload" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "1 image added." })).toBeVisible();
+    const img = page.locator('img[src^="/media/"]').first();
+    await expect(img).toBeVisible();
+    await expect(img).toHaveAttribute("srcset", /320w.*800w.*1200w/);
+    const res = await page.request.get((await img.getAttribute("src"))!);
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toBe("image/webp");
+    expect(res.headers()["cache-control"]).toContain("immutable");
     await expectAccessible(page, "product page");
   });
 });

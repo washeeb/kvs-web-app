@@ -21,7 +21,16 @@ const NAV: { label: string | null; items: Entry[] }[] = [
     ],
   },
   { label: "Services", items: [{ href: "/admin/jobs", label: "Service jobs", perm: "jobs.read" }] },
-  { label: "Catalogue & inventory", items: [{ href: "/admin/products", label: "Products & stock", perm: "catalogue.read" }] },
+  {
+    label: "Catalogue",
+    items: [
+      { href: "/admin/products", label: "Products & stock", perm: "catalogue.read" },
+      { href: "/admin/categories", label: "Categories", perm: "catalogue.read" },
+      { href: "/admin/brands", label: "Brands", perm: "catalogue.read" },
+      { href: "/admin/tags", label: "Tags", perm: "catalogue.read" },
+      { href: "/admin/services", label: "Service pages", perm: "catalogue.read" },
+    ],
+  },
   { label: "Finance", items: [{ href: "/admin/invoices", label: "Invoices & payments", perm: "finance.read" }] },
   { label: "Reports", items: [{ href: "/admin/exports", label: "Data exports", perm: "data.export" }] },
   {

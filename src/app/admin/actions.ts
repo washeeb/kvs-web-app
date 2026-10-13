@@ -19,6 +19,8 @@ import { addVariant, createProduct, updateProduct, updateVariant } from "@/serve
 import { changeStock } from "@/server/modules/inventory";
 import { issueInvoice, recordManualPayment, reverseManualPayment, voidInvoice } from "@/server/modules/invoices";
 import { resyncAll, retryDead } from "@/server/modules/ses-link";
+import { addImage, deleteImage, inspectImage, OWNER_TYPES, updateImage, type OwnerType } from "@/server/modules/media";
+import { assertImageOwner, deleteBrand, deleteCategory, deleteTag, renameTag, saveBrand, saveCategory } from "@/server/modules/taxonomy";
 
 type Prev = ActionState;
 const staff = () => requireActor("operator");
@@ -246,7 +248,17 @@ export async function jobAction(_: Prev, fd: FormData) {
 
 // ── Products & stock ──
 
-const productFields = (fd: FormData) => ({ name: str(fd, "name"), summary: str(fd, "summary"), description: str(fd, "description"), categoryId: str(fd, "categoryId") || null, status: (str(fd, "status") || "draft") as never, sesSync: bool(fd, "sesSync") });
+const productFields = (fd: FormData) => ({
+  name: str(fd, "name"),
+  summary: str(fd, "summary"),
+  description: str(fd, "description"),
+  categoryId: str(fd, "categoryId") || null,
+  brandId: str(fd, "brandId") || null,
+  specsText: String(fd.get("specsText") ?? ""),
+  tagsText: str(fd, "tagsText"),
+  status: (str(fd, "status") || "draft") as never,
+  sesSync: bool(fd, "sesSync"),
+});
 const variantFields = (fd: FormData) => ({ name: str(fd, "variantName") || "Standard", priceMinor: money(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), tracksStock: bool(fd, "tracksStock") });
 
 export async function createProductAction(_: Prev, fd: FormData) {
@@ -279,6 +291,111 @@ export async function productAction(_: Prev, fd: FormData) {
         break;
     }
     revalidatePath(`/admin/products/${id}`);
+    return "Saved.";
+  });
+}
+
+// ── Pictures ──
+
+/** Copies come as w<width> files (prepared in the browser) or one "original" file (no JavaScript). */
+export async function uploadImageAction(_: Prev, fd: FormData) {
+  const actor = await staff();
+  return run(async () => {
+    const ownerType = str(fd, "ownerType") as OwnerType;
+    const ownerId = str(fd, "ownerId");
+    if (!OWNER_TYPES.includes(ownerType)) throw invalid("Unknown page for this image.");
+    const db = getDb();
+    await assertImageOwner(db, ownerType, ownerId);
+    const files: { width: number; bytes: Buffer }[] = [];
+    for (const [key, value] of fd.entries()) {
+      if (!(value instanceof File) || value.size === 0) continue;
+      const bytes = Buffer.from(await value.arrayBuffer());
+      if (/^w\d{2,4}$/.test(key)) files.push({ width: Number(key.slice(1)), bytes });
+      else if (key === "original" && files.length === 0) files.push({ width: inspectImage(bytes)?.width ?? 0, bytes });
+    }
+    // With JavaScript only the prepared copies are sent; without it, only the original.
+    await addImage(db, actor, ownerType, ownerId, { files, alt: str(fd, "alt") });
+    revalidatePath("/", "layout");
+    return "Picture added.";
+  });
+}
+
+export async function imageAction(_: Prev, fd: FormData) {
+  const actor = await staff();
+  return run(async () => {
+    const db = getDb();
+    const id = str(fd, "id");
+    const op = str(fd, "op");
+    if (op === "delete") await deleteImage(db, actor, id);
+    else if (op === "alt") await updateImage(db, actor, id, { alt: str(fd, "alt") });
+    else if (op === "main") await updateImage(db, actor, id, { makeMain: true });
+    else if (op === "left" || op === "right") await updateImage(db, actor, id, { move: op === "left" ? -1 : 1 });
+    else throw invalid("Unknown action.");
+    revalidatePath("/", "layout");
+    return op === "delete" ? "Picture removed." : "Saved.";
+  });
+}
+
+// ── Categories, brands, tags ──
+
+export async function categoryAction(_: Prev, fd: FormData) {
+  const actor = await staff();
+  const id = str(fd, "id") || null;
+  let createdId = "";
+  const r = await run(async () => {
+    const db = getDb();
+    if (str(fd, "op") === "delete") {
+      await deleteCategory(db, actor, id!);
+      revalidatePath("/", "layout");
+      return "Category deleted.";
+    }
+    const row = await saveCategory(db, actor, id, {
+      name: str(fd, "name"),
+      slug: str(fd, "slug"),
+      description: str(fd, "description"),
+      parentId: str(fd, "parentId") || null,
+      serviceLine: str(fd, "serviceLine") || null,
+      skuCode: str(fd, "skuCode"),
+      active: bool(fd, "active"),
+      sortOrder: int(fd, "sortOrder") || 0,
+    });
+    createdId = id ? "" : row.id;
+    revalidatePath("/", "layout");
+    return "Category saved.";
+  });
+  if (r.ok && str(fd, "op") === "delete") redirect("/admin/categories");
+  if (r.ok && createdId) redirect(`/admin/categories/${createdId}`);
+  return r;
+}
+
+export async function brandAction(_: Prev, fd: FormData) {
+  const actor = await staff();
+  const id = str(fd, "id") || null;
+  let createdId = "";
+  const r = await run(async () => {
+    const db = getDb();
+    if (str(fd, "op") === "delete") {
+      await deleteBrand(db, actor, id!);
+      revalidatePath("/", "layout");
+      return "Brand deleted.";
+    }
+    const row = await saveBrand(db, actor, id, { name: str(fd, "name"), description: str(fd, "description"), website: str(fd, "website"), active: bool(fd, "active") });
+    createdId = id ? "" : row.id;
+    revalidatePath("/", "layout");
+    return "Brand saved.";
+  });
+  if (r.ok && str(fd, "op") === "delete") redirect("/admin/brands");
+  if (r.ok && createdId) redirect(`/admin/brands/${createdId}`);
+  return r;
+}
+
+export async function tagAction(_: Prev, fd: FormData) {
+  const actor = await staff();
+  return run(async () => {
+    const db = getDb();
+    if (str(fd, "op") === "delete") await deleteTag(db, actor, str(fd, "id"));
+    else await renameTag(db, actor, str(fd, "id"), str(fd, "name"));
+    revalidatePath("/", "layout");
     return "Saved.";
   });
 }

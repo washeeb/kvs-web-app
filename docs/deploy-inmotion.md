@@ -86,5 +86,6 @@ InMotion's firewall (ModSecurity) answers **406** to requests that identify as `
 
 - Settings → company details, TIN, **payment instructions** (MoMo / bank), opening hours; confirm KingsView's **VAT status** and switch the taxes off if it is not VAT-registered.
 - Add real products (Products & stock) and remove nothing from the demo — production never contains demo data.
-- Backups: InMotion Backup Manager already covers the home directory (incl. `~/kvs-app/.env.production`) and all PostgreSQL databases.
+- Pictures are stored in `~/kvs-data/uploads` (next to the app, so deploys never delete them). Set `UPLOAD_DIR` only to move them.
+- Backups: InMotion Backup Manager already covers the home directory (incl. `~/kvs-app/.env.production` and `~/kvs-data`) and all PostgreSQL databases.
 - Paystack webhook (when keys exist): `https://kingsviewsolutions.com/api/webhooks/paystack`.

@@ -5,14 +5,16 @@ import { getDb } from "@/server/db/client";
 import { requireActor } from "@/server/web/session";
 import { can } from "@/server/authz/policy";
 import { AppError } from "@/server/lib/errors";
-import { getProductAdmin, listCategories } from "@/server/modules/catalogue";
+import { getProductAdmin } from "@/server/modules/catalogue";
+import { listBrands, listCategoriesTree, listTags } from "@/server/modules/taxonomy";
+import { ImageManager } from "@/components/image-manager";
 import { listMovements } from "@/server/modules/inventory";
 import { ActionForm } from "@/components/action-form";
 import { AvailabilityBadge } from "@/components/availability";
 import { ProductFields } from "@/components/product-fields";
 import { Card, DateTime, Field, PageHeader, StatusBadge } from "@/components/ui";
 import { LiveRefresh } from "@/components/live-refresh";
-import { productAction } from "../../actions";
+import { imageAction, productAction, uploadImageAction } from "../../actions";
 
 export const metadata: Metadata = { title: "Product" };
 
@@ -22,13 +24,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const { id } = await params;
   const actor = await requireActor("operator");
   const db = getDb();
-  const { product: p, variants } = await getProductAdmin(db, actor, id).catch((e) => {
+  const { product: p, variants, images, tags: productTagList } = await getProductAdmin(db, actor, id).catch((e) => {
     if (e instanceof AppError) notFound();
     throw e;
   });
   const write = can(actor, "catalogue.write");
   const adjust = can(actor, "inventory.adjust");
-  const [categories, moves] = await Promise.all([listCategories(db), can(actor, "inventory.read") ? Promise.all(variants.map((v) => listMovements(db, actor, v.id, 8))) : Promise.resolve([])]);
+  const [categories, brands, allTags, moves] = await Promise.all([listCategoriesTree(db), listBrands(db), listTags(db), can(actor, "inventory.read") ? Promise.all(variants.map((v) => listMovements(db, actor, v.id, 8))) : Promise.resolve([])]);
   const hidden = (op: string, variantId?: string) => <><input type="hidden" name="productId" value={p.id} /><input type="hidden" name="op" value={op} />{variantId && <input type="hidden" name="variantId" value={variantId} />}</>;
   return (
     <>
@@ -38,6 +40,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
         <div className="min-w-0 space-y-6">
+          <Card title="Pictures">
+            <ImageManager images={images} ownerType="product" ownerId={p.id} defaultAlt={p.name} canWrite={write} uploadAction={uploadImageAction} imageAction={imageAction} />
+          </Card>
           {variants.map((v, i) => (
             <Card key={v.id} title={<>{v.name} <span className="text-sm font-normal text-slate-600">· {v.sku}</span></>} actions={<AvailabilityBadge a={v.availability} showCount />}>
               {v.tracksStock && <p className="mb-3 text-sm text-slate-700">On hand <strong>{v.onHand}</strong> · reserved for open orders <strong>{v.reserved}</strong></p>}
@@ -85,7 +90,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             <Card title="Product details">
               <ActionForm action={productAction} submitLabel="Save product">
                 {hidden("product")}
-                <ProductFields p={p} categories={categories} />
+                <ProductFields p={p} categories={categories} brands={brands} tagNames={allTags.map((t) => t.name)} tags={productTagList.map((t) => t.name)} />
               </ActionForm>
             </Card>
             <Card title="Add an option">

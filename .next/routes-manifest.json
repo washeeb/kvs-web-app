@@ -188,6 +188,14 @@
       "namedRegex": "^/admin/services/(?<nxtPslug>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/admin/slides/[id]",
+      "regex": "^/admin/slides/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/slides/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/admin/suppliers/[id]",
       "regex": "^/admin/suppliers/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -503,6 +511,12 @@
       "regex": "^/admin/settings(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/slides",
+      "regex": "^/admin/slides(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/slides(?:/)?$"
     },
     {
       "page": "/admin/suppliers",

@@ -67,6 +67,8 @@
   "/admin/services/page": "app/admin/services/page.js",
   "/admin/ses/page": "app/admin/ses/page.js",
   "/admin/settings/page": "app/admin/settings/page.js",
+  "/admin/slides/[id]/page": "app/admin/slides/[id]/page.js",
+  "/admin/slides/page": "app/admin/slides/page.js",
   "/admin/suppliers/[id]/page": "app/admin/suppliers/[id]/page.js",
   "/admin/suppliers/page": "app/admin/suppliers/page.js",
   "/admin/tags/page": "app/admin/tags/page.js",

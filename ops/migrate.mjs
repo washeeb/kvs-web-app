@@ -12620,6 +12620,7 @@ __export(schema_exports, {
   sesOutbox: () => sesOutbox,
   sessions: () => sessions,
   settings: () => settings,
+  slides: () => slides,
   stockCountLines: () => stockCountLines,
   stockCounts: () => stockCounts,
   stockLevels: () => stockLevels,
@@ -12837,7 +12838,7 @@ var media = pgTable(
   "media",
   {
     id: id(),
-    /** product | category | brand | service */
+    /** product | category | brand | service | slide */
     ownerType: text("owner_type").notNull(),
     /** Row id, or the service slug for service pages. */
     ownerId: text("owner_id").notNull(),
@@ -12860,6 +12861,20 @@ var media = pgTable(
   },
   (t) => [index().on(t.ownerType, t.ownerId)]
 );
+var slides = pgTable("slides", {
+  id: id(),
+  headline: text("headline").notNull(),
+  body: text("body"),
+  ctaLabel: text("cta_label"),
+  /** A path on this site ("/shop") or an https:// address. */
+  ctaHref: text("cta_href"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  /** YYYY-MM-DD; empty = no limit. */
+  startsOn: text("starts_on"),
+  endsOn: text("ends_on"),
+  createdAt: createdAt()
+});
 var products = pgTable("products", {
   id: id(),
   slug: text("slug").notNull().unique(),

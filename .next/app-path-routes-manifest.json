@@ -67,6 +67,8 @@
   "/admin/services/page": "/admin/services",
   "/admin/ses/page": "/admin/ses",
   "/admin/settings/page": "/admin/settings",
+  "/admin/slides/[id]/page": "/admin/slides/[id]",
+  "/admin/slides/page": "/admin/slides",
   "/admin/suppliers/[id]/page": "/admin/suppliers/[id]",
   "/admin/suppliers/page": "/admin/suppliers",
   "/admin/tags/page": "/admin/tags",

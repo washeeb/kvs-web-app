@@ -1,7 +1,7 @@
 # KingsView Solutions (KVS) — Web App Master Plan
 
 > Living specification. Update **Status**, **Decisions** and **Progress log** as work lands.
-> Last updated: 2026-10-13 · **Live at https://kingsviewsolutions.com** (K1 + K2; Paystack off until keys; SES link off until Synclytics creates the connection) · Next: owner sign-in, real products, SES production connection
+> Last updated: 2026-10-13 · **Live at https://kingsviewsolutions.com** (K1 + K2) · **K4 built** (catalogue, inventory, purchasing, reports) — deploy from cPanel · Next: real products, SES production connection
 
 ---
 
@@ -82,6 +82,14 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 - [x] Paystack on KingsView's own account: pay the invoice balance from the private order page, HMAC-SHA512 webhook, verify-API confirmation, amount/currency checks, test-mode label; stays off until a key is set
 - Found while building: SES line ids are UUIDs (the contract doc does not say so) and SES limits product names to 200 characters — both handled
 
+### K4 — Catalogue, inventory, purchasing and reports *(built 2026-10-13; deploy from cPanel)*
+- [x] Grouped side menu with the current page highlighted
+- [x] Pictures for products, categories, brands and service pages (browser-side WebP, server checks by content, `~/kvs-data/uploads/media`, long-cache serving); categories with sub-categories and SKU codes, brands, tags, specifications; shop filters, sorting, SKU/brand search, galleries, schema.org data
+- [x] Inventory: locations (sellable or not, default), average cost, adjustments with reasons, transfers, stocktakes with scanning, serial numbers (receipt → transfer → sale), barcodes and Code 128 labels, camera/USB scanning, reorder points with hourly alerts
+- [x] Purchasing: suppliers, purchase orders (e-mail, part receipts, close short), goods receipts; reorder drafts per preferred supplier
+- [x] Reports: sales, products (ABC, margin), inventory health, demand forecast, finance & tax (GRA VAT/NHIL/GETFund), purchasing, enquiries/quotations/jobs; CSVs; Monday summary e-mail (switch in Settings)
+- Tests: 58 unit/integration, 112 browser. Migrations `0001_catalogue_media`, `0002_inventory_purchasing` run on deploy; new purchasing permissions reach the system roles on deploy.
+
 ### K3 — Go live
 - [x] Domain + InMotion add-on domain, database, Node app, cron; GitHub repo and deploy pipeline (2026-10-13)
 - [ ] Connect to SES production (SES creates the connection and shares secrets)
@@ -98,6 +106,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 8. Progress log
 
+- 2026-10-13 — K4 completed (see K4). GitHub Actions builds the deploy bundle again (the repository is now public — confirm that is intended).
 - 2026-10-13 — K4 (catalogue, inventory, reporting) started. Done: grouped side menu with current page highlighted; pictures for products, categories, brands and service pages (browser-side resize to WebP, server checks by content, stored in ~/kvs-data/uploads/media, long-cache serving); categories with sub-categories and SKU codes, brands, tags, specifications; shop filters, sorting, SKU/brand search, product galleries and schema.org data; service banners and galleries. 42 unit tests, 66 browser tests passing locally.
 - 2026-10-13 — **Live** at https://kingsviewsolutions.com (InMotion, same account as Synclytics; Node 24, PostgreSQL `n789825_kvs`, own deploy key). Verified from outside: all public pages 200, /admin → sign-in, /dev/mailbox 404, security headers (HSTS, nonce CSP, COOP, X-Frame-Options), /api/health ok with the database, cron tick 200. Shop empty (no demo data in production). Found while deploying: cPanel Git will not clone via an SSH alias (clone in Terminal, then register), nginx cache held the old directory listing (cleared), firewall 406 for curl user agent and body-less POST (cron lines send a browser user agent and GET). Pending: owner account sign-in + two-step, test e-mail, real products.
 - 2026-10-13 — Domain `kingsviewsolutions.com` and company details received: address, two phones, e-mail, TIN, MoMo and Absa bank details are the defaults and editable in Settings (separate mobile money and bank fields, second phone); used on the website, invoices, quotations, order page and e-mails.

@@ -1,10 +1,12 @@
 // KingsView starter illustrations: flat vector drawings in the brand colours for slides, service pages and shop
 // categories. They contain no text, people or real brands (product photos stay real photos).
 // Writes the SVG sources to assets/illustrations and web copies (WebP 320/800/1600) plus a manifest to
-// assets/starter-images, which `npm run images:starter` installs into the picture library.
+// assets/starter-images, which `npm run images:starter` installs into the picture library. Slides and shop
+// categories use the 3D renders in assets/renders (scripts/blender/starter_3d.py) when they exist.
 // Usage: npm run images:build
 import sharp from "sharp";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const W = 1200;
@@ -584,6 +586,8 @@ const CATEGORY_ALT = {
   "office-supplies": ["office", "Illustration of binders, paper, pens, a notebook and a stapler"],
   "souvenirs-promotional": ["souvenirs", "Illustration of a branded T-shirt, mug, cap and tote bag"],
 };
+/** Shop categories pictured by a 3D render (assets/renders/<name>.png). */
+const CATEGORY_3D = { "computers-accessories": "computers-light", networking: "networking-light", cctv: "cctv-light", "office-supplies": "office-light", "souvenirs-promotional": "souvenirs-light" };
 /** Starter slides: wording is a draft for KingsView to edit in admin. */
 const SLIDES = [
   { key: "hero", headline: "Technology, design and supplies — handled in one place.", body: "Websites, branding, printing, CCTV, training, branded items, office and IT supplies for businesses, schools, churches and homes.", ctaLabel: "Request a quotation", ctaHref: "/contact", alt: "Illustration of a website, camera, printer, router and branded items" },
@@ -596,6 +600,13 @@ const SLIDES = [
 // ---------- build ----------
 const SRC_DIR = "assets/illustrations";
 const OUT_DIR = "assets/starter-images";
+// Fingerprints of every earlier starter picture, so the installer may replace them (and only them) later.
+const sha = (file) => createHash("sha256").update(readFileSync(file)).digest("hex");
+const replaceable = new Set();
+if (existsSync(path.join(OUT_DIR, "manifest.json"))) {
+  for (const h of JSON.parse(readFileSync(path.join(OUT_DIR, "manifest.json"), "utf8")).replaceable ?? []) replaceable.add(h);
+  for (const d of readdirSync(OUT_DIR)) if (existsSync(path.join(OUT_DIR, d, "1600.webp"))) replaceable.add(sha(path.join(OUT_DIR, d, "1600.webp")));
+}
 rmSync(OUT_DIR, { recursive: true, force: true });
 mkdirSync(SRC_DIR, { recursive: true });
 mkdirSync(OUT_DIR, { recursive: true });
@@ -618,9 +629,36 @@ async function render(scene, theme) {
   return name;
 }
 
+/**
+ * A 3D render converted to the web copies, or null when there is none. Blender writes assets/renders/<name>.png
+ * (not committed: too large); it is kept as a high-quality <name>.webp, which is what the repository stores.
+ */
+async function render3d(name) {
+  const png = path.join("assets/renders", `${name}.png`);
+  const src = path.join("assets/renders", `${name}.webp`);
+  if (existsSync(png)) await sharp(png).webp({ quality: 95, effort: 6 }).toFile(src);
+  if (!existsSync(src)) return null;
+  const out = `3d-${name}`;
+  if (rendered.has(out)) return out;
+  const dir = path.join(OUT_DIR, out);
+  mkdirSync(dir, { recursive: true });
+  for (const width of [320, 800, 1600]) {
+    await sharp(src).resize({ width }).webp({ quality: width === 320 ? 72 : 82, effort: 6 }).toFile(path.join(dir, `${width}.webp`));
+  }
+  rendered.set(out, true);
+  return out;
+}
+
 const manifest = { services: [], categories: [], slides: [] };
 for (const [slug, [scene, alt]] of Object.entries(SERVICE_ALT)) manifest.services.push({ slug, image: await render(scene, "light"), alt });
-for (const [slug, [scene, alt]] of Object.entries(CATEGORY_ALT)) manifest.categories.push({ slug, image: await render(scene, "light"), alt });
-for (const s of SLIDES) manifest.slides.push({ ...s, image: await render(s.key, "dark") });
+for (const [slug, [scene, alt]] of Object.entries(CATEGORY_ALT)) {
+  const r = CATEGORY_3D[slug] && (await render3d(CATEGORY_3D[slug]));
+  manifest.categories.push({ slug, image: r ?? (await render(scene, "light")), alt: r ? alt.replace("Illustration", "3D illustration") : alt });
+}
+for (const s of SLIDES) {
+  const r = await render3d(`${s.key}-dark`);
+  manifest.slides.push({ ...s, image: r ?? (await render(s.key, "dark")), alt: r ? s.alt.replace("Illustration", "3D illustration") : s.alt });
+}
+manifest.replaceable = [...replaceable].sort();
 writeFileSync(path.join(OUT_DIR, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
 console.log(`Wrote ${rendered.size} illustrations to ${SRC_DIR} and ${OUT_DIR}`);

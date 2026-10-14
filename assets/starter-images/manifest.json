@@ -49,28 +49,28 @@
   "categories": [
     {
       "slug": "computers-accessories",
-      "image": "computers-light",
-      "alt": "Illustration of a laptop, keyboard, mouse and phone"
+      "image": "3d-computers-light",
+      "alt": "3D illustration of a laptop, keyboard, mouse and phone"
     },
     {
       "slug": "networking",
-      "image": "networkingCat-light",
-      "alt": "Illustration of a router and a network switch"
+      "image": "3d-networking-light",
+      "alt": "3D illustration of a router and a network switch"
     },
     {
       "slug": "cctv",
-      "image": "cctvCat-light",
-      "alt": "Illustration of a bullet camera, a dome camera and a monitor"
+      "image": "3d-cctv-light",
+      "alt": "3D illustration of a bullet camera, a dome camera and a monitor"
     },
     {
       "slug": "office-supplies",
-      "image": "office-light",
-      "alt": "Illustration of binders, paper, pens, a notebook and a stapler"
+      "image": "3d-office-light",
+      "alt": "3D illustration of binders, paper, pens, a notebook and a stapler"
     },
     {
       "slug": "souvenirs-promotional",
-      "image": "souvenirs-light",
-      "alt": "Illustration of a branded T-shirt, mug, cap and tote bag"
+      "image": "3d-souvenirs-light",
+      "alt": "3D illustration of a branded T-shirt, mug, cap and tote bag"
     }
   ],
   "slides": [
@@ -80,8 +80,8 @@
       "body": "Websites, branding, printing, CCTV, training, branded items, office and IT supplies for businesses, schools, churches and homes.",
       "ctaLabel": "Request a quotation",
       "ctaHref": "/contact",
-      "alt": "Illustration of a website, camera, printer, router and branded items",
-      "image": "hero-dark"
+      "alt": "3D illustration of a website, camera, printer, router and branded items",
+      "image": "3d-hero-dark"
     },
     {
       "key": "cctv",
@@ -89,8 +89,8 @@
       "body": "We survey your site, recommend the right cameras and recorder, install them neatly and show you how to view them on your phone.",
       "ctaLabel": "CCTV installation",
       "ctaHref": "/services/cctv-installation",
-      "alt": "Illustration of security cameras and a monitor showing four camera views",
-      "image": "cctv-dark"
+      "alt": "3D illustration of security cameras and a monitor showing four camera views",
+      "image": "3d-cctv-dark"
     },
     {
       "key": "web",
@@ -98,8 +98,8 @@
       "body": "From a clear company website to online shops and custom systems that save your team time.",
       "ctaLabel": "Website & software",
       "ctaHref": "/services/web-software-development",
-      "alt": "Illustration of a website, its code and a phone app",
-      "image": "web-dark"
+      "alt": "3D illustration of a website, its code and a phone app",
+      "image": "3d-web-dark"
     },
     {
       "key": "office",
@@ -107,8 +107,8 @@
       "body": "Order online for pickup or delivery and pay by mobile money, card or transfer.",
       "ctaLabel": "Visit the shop",
       "ctaHref": "/shop",
-      "alt": "Illustration of binders, paper, pens, a notebook and a stapler",
-      "image": "office-dark"
+      "alt": "3D illustration of binders, paper, pens, a notebook and a stapler",
+      "image": "3d-office-dark"
     },
     {
       "key": "souvenirs",
@@ -116,8 +116,37 @@
       "body": "Branded T-shirts, caps, mugs and bags for staff, events and customers.",
       "ctaLabel": "Branded items",
       "ctaHref": "/services/souvenirs-uniforms-promotional",
-      "alt": "Illustration of a branded T-shirt, mug, cap and tote bag",
-      "image": "souvenirs-dark"
+      "alt": "3D illustration of a branded T-shirt, mug, cap and tote bag",
+      "image": "3d-souvenirs-dark"
     }
+  ],
+  "replaceable": [
+    "1fa4134997c5c10e97eb2fe8adb96f5f4ea15cfd99c52abb88ebbf53d2a861a3",
+    "3d163eef4352c66d7616959db7e2bc4240ad39de70d92ca48ef7f0b1b37cc832",
+    "45d6ab253db3b67264ce9c6c752e6ca2249f920f7ad27c8f57d63fa849df2041",
+    "4829a7a12f2564bf830b283ccd0b2c36ae8b46546255b4893b4f28fc4aecfdbc",
+    "5cbf937ef8fb508b760d3ca1e63091caeaaf68d7c57b6537a53bf16a49239289",
+    "5f9f27e2031595024ca6526ebcf42613befc7e506f5eb1e9bf22c37685cba6b9",
+    "5fd342217b7609e8a7243855a2e3c15f1f1b4c6eeac5d44ca61266b995948d30",
+    "62af5986b4652795264c0dad5e3a970fc754ae579e004b8f1aeac8600a95993e",
+    "7626f8d83fd79b7b97aa0103fbeb132f8309e30d077a55c729b0ec8f5bade0f5",
+    "8a8b11c3a3272953b6a09ab2156aa77e9769205967d2e1c6c15b1fa656dc23a4",
+    "8b7e7beb0f0c0e31262c4c96f23b39dea3b66a15dfbd09142866c3bce209fd6e",
+    "a05301bb6d6d11d752a36923321fe5b68d92a4742d31040b03868282b58ef54d",
+    "a73d0f23afa8899f577177accb360511bb73fd2cb0ad4a6ebb005c85fa5db2ec",
+    "bd953b5c8ec990f9acfdccce790d6060040e79f1384dca0fc1b61fc2256bdb17",
+    "bea6bc07606a8cdbcae977cdb7f25608272eb5af85d4b0ab8ec227bd1f7d4a55",
+    "c4acfd37c0b8bbf27c89ff1ed2c5ee828609713cc08a752703e99eb6fd3ba6c2",
+    "c77563d6926f507786cebbf6d6ac49405075be3fb19cefde1264d4c2b4c3ee56",
+    "d3a669a787380327ab346fad811598b093526771f980d229c6d5315eb480590d",
+    "d6fb068c2bc1e3781ecfc6240fa87c9978c660adf15ad8084a50a5ef83690501",
+    "d9131fa00d6b96998bf64b37082edb8a13e81ea150088d3ccc0d4e5e5e2f7f36",
+    "e35c7788f3da29e0106617314d7cc05daf746826f466092b6d8342e5ec303f42",
+    "e76f4749bdbf17302c547c6ad383305c9610224cf3773b80daaa049b310329f9",
+    "e8a990ed92bc22d328d4f7f8824ef56aa5a3bfb85aa7550bdf54369d9f41a179",
+    "f1b0405ca8e21f35b60f21bf11d4d009f28848db41b0be4f28d9cad95a2bab9a",
+    "f243f2696823fccb1c8bc8395975b926dc13f1b9b1d6de6e18dc227fca0a1386",
+    "f32b81240ccd2fd8a33cd8dc3c5f609a9404a482fc3f29cebf95fe15e08d636a",
+    "f8bc544cc60da6dbdf6b49e9bcf2fb42b6d72d8a0fc3edc4dcb9c3b85c23be0a"
   ]
 }

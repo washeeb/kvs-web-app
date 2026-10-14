@@ -26,6 +26,8 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] }, testMatch: /a11y\.spec\.ts/ },
+    // The device asks for dark mode, so pages use the dark theme: checks contrast and layout there too.
+    { name: "dark", use: { ...devices["Desktop Chrome"], colorScheme: "dark" }, testMatch: /a11y\.spec\.ts/ },
   ],
   webServer: {
     command: `npx next start -p ${PORT}`,

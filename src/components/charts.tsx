@@ -39,8 +39,8 @@ export function LineChart({ series, unit, money = false, label }: { series: Poin
       <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label={`${label}: total ${fmtValue(total, money)}${series.length ? `, highest ${fmtValue(peak.value, money)} on ${fmtDate(peak.at, unit)}` : ""}.`}>
         {ticks.map((t) => (
           <g key={t}>
-            <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#e2e8f0" strokeWidth="1" />
-            <text x={pad.l - 6} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#475569">{axisLabel(t)}</text>
+            <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} className="stroke-slate-200" strokeWidth="1" />
+            <text x={pad.l - 6} y={y(t) + 4} textAnchor="end" fontSize="11" className="fill-slate-600">{axisLabel(t)}</text>
           </g>
         ))}
         {area && <path d={area} fill="currentColor" className="text-teal-600" opacity="0.12" />}
@@ -50,7 +50,7 @@ export function LineChart({ series, unit, money = false, label }: { series: Poin
             <circle cx={x(i)} cy={y(s.value)} r={series.length > 40 ? 1.5 : 3} fill="currentColor" className="text-teal-700">
               <title>{`${fmtDate(s.at, unit)}: ${fmtValue(s.value, money)}`}</title>
             </circle>
-            {i % every === 0 && <text x={x(i)} y={H - 8} textAnchor="middle" fontSize="11" fill="#475569">{fmtDate(s.at, unit)}</text>}
+            {i % every === 0 && <text x={x(i)} y={H - 8} textAnchor="middle" fontSize="11" className="fill-slate-600">{fmtDate(s.at, unit)}</text>}
           </g>
         ))}
       </svg>

@@ -37,7 +37,7 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Pro
       )}
       <nav aria-label="Invoice filters" className="mb-4 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
-          <Link key={f.key} href={`/admin/invoices?show=${f.key}`} aria-current={f.key === filter ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === filter ? "bg-brand-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
+          <Link key={f.key} href={`/admin/invoices?show=${f.key}`} aria-current={f.key === filter ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === filter ? "bg-slate-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
         ))}
       </nav>
       <Card>

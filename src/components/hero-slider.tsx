@@ -44,7 +44,7 @@ export function HeroSlider({ slides, label = "Highlights" }: { slides: HeroSlide
     <section
       aria-roledescription="carousel"
       aria-label={label}
-      className="on-dark relative bg-[#151515] text-white"
+      className="on-dark relative bg-[#151515] text-[#fff]"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onFocus={() => setFocus(true)}
@@ -72,7 +72,7 @@ export function HeroSlider({ slides, label = "Highlights" }: { slides: HeroSlide
             <div className="flex items-center" role="group" aria-label="Choose a slide">
               {slides.map((s, i) => (
                 <button key={s.id} type="button" onClick={() => go(i)} className="grid h-8 w-8 place-items-center" aria-label={`Slide ${i + 1}: ${s.headline}`} aria-current={i === current ? "true" : undefined}>
-                  <span aria-hidden="true" className={`block h-2.5 rounded-full transition-all ${i === current ? "w-6 bg-[#d11a1a]" : "w-2.5 bg-white/50"}`} />
+                  <span aria-hidden="true" className={`block h-2.5 rounded-full transition-all ${i === current ? "w-6 bg-[#d11a1a]" : "w-2.5 bg-[#fff]/50"}`} />
                 </button>
               ))}
             </div>
@@ -96,7 +96,7 @@ export function HeroSlider({ slides, label = "Highlights" }: { slides: HeroSlide
                 <div className="order-2 md:order-1">
                   <p className="text-sm font-semibold uppercase tracking-wide text-[#ff8a8a]">KingsView Solutions</p>
                   <h2 className="mt-2 text-3xl font-bold leading-tight md:text-5xl">{s.headline}</h2>
-                  {s.body && <p className="mt-4 max-w-xl text-lg text-slate-200">{s.body}</p>}
+                  {s.body && <p className="mt-4 max-w-xl text-lg text-[#e2e8f0]">{s.body}</p>}
                   {s.ctaLabel && s.ctaHref && (
                     <div className="mt-6 flex flex-wrap gap-3">
                       {s.ctaHref.startsWith("/") ? (
@@ -104,7 +104,7 @@ export function HeroSlider({ slides, label = "Highlights" }: { slides: HeroSlide
                       ) : (
                         <a href={s.ctaHref} className="btn btn-accent" rel="noopener">{s.ctaLabel}</a>
                       )}
-                      {i === 0 && s.ctaHref !== "/shop" && <Link href="/shop" className="btn border border-white/40 text-white hover:bg-white/10">Visit the shop</Link>}
+                      {i === 0 && s.ctaHref !== "/shop" && <Link href="/shop" className="btn border border-[#fff]/40 text-[#fff] hover:bg-[#fff]/10">Visit the shop</Link>}
                     </div>
                   )}
                 </div>

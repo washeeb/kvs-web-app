@@ -28,7 +28,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
       <PageHeader title="Orders" description="Confirm new orders, prepare them, mark them ready, then completed when collected or delivered." actions={<LiveRefresh topics={["orders"]} />} />
       <nav aria-label="Order filters" className="mb-4 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
-          <Link key={f.key} href={`/admin/orders?show=${f.key}`} aria-current={f.key === show ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === show ? "bg-brand-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
+          <Link key={f.key} href={`/admin/orders?show=${f.key}`} aria-current={f.key === show ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === show ? "bg-slate-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
         ))}
       </nav>
       <Card>

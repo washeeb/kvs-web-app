@@ -28,7 +28,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
       <PageHeader title="Service jobs" description="Installations, shoots, training sessions and design or development work, by date." actions={<><LiveRefresh topics={["jobs"]} />{can(actor, "jobs.write") && <Link href="/admin/jobs/new" className="btn btn-primary">New job</Link>}</>} />
       <nav aria-label="Job filters" className="mb-4 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
-          <Link key={f.key} href={`/admin/jobs?show=${f.key}`} aria-current={f.key === show ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === show ? "bg-brand-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
+          <Link key={f.key} href={`/admin/jobs?show=${f.key}`} aria-current={f.key === show ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm font-medium ${f.key === show ? "bg-slate-900 text-white" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"}`}>{f.label}</Link>
         ))}
       </nav>
       <Card>

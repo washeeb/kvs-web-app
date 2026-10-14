@@ -6,6 +6,7 @@ import { requireActor } from "@/server/web/session";
 import { logout } from "../(auth)/actions";
 import { NotificationBell } from "@/components/notifications";
 import { SideNav } from "@/components/side-nav";
+import { ThemeSwitch } from "@/components/theme-switch";
 
 type Entry = { href: string; label: string; perm?: Permission; exact?: boolean };
 /** Menu groups; an entry shows when the user holds its permission, and empty groups are hidden. */
@@ -90,6 +91,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </p>
           <div className="flex items-center gap-3">
             <NotificationBell actor={actor} href="/admin/notifications" />
+            <ThemeSwitch />
             <Link href="/" className="text-sm text-slate-600 hover:underline">Website</Link>
             <form action={logout}><button className="btn btn-ghost">Sign out</button></form>
           </div>

@@ -1,0 +1,3 @@
+module.exports=[72777,a=>{"use strict";let b=(0,a.i(11857).registerClientReference)(function(){throw Error("Attempted to call ThemeSwitch() from the server but ThemeSwitch is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/src/components/theme-switch.tsx","ThemeSwitch");a.s(["ThemeSwitch",0,b])},34846,a=>{"use strict";var b=a.i(72777);a.n(b)},84864,a=>{a.v(a=>Promise.resolve().then(()=>a(90266)))},49528,a=>{a.v(a=>Promise.resolve().then(()=>a(75840)))}];
+
+//# sourceMappingURL=src_1dn9w_8biub48._.js.map

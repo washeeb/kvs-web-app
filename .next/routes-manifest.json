@@ -591,16 +591,22 @@
       "namedRegex": "^/dev/mailbox(?:/)?$"
     },
     {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
       "page": "/forgot-password",
       "regex": "^/forgot\\-password(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/forgot\\-password(?:/)?$"
     },
     {
-      "page": "/icon.png",
-      "regex": "^/icon\\.png(?:/)?$",
+      "page": "/icon.svg",
+      "regex": "^/icon\\.svg(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/icon\\.png(?:/)?$"
+      "namedRegex": "^/icon\\.svg(?:/)?$"
     },
     {
       "page": "/login",
@@ -613,6 +619,12 @@
       "regex": "^/login/mfa(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/login/mfa(?:/)?$"
+    },
+    {
+      "page": "/manifest.webmanifest",
+      "regex": "^/manifest\\.webmanifest(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manifest\\.webmanifest(?:/)?$"
     },
     {
       "page": "/opengraph-image.png",

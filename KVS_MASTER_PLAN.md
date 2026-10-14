@@ -112,6 +112,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 8. Progress log
 
+- 2026-10-14 — Back to the drawings for slides and shop categories at the owner's request (USE_3D = false in scripts/illustrations.mjs; Blender script and renders kept).
 - 2026-10-14 — 3D renders (Blender, scripts/blender/starter_3d.py) replace the drawings for home page slides and shop categories; service pages keep the drawings. The starter installer now upgrades untouched starter pictures and never replaces staff uploads.
 - 2026-10-13 — K5 completed (see K5): home page slider with admin, and 17 starter illustrations (slides, services, categories). Owner chose: vector illustrations plus their own / manufacturer photos for products; no people (real staff photos later).
 - 2026-10-13 — K4 completed (see K4). GitHub Actions builds the deploy bundle again (the repository is now public — confirm that is intended).

@@ -384,7 +384,9 @@ class Kit:
         # extrude_outline expects counter-clockwise points; reverse so the face points outward
         o = [self.extrude_outline(list(reversed(pts)), 0.3, (0, 0.15, 1.6), mat, bevel=0.06)]
         if mark == "check":
-            o.append(self.tube([(-0.45, -0.17, 1.7), (-0.1, -0.17, 1.35), (0.5, -0.17, 2.0)], 0.1, "white"))
+            # A tick from two straight strokes on the front face.
+            o.append(self.box((0.56, 0.08, 0.18), (-0.275, -0.18, 1.525), "white", rot=(0, 0.785, 0), bevel=0.06))
+            o.append(self.box((0.98, 0.08, 0.18), (0.2, -0.18, 1.675), "white", rot=(0, -0.825, 0), bevel=0.06))
         else:
             o += [self.box((0.7, 0.12, 0.55), (0, -0.12, 1.45), "white", bevel=0.05), self.torus(0.22, 0.06, (0, -0.12, 1.75), "white", rot=(math.pi / 2, 0, 0))]
         return o
@@ -508,8 +510,8 @@ def build(k, scene):
         k.stage((6.2, -8.6, 4.4), (0.2, -0.1, 0.8), 60)
     elif s == "software":
         g(k.monitor("app"), (-0.6, 0.4, 0), 0.15)
-        g(k.license_card(), (2.4, -1.2, 0), -0.4)
-        k.stage((7.0, -10.0, 5.4), (0.3, 0, 1.3), 56)
+        g(k.license_card(), (1.9, -0.7, 0), -0.4, 0.9)
+        k.stage((7.0, -10.0, 5.4), (0.5, 0, 1.1), 54)
     elif s == "managed":
         for i, (x, y, rz, st) in enumerate(((-1.75, 0.3, 0.2, "dash"), (1.75, 0.3, -0.2, "alert"))):
             g(k.monitor(st, 3.0, 1.8), (x, y, 0), rz)

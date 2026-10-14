@@ -586,7 +586,9 @@ const CATEGORY_ALT = {
   "office-supplies": ["office", "Illustration of binders, paper, pens, a notebook and a stapler"],
   "souvenirs-promotional": ["souvenirs", "Illustration of a branded T-shirt, mug, cap and tote bag"],
 };
-/** Shop categories pictured by a 3D render (assets/renders/<name>.png). */
+/** Whether slides and shop categories use the 3D renders. Off: KingsView chose the drawings (2026-10-14). */
+const USE_3D = false;
+/** Shop categories pictured by a 3D render (assets/renders/<name>.webp). */
 const CATEGORY_3D = { "computers-accessories": "computers-light", networking: "networking-light", cctv: "cctv-light", "office-supplies": "office-light", "souvenirs-promotional": "souvenirs-light" };
 /** Starter slides: wording is a draft for KingsView to edit in admin. */
 const SLIDES = [
@@ -634,6 +636,7 @@ async function render(scene, theme) {
  * (not committed: too large); it is kept as a high-quality <name>.webp, which is what the repository stores.
  */
 async function render3d(name) {
+  if (!USE_3D) return null;
   const png = path.join("assets/renders", `${name}.png`);
   const src = path.join("assets/renders", `${name}.webp`);
   if (existsSync(png)) await sharp(png).webp({ quality: 95, effort: 6 }).toFile(src);

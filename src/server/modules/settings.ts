@@ -66,7 +66,7 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   bankName: "Absa Bank",
   bankAccountName: "KingsView Solutions",
   bankAccountNumber: "0341071744",
-  bankBranch: "Ring Road Central Branch",
+  bankBranch: "Tarkwa Branch",
   paymentInstructions: "",
   contactEmail: "info@kingsviewsolutions.com",
   contactPhone: "0552225441",

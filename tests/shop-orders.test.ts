@@ -87,7 +87,7 @@ describe("guest checkout", () => {
     const [mail] = await db.select().from(mailOutbox).where(eq(mailOutbox.to, guest.email));
     expect(mail!.body).toContain(`/order/${token}`);
     expect(mail!.body).toContain("Mobile money: 0552225441");
-    expect(mail!.body).toContain("Absa Bank, Ring Road Central Branch — account 0341071744 (KingsView Solutions)");
+    expect(mail!.body).toContain("Absa Bank, Tarkwa Branch — account 0341071744 (KingsView Solutions)");
     expect(mail!.body).toContain("0552225441 / 0245636889");
   });
 

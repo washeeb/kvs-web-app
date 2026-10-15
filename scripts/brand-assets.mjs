@@ -48,14 +48,10 @@ const roundedWhite = async (size, pad) => {
   const art = await (await square(size, pad, CLEAR)).toBuffer();
   return sharp(mask).composite([{ input: art }]).png({ compressionLevel: 9 });
 };
-rmSync("src/app/icon.png", { force: true });
-// Browser tab: the plain crest, switching to the light-on-dark version when the browser uses a dark theme.
-const tab = async (art) => (await (await square(64, 0.02, CLEAR, art)).toBuffer()).toString("base64");
-writeFileSync(
-  "src/app/icon.svg",
-  `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><style>.d{display:none}@media (prefers-color-scheme:dark){.l{display:none}.d{display:inline}}</style><image class="l" width="64" height="64" href="data:image/png;base64,${await tab(crest)}"/><image class="d" width="64" height="64" href="data:image/png;base64,${await tab(crestDark)}"/></svg>`,
-);
-// Older browsers: favicon.ico with the crest on a white tile, readable on light and dark tab bars (PNG-in-ICO).
+// Browser tab: the crest on a white rounded tile, so it reads on light and dark tab bars alike.
+rmSync("src/app/icon.svg", { force: true });
+await (await roundedWhite(512, 0.08)).toFile("src/app/icon.png");
+// Older browsers: the same white tile as favicon.ico (PNG-in-ICO).
 const ico = await Promise.all([16, 32, 48].map(async (n) => (await roundedWhite(n, 0.08)).toBuffer()));
 const head = Buffer.alloc(6 + 16 * ico.length);
 head.writeUInt16LE(0, 0);
@@ -85,4 +81,4 @@ await (await square(512, 0.2, { r: 17, g: 17, b: 17, alpha: 1 }, crestDark)).toF
 const og = await sharp(landscape).resize({ width: 1000 }).toBuffer();
 await sharp({ create: { width: 1200, height: 630, channels: 4, background: WHITE } }).composite([{ input: og, gravity: "center" }]).png().toFile("src/app/opengraph-image.png");
 
-console.log("Brand assets written to", OUT, "and src/app/{icon.svg,favicon.ico,apple-icon.png,opengraph-image.png}, public/icons");
+console.log("Brand assets written to", OUT, "and src/app/{icon.png,favicon.ico,apple-icon.png,opengraph-image.png}, public/icons");

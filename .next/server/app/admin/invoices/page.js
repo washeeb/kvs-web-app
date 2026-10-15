@@ -1,6 +1,6 @@
 var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/admin/invoices/page.js")
-R.c("server/chunks/ssr/[root-of-the-server]__1cdxi2hdv3m24._.js")
-R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0y1hv-xz8l3sp.js")
+R.c("server/chunks/ssr/[root-of-the-server]__09gyr1-t9qey9._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_1jbkwwnr6_bxs.js")
 R.c("server/chunks/ssr/src_app_admin_invoices_page_tsx_1z1puvxx5eo_r._.js")
 R.c("server/chunks/ssr/src_server_modules_invoices_ts_15n1o1yfdx25s._.js")
 R.c("server/chunks/ssr/node_modules_next_dist_0joxsz2q5dh6c._.js")
@@ -36,5 +36,5 @@ R.c("server/chunks/ssr/src_components_ui_tsx_1ph0b_8sjd0ld._.js")
 R.c("server/chunks/ssr/src_server_0j8cmte8tv-y3._.js")
 R.c("server/chunks/ssr/src_133l6kbl6-r0p._.js")
 R.c("server/chunks/ssr/_next-internal_server_app_admin_invoices_page_actions_06ge70n9amp-2.js")
-R.m(55407)
-module.exports=R.m(55407).exports
+R.m(59321)
+module.exports=R.m(59321).exports

@@ -1,7 +1,7 @@
 var R=require("../../../../chunks/ssr/[turbopack]_runtime.js")("server/app/admin/reports/forecast/page.js")
 R.c("server/chunks/ssr/src_content_services_ts_0ia80y8e2c7bt._.js")
-R.c("server/chunks/ssr/[root-of-the-server]__1k49y2eahutcw._.js")
-R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_173p7umun2c32.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1wuk__p85obcj._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0s_dfigl_9kbm.js")
 R.c("server/chunks/ssr/src_server_modules_settings_ts_0qbof4ijvt5d_._.js")
 R.c("server/chunks/ssr/src_app_admin_reports_forecast_page_tsx_1vpa_kax1txe6._.js")
 R.c("server/chunks/ssr/src_1ubzhkfkdghsa._.js")
@@ -40,5 +40,5 @@ R.c("server/chunks/ssr/src_server_0j8cmte8tv-y3._.js")
 R.c("server/chunks/ssr/src_133l6kbl6-r0p._.js")
 R.c("server/chunks/ssr/src_app_admin_reports_layout_tsx_0gqvfckpx6e3o._.js")
 R.c("server/chunks/ssr/_next-internal_server_app_admin_reports_forecast_page_actions_1f77f6giyewh7.js")
-R.m(2075)
-module.exports=R.m(2075).exports
+R.m(5295)
+module.exports=R.m(5295).exports

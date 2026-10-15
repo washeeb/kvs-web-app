@@ -1,9 +1,9 @@
 var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/dev/mailbox/page.js")
 R.c("server/chunks/ssr/[root-of-the-server]__1vhg8piss-ipy._.js")
-R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_15wabkz7mf930.js")
+R.c("server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_1uc8jrjse8txk.js")
 R.c("server/chunks/ssr/node_modules_next_dist_compiled_@opentelemetry_api_index_1oy1nwhip-98t.js")
 R.c("server/chunks/ssr/node_modules_next_dist_1et9oq9q9-y3v._.js")
-R.c("server/chunks/ssr/[root-of-the-server]__0p1x0-hsn-loo._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0cbtz04cazmpr._.js")
 R.c("server/chunks/ssr/node_modules_next_dist_0janj0i6dqko7._.js")
 R.c("server/chunks/ssr/_1ou6v6iaaxymr._.js")
 R.c("server/chunks/ssr/_0cc4p99trsugg._.js")
@@ -20,5 +20,5 @@ R.c("server/chunks/ssr/node_modules_next_dist_client_components_0p8s4lhdi0ir6._.
 R.c("server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_0l_sp0xky89qu.js")
 R.c("server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_0q-w892nagajq.js")
 R.c("server/chunks/ssr/_next-internal_server_app_dev_mailbox_page_actions_1zrhuklkylwtv.js")
-R.m(52523)
-module.exports=R.m(52523).exports
+R.m(28921)
+module.exports=R.m(28921).exports

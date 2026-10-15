@@ -84,7 +84,7 @@
   "/apple-icon.png/route": "/apple-icon.png",
   "/dev/mailbox/page": "/dev/mailbox",
   "/favicon.ico/route": "/favicon.ico",
-  "/icon.svg/route": "/icon.svg",
+  "/icon.png/route": "/icon.png",
   "/manifest.webmanifest/route": "/manifest.webmanifest",
   "/media/[id]/[file]/route": "/media/[id]/[file]",
   "/opengraph-image.png/route": "/opengraph-image.png",

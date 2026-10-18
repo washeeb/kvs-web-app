@@ -36,6 +36,13 @@
       "when": 1791964739308,
       "tag": "0004_bank_branch",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792345550336,
+      "tag": "0005_price_on_request",
+      "breakpoints": true
     }
   ]
 }

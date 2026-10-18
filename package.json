@@ -25,6 +25,8 @@
     "brand:build": "node scripts/brand-assets.mjs",
     "images:build": "node scripts/illustrations.mjs",
     "images:starter": "tsx scripts/starter-images.ts",
+    "products:prepare": "node scripts/supplier-import/prepare.mjs",
+    "products:import": "tsx scripts/import-products.ts",
     "package:shared": "node scripts/package-shared.mjs",
     "test:e2e": "playwright test"
   },

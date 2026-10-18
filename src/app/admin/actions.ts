@@ -267,7 +267,7 @@ const productFields = (fd: FormData) => ({
   status: (str(fd, "status") || "draft") as never,
   sesSync: bool(fd, "sesSync"),
 });
-const variantFields = (fd: FormData) => ({ name: str(fd, "variantName") || "Standard", priceMinor: money(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), tracksStock: bool(fd, "tracksStock") });
+const variantFields = (fd: FormData) => ({ name: str(fd, "variantName") || "Standard", priceMinor: optionalMoney(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), tracksStock: bool(fd, "tracksStock") });
 
 export async function createProductAction(_: Prev, fd: FormData) {
   const actor = await staff();
@@ -292,7 +292,7 @@ export async function productAction(_: Prev, fd: FormData) {
         await addVariant(db, actor, id, variantFields(fd));
         break;
       case "variant":
-        await updateVariant(db, actor, str(fd, "variantId"), { name: str(fd, "variantName"), priceMinor: money(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), active: bool(fd, "active") });
+        await updateVariant(db, actor, str(fd, "variantId"), { name: str(fd, "variantName"), priceMinor: optionalMoney(fd, "price"), costMinor: optionalMoney(fd, "cost"), taxable: bool(fd, "taxable"), active: bool(fd, "active") });
         break;
       case "stock":
         await changeStock(db, actor, { variantId: str(fd, "variantId"), mode: str(fd, "mode") === "count" ? "count" : "receive", quantity: int(fd, "quantity"), note: str(fd, "note") });

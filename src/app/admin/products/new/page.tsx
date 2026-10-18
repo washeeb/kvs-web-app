@@ -28,7 +28,7 @@ export default async function NewProductPage() {
             <p className="mb-3 text-xs text-slate-600">The SKU (product code) is assigned automatically when you save, e.g. KV-NET-00012, and never changes.</p>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Option name" htmlFor="variantName"><input id="variantName" name="variantName" className="field" defaultValue="Standard" maxLength={120} /></Field>
-              <Field label="Selling price, excl. taxes (GHS)" htmlFor="price"><input id="price" name="price" className="field" inputMode="decimal" required /></Field>
+              <Field label="Selling price, excl. taxes (GHS)" htmlFor="price" hint="Leave empty for price on request: the shop shows “Request a quote” until a price is set."><input id="price" name="price" className="field" inputMode="decimal" /></Field>
               <Field label="Cost price (GHS, optional)" htmlFor="cost" hint="Shared with Synclytics as the partner cost."><input id="cost" name="cost" className="field" inputMode="decimal" /></Field>
             </div>
             <div className="mt-3 flex flex-wrap gap-4 text-sm">

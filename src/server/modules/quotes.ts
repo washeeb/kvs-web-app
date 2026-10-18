@@ -43,6 +43,7 @@ export async function createQuote(db: DB, actor: Actor, input: z.input<typeof qu
     if ("variantId" in l) {
       const f = variants.find((x) => x.v.id === l.variantId);
       if (!f || !f.v.active) throw invalid("A selected product is not available.");
+      if (f.v.priceMinor === null) throw invalid(`${f.name} has no price yet. Set its price on the product, or add it as a custom line with the quoted price.`);
       return { variantId: f.v.id, description: `${f.name} — ${f.v.name} (${f.v.sku})`, quantity: l.quantity, unitPriceMinor: f.v.priceMinor, taxable: f.v.taxable };
     }
     return { variantId: null, description: l.description, quantity: l.quantity, unitPriceMinor: l.unitPriceMinor, taxable: l.taxable };

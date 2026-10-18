@@ -115,7 +115,11 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
                       <h2 className="mt-3 text-lg font-semibold"><Link href={`/shop/${p.slug}`} className="hover:text-teal-700">{p.name}</Link></h2>
                       <p className="mt-1 flex-1 text-sm text-slate-600">{p.summary}</p>
                       <div className="mt-4 flex items-end justify-between gap-2">
-                        <p className="font-semibold">{p.variants.length > 1 && <span className="text-xs font-normal text-slate-600">From </span>}<Money minor={from.priceMinor} currency={from.currency} /></p>
+                        {from.priceMinor === null ? (
+                          <p className="font-semibold text-slate-700">Price on request</p>
+                        ) : (
+                          <p className="font-semibold">{p.variants.length > 1 && <span className="text-xs font-normal text-slate-600">From </span>}<Money minor={from.priceMinor} currency={from.currency} /></p>
+                        )}
                         <AvailabilityBadge a={from.availability} />
                       </div>
                     </div>

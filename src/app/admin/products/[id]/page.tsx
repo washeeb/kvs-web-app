@@ -77,7 +77,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                     {hidden("variant", v.id)}
                     <Field label="Option name" htmlFor={`vn-${v.id}`}><input id={`vn-${v.id}`} name="variantName" className="field" defaultValue={v.name} maxLength={120} /></Field>
                     <div className="grid grid-cols-2 gap-3">
-                      <Field label="Price (GHS)" htmlFor={`vp-${v.id}`}><input id={`vp-${v.id}`} name="price" className="field" inputMode="decimal" required defaultValue={amount(v.priceMinor)} /></Field>
+                      <Field label="Price (GHS)" htmlFor={`vp-${v.id}`} hint="Empty = price on request."><input id={`vp-${v.id}`} name="price" className="field" inputMode="decimal" defaultValue={amount(v.priceMinor)} /></Field>
                       <Field label="Cost (GHS)" htmlFor={`vc-${v.id}`} hint="Average cost; updated automatically when stock is received with a unit cost."><input id={`vc-${v.id}`} name="cost" className="field" inputMode="decimal" defaultValue={amount(v.costMinor)} /></Field>
                     </div>
                     <div className="flex gap-4 text-sm">
@@ -158,7 +158,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 <p className="text-xs text-slate-600">A new SKU is assigned automatically.</p>
                 <Field label="Option name" htmlFor="variantName"><input id="variantName" name="variantName" className="field" required maxLength={120} /></Field>
                 <div className="grid grid-cols-2 gap-3">
-                  <Field label="Price (GHS)" htmlFor="price"><input id="price" name="price" className="field" inputMode="decimal" required /></Field>
+                  <Field label="Price (GHS)" htmlFor="price" hint="Empty = price on request."><input id="price" name="price" className="field" inputMode="decimal" /></Field>
                   <Field label="Cost (GHS)" htmlFor="cost"><input id="cost" name="cost" className="field" inputMode="decimal" /></Field>
                 </div>
                 <div className="flex gap-4 text-sm">

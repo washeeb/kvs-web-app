@@ -37,7 +37,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                       <span className="flex gap-1">{p.sesSync && <Badge tone="purple">Synclytics</Badge>}{p.isDemo && <Badge tone="amber">demo</Badge>}</span>
                     </td>
                     <td><StatusBadge status={p.status} /></td>
-                    <td className="text-xs">{p.variants.map((v) => <span key={v.id} className="block">{v.sku} · <Money minor={v.priceMinor} currency={v.currency} /></span>)}</td>
+                    <td className="text-xs">{p.variants.map((v) => <span key={v.id} className="block">{v.sku} · {v.priceMinor === null ? <span className="text-amber-800">price on request</span> : <Money minor={v.priceMinor} currency={v.currency} />}</span>)}</td>
                     <td className="space-y-1">{p.variants.map((v) => <span key={v.id} className="block"><AvailabilityBadge a={v.availability} showCount /></span>)}</td>
                   </tr>
                 ))}

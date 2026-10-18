@@ -112,6 +112,7 @@ Owner / Administrator · Manager · Sales & front desk · Store & stock · Techn
 
 ## 8. Progress log
 
+- 2026-10-18 — Products priced on request (empty price → "Price on request" + "Request a quote", pre-filled enquiry; cannot be added to cart or quoted from the catalogue without a price). Supplier import (scripts/supplier-import/prepare.mjs → ops/import-products.mjs): core range of Bridge Technologies and Compu lists, 1,093 products in 26 sub-categories (new top-level Alarms & access control, Printers, toner & ink), 27 brands, 1,397 pictures. Compu pictures whose file name names another product were held back (583) for review. Migration 0005_price_on_request.
 - 2026-10-14 — Back to the drawings for slides and shop categories at the owner's request (USE_3D = false in scripts/illustrations.mjs; Blender script and renders kept).
 - 2026-10-14 — 3D renders (Blender, scripts/blender/starter_3d.py) replace the drawings for home page slides and shop categories; service pages keep the drawings. The starter installer now upgrades untouched starter pictures and never replaces staff uploads.
 - 2026-10-13 — K5 completed (see K5): home page slider with admin, and 17 starter illustrations (slides, services, categories). Owner chose: vector illustrations plus their own / manufacturer photos for products; no people (real staff photos later).

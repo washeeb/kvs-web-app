@@ -39,7 +39,7 @@ export default async function LabelsPage({ searchParams }: { searchParams: Promi
     }
     const [p] = await db.select({ name: products.name }).from(products).where(eq(products.id, v.productId));
     const svg = code128Svg(v.sku, { height: 48, moduleWidth: 1.6 }).svg;
-    for (let n = 0; n < qty; n++) labels.push({ sku: v.sku, name: v.name === "Standard" ? p!.name : `${p!.name} — ${v.name}`, price: formatMoney(v.priceMinor, v.currency), svg });
+    for (let n = 0; n < qty; n++) labels.push({ sku: v.sku, name: v.name === "Standard" ? p!.name : `${p!.name} — ${v.name}`, price: v.priceMinor === null ? "" : formatMoney(v.priceMinor, v.currency), svg });
   }
   const showPrice = sp.price !== "0";
   return (

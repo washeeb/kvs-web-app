@@ -163,7 +163,7 @@ export async function createSesOrderTx(tx: DB, sesOrderNumber: string, lines: { 
     : [];
   const priced = lines.map((l) => {
     const m = variants.find((x) => x.v.sku === l.sku && x.p.sesSync);
-    const unit = m ? (m.v.costMinor ?? m.v.priceMinor) : 0;
+    const unit = m ? (m.v.costMinor ?? m.v.priceMinor ?? 0) : 0;
     return { l, m, unit, total: unit * l.quantity };
   });
   const subtotal = priced.reduce((a, x) => a + (x.m ? x.total : 0), 0);

@@ -5,7 +5,8 @@ import { useMemo, useState } from "react";
 export interface VariantOption {
   id: string;
   label: string;
-  priceMinor: number;
+  /** null = price on request: price it as a custom line. */
+  priceMinor: number | null;
 }
 
 type Line = { key: number; kind: "catalogue"; variantId: string; quantity: number } | { key: number; kind: "custom"; description: string; unitPrice: string; quantity: number; taxable: boolean };
@@ -45,7 +46,7 @@ export function QuoteBuilder({ variants }: { variants: VariantOption[] }) {
               <label className="field-label" htmlFor={`v-${l.key}`}>Product {i + 1}</label>
               <select id={`v-${l.key}`} className="field" value={l.variantId} onChange={(e) => update(l.key, { variantId: e.target.value })}>
                 {variants.map((v) => (
-                  <option key={v.id} value={v.id}>{v.label} — {fmt(v.priceMinor)}</option>
+                  <option key={v.id} value={v.id} disabled={v.priceMinor === null}>{v.label} — {v.priceMinor === null ? "price on request (use a custom line)" : fmt(v.priceMinor)}</option>
                 ))}
               </select>
             </div>

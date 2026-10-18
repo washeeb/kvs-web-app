@@ -11,6 +11,19 @@ test("visitor sends a service request and gets a reference", async ({ page }) =>
   await expect(page.getByRole("status")).toContainText(/request E-\d{4}-\d{5} has been received/);
 });
 
+test("visitor asks for a quotation for an item priced on request", async ({ page }) => {
+  await page.goto("/shop/demo-outdoor-access-point");
+  await expect(page.getByText("Price on request").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /Add to cart/ })).toHaveCount(0);
+  await page.getByRole("link", { name: /Request a quote/ }).click();
+  await page.waitForURL(/\/contact\?product=demo-outdoor-access-point/);
+  await expect(page.getByLabel("What do you need?")).toHaveValue(/quotation for: Outdoor access point \(SKU KVS-AP-OUT\)/);
+  await page.getByLabel("Your name").fill("E2E Buyer");
+  await page.getByLabel("Phone or WhatsApp").fill("0240000003");
+  await page.getByRole("button", { name: "Send request" }).click();
+  await expect(page.getByRole("status")).toContainText(/E-\d{4}-\d{5}/);
+});
+
 test("shopper orders as a guest and lands on the private order page", async ({ page }) => {
   await page.goto("/shop/demo-wireless-mouse");
   await page.getByRole("button", { name: /Add to cart/ }).first().click();

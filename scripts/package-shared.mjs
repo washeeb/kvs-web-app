@@ -25,7 +25,7 @@ for (const p of ["node_modules/@electric-sql", ".next/node_modules/@electric-sql
 
 // 3. Maintenance commands bundled into single files (migrate, reference seed, first admin, starter pictures).
 await build({
-  entryPoints: { migrate: "scripts/migrate.ts", "seed-reference": "scripts/seed.ts", "create-admin": "scripts/create-admin.ts", "starter-images": "scripts/starter-images.ts" },
+  entryPoints: { migrate: "scripts/migrate.ts", "seed-reference": "scripts/seed.ts", "create-admin": "scripts/create-admin.ts", "starter-images": "scripts/starter-images.ts", "import-products": "scripts/import-products.ts" },
   outdir: path.join(out, "ops"),
   outExtension: { ".js": ".mjs" },
   bundle: true,
@@ -54,6 +54,7 @@ const deployPkg = {
     "db:seed-reference": "NODE_ENV=production node ops/seed-reference.mjs",
     "admin:create": "node ops/create-admin.mjs",
     "images:starter": "node ops/starter-images.mjs",
+    "products:import": "node ops/import-products.mjs",
   },
 };
 writeFileSync(path.join(out, "package.json"), JSON.stringify(deployPkg, null, 2));

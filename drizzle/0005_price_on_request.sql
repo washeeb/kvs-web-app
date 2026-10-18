@@ -1,0 +1,1 @@
+ALTER TABLE "product_variants" ALTER COLUMN "price_minor" DROP NOT NULL;

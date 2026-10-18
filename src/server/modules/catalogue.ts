@@ -55,7 +55,8 @@ export interface ShopVariant {
   id: string;
   sku: string;
   name: string;
-  priceMinor: number;
+  /** null = price on request. */
+  priceMinor: number | null;
   currency: string;
   tracksStock: boolean;
   availability: Availability;
@@ -114,8 +115,15 @@ export async function listShopProducts(db: DB, filter: { q?: string; category?: 
   const list = rows
     .map((r) => ({ ...r.product, categoryName: r.categoryName, categorySlug: r.categorySlug, brandName: r.brandName, brandSlug: r.brandSlug, image: images.get(r.product.id) ?? null, variants: variants.get(r.product.id) ?? [] }))
     .filter((p) => p.variants.length > 0);
-  if (filter.sort === "price-asc") list.sort((a, b) => a.variants[0]!.priceMinor - b.variants[0]!.priceMinor);
-  if (filter.sort === "price-desc") list.sort((a, b) => b.variants[0]!.priceMinor - a.variants[0]!.priceMinor);
+  // Items priced on request sort after priced ones either way.
+  const price = (p: (typeof list)[number]) => p.variants.find((v) => v.priceMinor !== null)?.priceMinor ?? null;
+  const byPrice = (dir: 1 | -1) => (a: (typeof list)[number], b: (typeof list)[number]) => {
+    const x = price(a);
+    const y = price(b);
+    return x === null ? (y === null ? 0 : 1) : y === null ? -1 : dir * (x - y);
+  };
+  if (filter.sort === "price-asc") list.sort(byPrice(1));
+  if (filter.sort === "price-desc") list.sort(byPrice(-1));
   return list;
 }
 
@@ -199,7 +207,8 @@ export const variantInput = z.object({
   /** Normally left out: the system assigns the next SKU (see nextSku). */
   sku: z.string().trim().toUpperCase().regex(/^[A-Z0-9][A-Z0-9-]{2,40}$/, "SKU: 3–41 capital letters, digits or dashes.").optional(),
   name: z.string().trim().min(1).max(120),
-  priceMinor: money,
+  /** null = price on request. */
+  priceMinor: money.nullable().default(null),
   costMinor: money.nullable().optional(),
   currency: z.string().length(3).default("GHS"),
   taxable: z.boolean().default(true),
@@ -261,7 +270,7 @@ export async function addVariant(db: DB, actor: Actor, productId: string, input:
 }
 
 /** Price, cost and availability changes take effect for new orders only; existing orders keep their prices. */
-export async function updateVariant(db: DB, actor: Actor, variantId: string, input: { name: string; priceMinor: number; costMinor: number | null; taxable: boolean; active: boolean }) {
+export async function updateVariant(db: DB, actor: Actor, variantId: string, input: { name: string; priceMinor: number | null; costMinor: number | null; taxable: boolean; active: boolean }) {
   authorize(actor, "catalogue.write");
   const data = variantInput.pick({ name: true, priceMinor: true, costMinor: true, taxable: true, active: true }).parse(input);
   await db.transaction(async (tx) => {

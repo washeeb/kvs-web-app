@@ -4,7 +4,7 @@ import { ActionForm } from "./action-form";
 import { Field } from "./ui";
 
 /** Enquiry / quotation request. Works without JavaScript; spam is filtered by a hidden field and rate limits. */
-export function EnquiryForm({ serviceLine = "", submitLabel = "Send request", placeholder }: { serviceLine?: string; submitLabel?: string; placeholder?: string }) {
+export function EnquiryForm({ serviceLine = "", submitLabel = "Send request", placeholder, message = "" }: { serviceLine?: string; submitLabel?: string; placeholder?: string; message?: string }) {
   return (
     <ActionForm action={enquiryAction} submitLabel={submitLabel} submitClassName="btn btn-accent" resetOnSuccess>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -20,7 +20,7 @@ export function EnquiryForm({ serviceLine = "", submitLabel = "Send request", pl
         </select>
       </Field>
       <Field label="What do you need?" htmlFor="message">
-        <textarea id="message" name="message" rows={5} className="field" required minLength={10} maxLength={4000} placeholder={placeholder} />
+        <textarea id="message" name="message" rows={5} className="field" required minLength={10} maxLength={4000} placeholder={placeholder} defaultValue={message} />
       </Field>
       {/* Honeypot for bots: hidden from people and assistive technology. */}
       <div aria-hidden className="absolute -left-[10000px]">

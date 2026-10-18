@@ -28,11 +28,12 @@ export async function addToCartAction(_: ActionState, fd: FormData): Promise<Act
   return run(async () => {
     const variantId = str(fd, "variantId");
     const [ok] = await getDb()
-      .select({ id: productVariants.id })
+      .select({ id: productVariants.id, price: productVariants.priceMinor })
       .from(productVariants)
       .innerJoin(products, eq(products.id, productVariants.productId))
       .where(and(eq(productVariants.id, variantId), eq(productVariants.active, true), eq(products.status, "active")));
     if (!ok) throw invalid("That item is not available.");
+    if (ok.price === null) throw invalid("This item is priced on request. Ask us for a quotation instead.");
     await writeCart(setCartLine(await readCart(), variantId, int(fd, "quantity"), "add"));
     revalidatePath("/", "layout");
     return "Added to your cart.";

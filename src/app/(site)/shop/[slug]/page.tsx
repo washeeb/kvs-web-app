@@ -41,10 +41,10 @@ export default async function ProductPage({ params, searchParams }: { params: Pr
     sku: p.variants[0]?.sku,
     brand: p.brandName ? { "@type": "Brand", name: p.brandName } : undefined,
     category: p.categoryName ?? undefined,
-    offers: p.variants.map((v) => ({
+    offers: p.variants.filter((v) => v.priceMinor !== null).map((v) => ({
       "@type": "Offer",
       sku: v.sku,
-      price: (v.priceMinor / 100).toFixed(2),
+      price: ((v.priceMinor ?? 0) / 100).toFixed(2),
       priceCurrency: v.currency,
       availability: v.availability.purchasable ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       url: `${base()}/shop/${p.slug}`,
@@ -93,8 +93,14 @@ export default async function ProductPage({ params, searchParams }: { params: Pr
                   <p className="text-xs text-slate-600">SKU {v.sku}</p>
                 </div>
                 <AvailabilityBadge a={v.availability} showCount />
-                <p className="font-semibold"><Money minor={v.priceMinor} currency={v.currency} /> <span className="text-xs font-normal text-slate-600">excl. taxes</span></p>
-                {v.availability.purchasable ? (
+                {v.priceMinor === null ? (
+                  <p className="font-semibold text-slate-700">Price on request</p>
+                ) : (
+                  <p className="font-semibold"><Money minor={v.priceMinor} currency={v.currency} /> <span className="text-xs font-normal text-slate-600">excl. taxes</span></p>
+                )}
+                {v.priceMinor === null ? (
+                  <Link href={`/contact?product=${encodeURIComponent(p.slug)}`} className="btn btn-accent">Request a quote<span className="sr-only">: {v.name}</span></Link>
+                ) : v.availability.purchasable ? (
                   <ActionForm action={addToCartAction} inline submitLabel={<>Add to cart<span className="sr-only">: {v.name}</span></>} submitClassName="btn btn-accent">
                     <input type="hidden" name="variantId" value={v.id} />
                     <label htmlFor={`qty-${v.id}`} className="sr-only">Quantity of {v.name}</label>

@@ -82,9 +82,9 @@ export async function priceCart(db: DB, cart: Cart) {
     const availability = computeAvailability(levels.filter((l) => l.variantId === r.v.id), r.v.tracksStock);
     let problem: string | null = null;
     if (!r.v.active || r.status !== "active") problem = "No longer available.";
-    else if (r.v.currency !== s.defaultCurrency) problem = "Ask us for a quotation for this item.";
+    else if (r.v.currency !== s.defaultCurrency || r.v.priceMinor === null) problem = "Priced on request: ask us for a quotation for this item.";
     else if (r.v.tracksStock && availability.available < item.q) problem = availability.available === 0 ? "Out of stock." : `Only ${availability.available} available.`;
-    lines.push({ variantId: r.v.id, sku: r.v.sku, slug: r.slug, productName: r.name, variantName: r.v.name, quantity: item.q, unitPriceMinor: r.v.priceMinor, taxable: r.v.taxable, tracksStock: r.v.tracksStock, lineTotalMinor: r.v.priceMinor * item.q, availability, problem });
+    lines.push({ variantId: r.v.id, sku: r.v.sku, slug: r.slug, productName: r.name, variantName: r.v.name, quantity: item.q, unitPriceMinor: r.v.priceMinor ?? 0, taxable: r.v.taxable, tracksStock: r.v.tracksStock, lineTotalMinor: (r.v.priceMinor ?? 0) * item.q, availability, problem });
   }
   const totals = computeTotals({ lines, discountBp: 0, taxes: await activeTaxes(db) });
   const overLimit = totals.totalMinor >= s.shopOrderLimitMinor;

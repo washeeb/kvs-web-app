@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { expectAccessible, watchCsp } from "./helpers";
 import { STATE } from "./auth.setup";
 
-const PUBLIC = ["/", "/services", "/services/cctv-installation", "/shop", "/shop/demo-wifi-router", "/shop/cart", "/contact", "/privacy", "/login", "/forgot-password"];
+const PUBLIC = ["/", "/services", "/services/cctv-installation", "/shop", "/shop/demo-wifi-router", "/shop/demo-outdoor-access-point", "/contact?product=demo-outdoor-access-point", "/shop/cart", "/contact", "/privacy", "/login", "/forgot-password"];
 
 test.describe("public pages", () => {
   for (const path of PUBLIC) {

@@ -101,7 +101,7 @@ export async function seedReference(db: DB) {
   return org;
 }
 
-type DemoProduct = { slug: string; name: string; summary: string; cat: string; sesSync?: boolean; variants: { sku: string; name: string; price: number; cost?: number; stock?: number; tracks?: boolean }[] };
+type DemoProduct = { slug: string; name: string; summary: string; cat: string; sesSync?: boolean; variants: { sku: string; name: string; price: number | null; cost?: number; stock?: number; tracks?: boolean }[] };
 
 /** Clearly labelled demonstration catalogue (prices are illustrative, not KingsView's). */
 const DEMO_PRODUCTS: DemoProduct[] = [
@@ -111,6 +111,7 @@ const DEMO_PRODUCTS: DemoProduct[] = [
   { slug: "demo-wifi-router", name: "Wi-Fi router", summary: "Demonstration listing.", cat: "networking", sesSync: true, variants: [{ sku: "KVS-ROUTER-AC", name: "Dual band", price: 65_000, cost: 48_000, stock: 4 }] },
   { slug: "demo-cctv-kit", name: "CCTV starter kit (4 cameras)", summary: "Demonstration listing. Installation quoted separately.", cat: "cctv", variants: [{ sku: "KVS-CCTV-KIT4", name: "4 cameras + recorder", price: 380_000, cost: 290_000, stock: 3 }] },
   { slug: "demo-a4-paper", name: "A4 copier paper (ream)", summary: "Demonstration listing.", cat: "office-supplies", variants: [{ sku: "KVS-A4-REAM", name: "80 g/m², 500 sheets", price: 7_500, cost: 6_000, stock: 100 }] },
+  { slug: "demo-outdoor-access-point", name: "Outdoor access point", summary: "Demonstration listing. Priced on request.", cat: "networking", variants: [{ sku: "KVS-AP-OUT", name: "Standard", price: null, tracks: false }] },
   { slug: "demo-branded-mug", name: "Branded mug", summary: "Demonstration listing. Your logo printed; minimum quantities apply.", cat: "souvenirs-promotional", variants: [{ sku: "KVS-MUG-WHT", name: "White, one-colour print", price: 4_500, tracks: false }] },
 ];
 

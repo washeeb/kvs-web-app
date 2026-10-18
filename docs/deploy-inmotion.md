@@ -92,5 +92,10 @@ InMotion's firewall (ModSecurity) answers **406** to requests that identify as `
   cd ~/kvs-app && set -a && . ./.env.production && set +a && ~/nodevenv/kvs-app/24/bin/node ops/starter-images.mjs info@kingsviewsolutions.com; cd ~
   ```
   Then edit the slide wording under **Catalogue → Home page slides**, and replace any illustration with a real photo from the same page when one is available.
+- Supplier product import: prepared on a PC with `npm run products:prepare -- <bridge.json> <compu.json> <folder>` (pictures downloaded and resized there; supplier lists are never committed). Upload the zip to `~/kvs-data/imports/` with cPanel **File Manager**, extract it there, then:
+  ```bash
+  cd ~/kvs-app && set -a && . ./.env.production && set +a && ~/nodevenv/kvs-app/24/bin/node ops/import-products.mjs ~/kvs-data/imports/<folder> info@kingsviewsolutions.com; cd ~
+  ```
+  Products arrive **priced on request** (the shop shows "Request a quote"), not stock-tracked, linked to their supplier. Re-running skips products whose name already exists, so staff edits are never overwritten.
 - Backups: InMotion Backup Manager already covers the home directory (incl. `~/kvs-app/.env.production` and `~/kvs-data`) and all PostgreSQL databases.
 - Paystack webhook (when keys exist): `https://kingsviewsolutions.com/api/webhooks/paystack`.

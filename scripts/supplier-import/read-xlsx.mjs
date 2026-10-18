@@ -14,7 +14,9 @@ if (!file || !out) {
 }
 const dir = mkdtempSync(path.join(tmpdir(), "xlsx-"));
 try {
-  execFileSync("tar", ["-xf", path.resolve(file), "-C", dir]);
+  // On Windows use the built-in bsdtar: a GNU tar earlier on the PATH (Git Bash) reads "E:" as a remote host.
+  const tar = process.platform === "win32" ? path.join(process.env.SystemRoot ?? "C:\\Windows", "System32", "tar.exe") : "tar";
+  execFileSync(tar, ["-xf", path.resolve(file), "-C", dir]);
   const dec = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).replace(/&amp;/g, "&");
   const texts = (xml) => [...xml.matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map((t) => t[1]).join("");
   const sharedFile = path.join(dir, "xl/sharedStrings.xml");

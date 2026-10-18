@@ -12908,7 +12908,8 @@ var productVariants = pgTable(
     productId: uuid("product_id").notNull().references(() => products.id),
     sku: text("sku").notNull().unique(),
     name: text("name").notNull(),
-    priceMinor: money("price_minor").notNull(),
+    /** Selling price excl. taxes; empty = price on request (shown with "Request a quote", not sold online). */
+    priceMinor: money("price_minor"),
     /** Average cost per unit (weighted on each receipt); shared with SES as the partner cost when synced. */
     costMinor: money("cost_minor"),
     /** Manufacturer barcode (EAN/UPC) if the item has one; labels use the SKU otherwise. */

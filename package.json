@@ -8,6 +8,7 @@
     "db:migrate": "node ops/migrate.mjs",
     "db:seed-reference": "NODE_ENV=production node ops/seed-reference.mjs",
     "admin:create": "node ops/create-admin.mjs",
-    "images:starter": "node ops/starter-images.mjs"
+    "images:starter": "node ops/starter-images.mjs",
+    "products:import": "node ops/import-products.mjs"
   }
 }

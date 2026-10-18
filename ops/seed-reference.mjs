@@ -12834,7 +12834,8 @@ var productVariants = pgTable(
     productId: uuid("product_id").notNull().references(() => products.id),
     sku: text("sku").notNull().unique(),
     name: text("name").notNull(),
-    priceMinor: money("price_minor").notNull(),
+    /** Selling price excl. taxes; empty = price on request (shown with "Request a quote", not sold online). */
+    priceMinor: money("price_minor"),
     /** Average cost per unit (weighted on each receipt); shared with SES as the partner cost when synced. */
     costMinor: money("cost_minor"),
     /** Manufacturer barcode (EAN/UPC) if the item has one; labels use the SKU otherwise. */
@@ -13587,6 +13588,7 @@ var DEMO_PRODUCTS = [
   { slug: "demo-wifi-router", name: "Wi-Fi router", summary: "Demonstration listing.", cat: "networking", sesSync: true, variants: [{ sku: "KVS-ROUTER-AC", name: "Dual band", price: 65e3, cost: 48e3, stock: 4 }] },
   { slug: "demo-cctv-kit", name: "CCTV starter kit (4 cameras)", summary: "Demonstration listing. Installation quoted separately.", cat: "cctv", variants: [{ sku: "KVS-CCTV-KIT4", name: "4 cameras + recorder", price: 38e4, cost: 29e4, stock: 3 }] },
   { slug: "demo-a4-paper", name: "A4 copier paper (ream)", summary: "Demonstration listing.", cat: "office-supplies", variants: [{ sku: "KVS-A4-REAM", name: "80 g/m\xB2, 500 sheets", price: 7500, cost: 6e3, stock: 100 }] },
+  { slug: "demo-outdoor-access-point", name: "Outdoor access point", summary: "Demonstration listing. Priced on request.", cat: "networking", variants: [{ sku: "KVS-AP-OUT", name: "Standard", price: null, tracks: false }] },
   { slug: "demo-branded-mug", name: "Branded mug", summary: "Demonstration listing. Your logo printed; minimum quantities apply.", cat: "souvenirs-promotional", variants: [{ sku: "KVS-MUG-WHT", name: "White, one-colour print", price: 4500, tracks: false }] }
 ];
 async function seed(db2, opts) {

@@ -24,6 +24,23 @@ test("visitor asks for a quotation for an item priced on request", async ({ page
   await expect(page.getByRole("status")).toContainText(/E-\d{4}-\d{5}/);
 });
 
+test.describe("phone visitor", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+  test("the menu closes after choosing a page, and the current page is marked", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Menu" }).click();
+    const menu = page.getByRole("navigation", { name: "Mobile" });
+    await expect(menu).toBeVisible();
+    await menu.getByRole("link", { name: "Shop" }).click();
+    await page.waitForURL(/\/shop$/);
+    await expect(menu).toBeHidden();
+    await page.getByRole("button", { name: "Menu" }).click();
+    await expect(menu.getByRole("link", { name: "Shop" })).toHaveAttribute("aria-current", "page");
+    await page.keyboard.press("Escape");
+    await expect(menu).toBeHidden();
+  });
+});
+
 test("shopper orders as a guest and lands on the private order page", async ({ page }) => {
   await page.goto("/shop/demo-wireless-mouse");
   await page.getByRole("button", { name: /Add to cart/ }).first().click();

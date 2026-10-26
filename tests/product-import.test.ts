@@ -88,3 +88,20 @@ describe("supplier product import", () => {
     expect(again).toMatchObject({ productsCreated: 0, productsSkipped: 2, categoriesCreated: [], suppliersCreated: [], pictures: 0 });
   });
 });
+
+describe("shop paging", () => {
+  it("returns one page at a time with the total, sorts priced items before items on request, and clamps the page", async () => {
+    const { searchShopProducts } = await import("@/server/modules/catalogue");
+    const all = await searchShopProducts(db, { sort: "price-asc" }, 1000);
+    const two = await searchShopProducts(db, { sort: "price-asc", page: 2 }, 2);
+    expect(two.total).toBe(all.total);
+    expect(two.pages).toBe(Math.ceil(all.total / 2));
+    expect(two.items.map((p) => p.id)).toEqual(all.items.slice(2, 4).map((p) => p.id));
+    const prices = all.items.map((p) => p.variants.find((v) => v.priceMinor !== null)?.priceMinor ?? null);
+    const firstNull = prices.indexOf(null);
+    if (firstNull >= 0) expect(prices.slice(firstNull).every((x) => x === null)).toBe(true);
+    const priced = prices.filter((x): x is number => x !== null);
+    expect([...priced].sort((a, b) => a - b)).toEqual(priced);
+    expect((await searchShopProducts(db, { page: 9999 }, 2)).page).toBe(two.pages);
+  });
+});

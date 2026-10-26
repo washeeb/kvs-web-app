@@ -446,7 +446,54 @@ ${body}
 </svg>`;
 }
 
+/** Alarm keypad with a small screen and number keys. */
+function alarmKeypad(s = 1) {
+  return at(0, 0, s, [
+    rect(8, 10, 220, 300, "rgba(0,0,0,0.12)", 22),
+    rect(0, 0, 220, 300, WHITE, 22, `stroke="${GREY}" stroke-width="4"`),
+    rect(24, 24, 172, 60, INK, 10),
+    rect(40, 44, 90, 12, RED2, 6),
+    circle(176, 50, 7, "#3cc46a"),
+    ...Array.from({ length: 12 }, (_, i) => rect(30 + (i % 3) * 56, 106 + Math.floor(i / 3) * 44, 46, 34, i === 11 ? RED : LIGHT, 8)),
+  ].join(""));
+}
+
+/** Motion detector (PIR) on a wall bracket. */
+function motionDetector(s = 1) {
+  return at(0, 0, s, [
+    rect(40, 0, 80, 26, "#cfcac4", 8),
+    path_("M0 26 H160 V120 Q160 170 80 190 Q0 170 0 120 Z", WHITE, `stroke="${GREY}" stroke-width="4"`),
+    path_("M30 70 H130 V110 Q130 140 80 150 Q30 140 30 110 Z", "#2c2c2c"),
+    path_("M40 80 H120", "none", `stroke="rgba(255,255,255,0.25)" stroke-width="6"`),
+    circle(80, 165, 6, RED2),
+  ].join(""));
+}
+
+/** Card reader with an access card being presented. */
+function cardReader(s = 1) {
+  return at(0, 0, s, [
+    rect(8, 10, 150, 240, "rgba(0,0,0,0.12)", 18),
+    rect(0, 0, 150, 240, INK, 18),
+    circle(75, 90, 40, "none", `stroke="${RED2}" stroke-width="6" opacity="0.8"`),
+    circle(75, 90, 22, "none", `stroke="${RED2}" stroke-width="6" opacity="0.5"`),
+    circle(75, 200, 8, "#3cc46a"),
+    rot(-18, 160, 140, rect(110, 110, 170, 108, RED, 12), rect(126, 128, 46, 34, "#e8c56a", 6), bars(126, 182, [110], "rgba(255,255,255,0.6)", 10)),
+  ].join(""));
+}
+
+/** Wall siren / strobe. */
+function siren(s = 1) {
+  return at(0, 0, s, [
+    rect(0, 0, 150, 180, WHITE, 24, `stroke="${GREY}" stroke-width="4"`),
+    rect(20, 20, 110, 70, RED2, 14),
+    rect(20, 20, 110, 24, "rgba(255,255,255,0.3)", 12),
+    ...[0, 1, 2].map((i) => rect(36, 110 + i * 18, 78, 8, GREY, 4)),
+  ].join(""));
+}
+
 const SCENES = {
+  alarms: (theme) =>
+    frame(theme, [at(250, 230, 1.05, alarmKeypad(1)), at(560, 200, 1, motionDetector(1)), at(800, 260, 1, cardReader(1)), at(560, 440, 0.7, siren(1))].join(""), { floorY: 650 }),
   web: (theme) =>
     frame(theme, [
       at(250, 170, 1, browser(560, 400)),
@@ -585,6 +632,8 @@ const CATEGORY_ALT = {
   cctv: ["cctvCat", "Illustration of a bullet camera, a dome camera and a monitor"],
   "office-supplies": ["office", "Illustration of binders, paper, pens, a notebook and a stapler"],
   "souvenirs-promotional": ["souvenirs", "Illustration of a branded T-shirt, mug, cap and tote bag"],
+  "alarms-access-control": ["alarms", "Illustration of an alarm keypad, a motion detector, a card reader and a siren"],
+  "printers-ink": ["printing", "Illustration of a printer, ink drops, business cards and paper"],
 };
 /** Whether slides and shop categories use the 3D renders. Off: KingsView chose the drawings (2026-10-14). */
 const USE_3D = false;

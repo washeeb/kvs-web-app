@@ -1,6 +1,6 @@
 {
   "node": {
-    "0012fb09361085b0195c1dd2a4ec5e4703041c7274": {
+    "004fe1bf19ab936423f681c8611f403f37bb81ffca": {
       "workers": {
         "app/(auth)/account/mfa/page": {
           "moduleId": 89039,
@@ -258,523 +258,7 @@
       "filename": "src/app/(auth)/actions.ts",
       "exportedName": "logout"
     },
-    "602cf058fe0959a5e6ff889ab109f207aa0cfec9c3": {
-      "workers": {
-        "app/(auth)/account/mfa/page": {
-          "moduleId": 89039,
-          "async": true
-        },
-        "app/(auth)/forgot-password/page": {
-          "moduleId": 36719,
-          "async": true
-        },
-        "app/(auth)/login/mfa/page": {
-          "moduleId": 80064,
-          "async": true
-        },
-        "app/(auth)/login/page": {
-          "moduleId": 96024,
-          "async": true
-        },
-        "app/(auth)/reset-password/page": {
-          "moduleId": 69,
-          "async": true
-        },
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/audit/page": {
-          "moduleId": 42733,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/customers/page": {
-          "moduleId": 86610,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/enquiries/page": {
-          "moduleId": 6277,
-          "async": true
-        },
-        "app/admin/exports/page": {
-          "moduleId": 12422,
-          "async": true
-        },
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/labels/page": {
-          "moduleId": 44465,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/movements/page": {
-          "moduleId": 7991,
-          "async": true
-        },
-        "app/admin/inventory/page": {
-          "moduleId": 77603,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/serials/page": {
-          "moduleId": 1088,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/invoices/page": {
-          "moduleId": 10516,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/jobs/page": {
-          "moduleId": 93671,
-          "async": true
-        },
-        "app/admin/notifications/page": {
-          "moduleId": 70038,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/orders/page": {
-          "moduleId": 3766,
-          "async": true
-        },
-        "app/admin/page": {
-          "moduleId": 37844,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/products/page": {
-          "moduleId": 8978,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/purchasing/page": {
-          "moduleId": 69908,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/quotes/page": {
-          "moduleId": 8709,
-          "async": true
-        },
-        "app/admin/reports/finance/page": {
-          "moduleId": 46091,
-          "async": true
-        },
-        "app/admin/reports/forecast/page": {
-          "moduleId": 67889,
-          "async": true
-        },
-        "app/admin/reports/inventory/page": {
-          "moduleId": 52610,
-          "async": true
-        },
-        "app/admin/reports/page": {
-          "moduleId": 8060,
-          "async": true
-        },
-        "app/admin/reports/pipeline/page": {
-          "moduleId": 5494,
-          "async": true
-        },
-        "app/admin/reports/products/page": {
-          "moduleId": 7854,
-          "async": true
-        },
-        "app/admin/reports/purchasing/page": {
-          "moduleId": 72737,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/services/page": {
-          "moduleId": 95050,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/(auth)/actions.ts",
-      "exportedName": "login"
-    },
-    "6045e13015f49fbe6e1ea506ff659a4def03fc3ff5": {
-      "workers": {
-        "app/(auth)/account/mfa/page": {
-          "moduleId": 89039,
-          "async": true
-        },
-        "app/(auth)/forgot-password/page": {
-          "moduleId": 36719,
-          "async": true
-        },
-        "app/(auth)/login/mfa/page": {
-          "moduleId": 80064,
-          "async": true
-        },
-        "app/(auth)/login/page": {
-          "moduleId": 96024,
-          "async": true
-        },
-        "app/(auth)/reset-password/page": {
-          "moduleId": 69,
-          "async": true
-        },
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/audit/page": {
-          "moduleId": 42733,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/customers/page": {
-          "moduleId": 86610,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/enquiries/page": {
-          "moduleId": 6277,
-          "async": true
-        },
-        "app/admin/exports/page": {
-          "moduleId": 12422,
-          "async": true
-        },
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/labels/page": {
-          "moduleId": 44465,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/movements/page": {
-          "moduleId": 7991,
-          "async": true
-        },
-        "app/admin/inventory/page": {
-          "moduleId": 77603,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/serials/page": {
-          "moduleId": 1088,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/invoices/page": {
-          "moduleId": 10516,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/jobs/page": {
-          "moduleId": 93671,
-          "async": true
-        },
-        "app/admin/notifications/page": {
-          "moduleId": 70038,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/orders/page": {
-          "moduleId": 3766,
-          "async": true
-        },
-        "app/admin/page": {
-          "moduleId": 37844,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/products/page": {
-          "moduleId": 8978,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/purchasing/page": {
-          "moduleId": 69908,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/quotes/page": {
-          "moduleId": 8709,
-          "async": true
-        },
-        "app/admin/reports/finance/page": {
-          "moduleId": 46091,
-          "async": true
-        },
-        "app/admin/reports/forecast/page": {
-          "moduleId": 67889,
-          "async": true
-        },
-        "app/admin/reports/inventory/page": {
-          "moduleId": 52610,
-          "async": true
-        },
-        "app/admin/reports/page": {
-          "moduleId": 8060,
-          "async": true
-        },
-        "app/admin/reports/pipeline/page": {
-          "moduleId": 5494,
-          "async": true
-        },
-        "app/admin/reports/products/page": {
-          "moduleId": 7854,
-          "async": true
-        },
-        "app/admin/reports/purchasing/page": {
-          "moduleId": 72737,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/services/page": {
-          "moduleId": 95050,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/(auth)/actions.ts",
-      "exportedName": "resetPasswordAction"
-    },
-    "60526f4ba0d4c13cb792ed0da44c3b7f144abc91d0": {
+    "601de1f423c87ebbb9db4a214378b2fdd12bdcfa5f": {
       "workers": {
         "app/(auth)/account/mfa/page": {
           "moduleId": 89039,
@@ -1032,7 +516,7 @@
       "filename": "src/app/(auth)/actions.ts",
       "exportedName": "verifyMfaAction"
     },
-    "60759a1ae95a3be17b406864fe859767b92e2dcded": {
+    "6056217d94abb8fafa21bcff512437838fd789044c": {
       "workers": {
         "app/(auth)/account/mfa/page": {
           "moduleId": 89039,
@@ -1290,7 +774,7 @@
       "filename": "src/app/(auth)/actions.ts",
       "exportedName": "confirmEnrollmentAction"
     },
-    "60d6ff0d603dbbb707eb6afaae0027803d2ba79c41": {
+    "60701737b4669a5a3155c82c8e176a0d86da3b166a": {
       "workers": {
         "app/(auth)/account/mfa/page": {
           "moduleId": 89039,
@@ -1548,85 +1032,523 @@
       "filename": "src/app/(auth)/actions.ts",
       "exportedName": "forgotPassword"
     },
-    "6057f4c3f7a9a00af0fab4e2178ef5d6f04cd38367": {
+    "60ad11019436b5f2aff1130a50f78d5c8435a37ffa": {
       "workers": {
-        "app/(site)/contact/page": {
-          "moduleId": 74165,
+        "app/(auth)/account/mfa/page": {
+          "moduleId": 89039,
           "async": true
         },
-        "app/(site)/order/[token]/page": {
-          "moduleId": 99916,
+        "app/(auth)/forgot-password/page": {
+          "moduleId": 36719,
           "async": true
         },
-        "app/(site)/services/[slug]/page": {
-          "moduleId": 46412,
+        "app/(auth)/login/mfa/page": {
+          "moduleId": 80064,
           "async": true
         },
-        "app/(site)/shop/[slug]/page": {
-          "moduleId": 70298,
+        "app/(auth)/login/page": {
+          "moduleId": 96024,
           "async": true
         },
-        "app/(site)/shop/cart/page": {
-          "moduleId": 59,
+        "app/(auth)/reset-password/page": {
+          "moduleId": 69,
+          "async": true
+        },
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/audit/page": {
+          "moduleId": 42733,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/customers/page": {
+          "moduleId": 86610,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/enquiries/page": {
+          "moduleId": 6277,
+          "async": true
+        },
+        "app/admin/exports/page": {
+          "moduleId": 12422,
+          "async": true
+        },
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/labels/page": {
+          "moduleId": 44465,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/movements/page": {
+          "moduleId": 7991,
+          "async": true
+        },
+        "app/admin/inventory/page": {
+          "moduleId": 77603,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/serials/page": {
+          "moduleId": 1088,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/invoices/page": {
+          "moduleId": 10516,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/jobs/page": {
+          "moduleId": 93671,
+          "async": true
+        },
+        "app/admin/notifications/page": {
+          "moduleId": 70038,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/orders/page": {
+          "moduleId": 3766,
+          "async": true
+        },
+        "app/admin/page": {
+          "moduleId": 37844,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/products/page": {
+          "moduleId": 8978,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/purchasing/page": {
+          "moduleId": 69908,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/quotes/page": {
+          "moduleId": 8709,
+          "async": true
+        },
+        "app/admin/reports/finance/page": {
+          "moduleId": 46091,
+          "async": true
+        },
+        "app/admin/reports/forecast/page": {
+          "moduleId": 67889,
+          "async": true
+        },
+        "app/admin/reports/inventory/page": {
+          "moduleId": 52610,
+          "async": true
+        },
+        "app/admin/reports/page": {
+          "moduleId": 8060,
+          "async": true
+        },
+        "app/admin/reports/pipeline/page": {
+          "moduleId": 5494,
+          "async": true
+        },
+        "app/admin/reports/products/page": {
+          "moduleId": 7854,
+          "async": true
+        },
+        "app/admin/reports/purchasing/page": {
+          "moduleId": 72737,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/services/page": {
+          "moduleId": 95050,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
           "async": true
         }
       },
-      "filename": "src/app/(site)/actions.ts",
-      "exportedName": "updateCartAction"
+      "filename": "src/app/(auth)/actions.ts",
+      "exportedName": "resetPasswordAction"
     },
-    "6061ecfdef3cdbbb7ffa50c84765f9c388b4a78ea0": {
+    "60dc356dc82ceadf00e106d64683cb3f5ea5657e71": {
       "workers": {
-        "app/(site)/contact/page": {
-          "moduleId": 74165,
+        "app/(auth)/account/mfa/page": {
+          "moduleId": 89039,
           "async": true
         },
-        "app/(site)/order/[token]/page": {
-          "moduleId": 99916,
+        "app/(auth)/forgot-password/page": {
+          "moduleId": 36719,
           "async": true
         },
-        "app/(site)/services/[slug]/page": {
-          "moduleId": 46412,
+        "app/(auth)/login/mfa/page": {
+          "moduleId": 80064,
           "async": true
         },
-        "app/(site)/shop/[slug]/page": {
-          "moduleId": 70298,
+        "app/(auth)/login/page": {
+          "moduleId": 96024,
           "async": true
         },
-        "app/(site)/shop/cart/page": {
-          "moduleId": 59,
+        "app/(auth)/reset-password/page": {
+          "moduleId": 69,
+          "async": true
+        },
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/audit/page": {
+          "moduleId": 42733,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/customers/page": {
+          "moduleId": 86610,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/enquiries/page": {
+          "moduleId": 6277,
+          "async": true
+        },
+        "app/admin/exports/page": {
+          "moduleId": 12422,
+          "async": true
+        },
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/labels/page": {
+          "moduleId": 44465,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/movements/page": {
+          "moduleId": 7991,
+          "async": true
+        },
+        "app/admin/inventory/page": {
+          "moduleId": 77603,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/serials/page": {
+          "moduleId": 1088,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/invoices/page": {
+          "moduleId": 10516,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/jobs/page": {
+          "moduleId": 93671,
+          "async": true
+        },
+        "app/admin/notifications/page": {
+          "moduleId": 70038,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/orders/page": {
+          "moduleId": 3766,
+          "async": true
+        },
+        "app/admin/page": {
+          "moduleId": 37844,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/products/page": {
+          "moduleId": 8978,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/purchasing/page": {
+          "moduleId": 69908,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/quotes/page": {
+          "moduleId": 8709,
+          "async": true
+        },
+        "app/admin/reports/finance/page": {
+          "moduleId": 46091,
+          "async": true
+        },
+        "app/admin/reports/forecast/page": {
+          "moduleId": 67889,
+          "async": true
+        },
+        "app/admin/reports/inventory/page": {
+          "moduleId": 52610,
+          "async": true
+        },
+        "app/admin/reports/page": {
+          "moduleId": 8060,
+          "async": true
+        },
+        "app/admin/reports/pipeline/page": {
+          "moduleId": 5494,
+          "async": true
+        },
+        "app/admin/reports/products/page": {
+          "moduleId": 7854,
+          "async": true
+        },
+        "app/admin/reports/purchasing/page": {
+          "moduleId": 72737,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/services/page": {
+          "moduleId": 95050,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
           "async": true
         }
       },
-      "filename": "src/app/(site)/actions.ts",
-      "exportedName": "enquiryAction"
+      "filename": "src/app/(auth)/actions.ts",
+      "exportedName": "login"
     },
-    "60687aba7052b7a156b5a819ab5424e9c3f6c03c83": {
-      "workers": {
-        "app/(site)/contact/page": {
-          "moduleId": 74165,
-          "async": true
-        },
-        "app/(site)/order/[token]/page": {
-          "moduleId": 99916,
-          "async": true
-        },
-        "app/(site)/services/[slug]/page": {
-          "moduleId": 46412,
-          "async": true
-        },
-        "app/(site)/shop/[slug]/page": {
-          "moduleId": 70298,
-          "async": true
-        },
-        "app/(site)/shop/cart/page": {
-          "moduleId": 59,
-          "async": true
-        }
-      },
-      "filename": "src/app/(site)/actions.ts",
-      "exportedName": "payOnlineAction"
-    },
-    "60b65a6f2dd17a32aaa70ecf1158bf4197b1ac10d6": {
+    "602b757dcd41b8a0200bcb5bf12c8a50b6edf3e51d": {
       "workers": {
         "app/(site)/contact/page": {
           "moduleId": 74165,
@@ -1652,7 +1574,33 @@
       "filename": "src/app/(site)/actions.ts",
       "exportedName": "addToCartAction"
     },
-    "60f71e023cf5984ed09c0aab642a526a41006f9c76": {
+    "603d91070bac7ee09b54918b6952091827458ecf89": {
+      "workers": {
+        "app/(site)/contact/page": {
+          "moduleId": 74165,
+          "async": true
+        },
+        "app/(site)/order/[token]/page": {
+          "moduleId": 99916,
+          "async": true
+        },
+        "app/(site)/services/[slug]/page": {
+          "moduleId": 46412,
+          "async": true
+        },
+        "app/(site)/shop/[slug]/page": {
+          "moduleId": 70298,
+          "async": true
+        },
+        "app/(site)/shop/cart/page": {
+          "moduleId": 59,
+          "async": true
+        }
+      },
+      "filename": "src/app/(site)/actions.ts",
+      "exportedName": "updateCartAction"
+    },
+    "60819e4f9133a60419b5aebee02a812e03e81f5b20": {
       "workers": {
         "app/(site)/contact/page": {
           "moduleId": 74165,
@@ -1678,7 +1626,59 @@
       "filename": "src/app/(site)/actions.ts",
       "exportedName": "checkoutAction"
     },
-    "602e3cf619e37cfd0182d66f699264f2b02139991e": {
+    "60b34a50842e3d371fc1367ca2afd9090b97a4fea5": {
+      "workers": {
+        "app/(site)/contact/page": {
+          "moduleId": 74165,
+          "async": true
+        },
+        "app/(site)/order/[token]/page": {
+          "moduleId": 99916,
+          "async": true
+        },
+        "app/(site)/services/[slug]/page": {
+          "moduleId": 46412,
+          "async": true
+        },
+        "app/(site)/shop/[slug]/page": {
+          "moduleId": 70298,
+          "async": true
+        },
+        "app/(site)/shop/cart/page": {
+          "moduleId": 59,
+          "async": true
+        }
+      },
+      "filename": "src/app/(site)/actions.ts",
+      "exportedName": "enquiryAction"
+    },
+    "60ed214a661981e019fce48ed5853c63e69cf31da3": {
+      "workers": {
+        "app/(site)/contact/page": {
+          "moduleId": 74165,
+          "async": true
+        },
+        "app/(site)/order/[token]/page": {
+          "moduleId": 99916,
+          "async": true
+        },
+        "app/(site)/services/[slug]/page": {
+          "moduleId": 46412,
+          "async": true
+        },
+        "app/(site)/shop/[slug]/page": {
+          "moduleId": 70298,
+          "async": true
+        },
+        "app/(site)/shop/cart/page": {
+          "moduleId": 59,
+          "async": true
+        }
+      },
+      "filename": "src/app/(site)/actions.ts",
+      "exportedName": "payOnlineAction"
+    },
+    "600714fdfd46144c05d74d1cb768f6e69eb394dd4f": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -1916,1477 +1916,7 @@
       "filename": "src/app/notification-actions.ts",
       "exportedName": "markNotificationsRead"
     },
-    "600ba600d91e22ed93cf7c165c12b3e4de4ce51ba8": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "createJobAction"
-    },
-    "601fea8044dc182f39e56eb14da149675d10a660b8": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "slideAction"
-    },
-    "602c35525001078a1a03b16a03751167447ce9954c": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "productAction"
-    },
-    "6047c22654d488cf078debcd5599f73adbb5c99ca4": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "updateSettingsAction"
-    },
-    "60501322b1a9bce688799012f2055d72b6553c9fed": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "createProductAction"
-    },
-    "605649c3923e0861c5d5a4c7ffcad85d7f4edd4b45": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "jobAction"
-    },
-    "60576b2cec265362d1c4247833922d5c2ba0250120": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "tagAction"
-    },
-    "6065450a704f79e1b333d63f153fb6c08c16da2c00": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "brandAction"
-    },
-    "6065f179ee97edbb2ea0f71104b6018d6bc983bad9": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "decideApprovalAction"
-    },
-    "60952b07fb3c97416efacdb259b6bc71e9f61299a5": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "categoryAction"
-    },
-    "60974916828158ce19ddf5114c5fc433f2f1e1de91": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "enquiryAction"
-    },
-    "609bedc30544c8275e1a29d92483ca3a810f0f6b76": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "uploadImageAction"
-    },
-    "609d7300866cf542ed5cd5536bbc7a94f1eb9d4f21": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "saveCustomerAction"
-    },
-    "60a5d484476bba0995f34a5a6bc4985eba92e2a71a": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "assignRoleAction"
-    },
-    "60a6b15453d062f875915f80582bbd1d989b7f4f10": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "userStatusAction"
-    },
-    "60a96c0f8bd2aab822cbdc32f69cb0a1f0b40e0624": {
+    "6001442bf02e8eeb1d39561e1054c2a829d7d095d2": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -3484,7 +2014,7 @@
       "filename": "src/app/admin/actions.ts",
       "exportedName": "orderAction"
     },
-    "60ab32aa60b304fd8840078d8acaa83f4a6b2b10fb": {
+    "600538f14377367c2c28a3472f572b7ca2348e2a0c": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -3580,9 +2110,9 @@
         }
       },
       "filename": "src/app/admin/actions.ts",
-      "exportedName": "createUserAction"
+      "exportedName": "decideApprovalAction"
     },
-    "60c75656764e831adffeff86d45a26cc4b41e2f9bf": {
+    "60147e0b42b0cc9fdc435a6a12c7baca4c49819bfe": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -3678,107 +2208,9 @@
         }
       },
       "filename": "src/app/admin/actions.ts",
-      "exportedName": "imageAction"
+      "exportedName": "createJobAction"
     },
-    "60c91f8b1739c9c04f0e6f4a8ec7c53245c60b83a4": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "sesAction"
-    },
-    "60ddcadb8bc7b4223391ddd228836b6fcd462d9cb1": {
+    "601f3877af394554ab07d92c34288c8fbfda320938": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -3876,7 +2308,301 @@
       "filename": "src/app/admin/actions.ts",
       "exportedName": "quoteAction"
     },
-    "60df17442ab3129268cd7972077f249fe0d75a9756": {
+    "602137572b523078ff4e35b8dfb29bd3f5084c1b40": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "enquiryAction"
+    },
+    "6022d01ade932af8947dd91f9e6f68b3fb5d89d623": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "createProductAction"
+    },
+    "603d0fcd8f5be4e0832029c6efc74c43d8d62e5db3": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "categoryAction"
+    },
+    "604a1261541889440700b03f372bef44a7bfe7a16d": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -3974,7 +2700,889 @@
       "filename": "src/app/admin/actions.ts",
       "exportedName": "createQuoteAction"
     },
-    "60e3226eb8b8fffd6994fa7c836e08d843c954006f": {
+    "604e6e5b85a707bfe139b3432edebc98ef74678d30": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "createUserAction"
+    },
+    "6050d28552cd48c27496c7d0d8b5231be6f352f63f": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "saveCustomerAction"
+    },
+    "6050d401be892c28359bf38e7ab62d467fcbac263c": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "brandAction"
+    },
+    "6061cdb5c72d4030949ebb7d6163355d0cd1e72eb5": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "assignRoleAction"
+    },
+    "606d929f12c7191f9ff9d12e0a8fba0f0c32fd4efd": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "productAction"
+    },
+    "607b59028bf6e00666064a81b1086250bcf21bdac0": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "userStatusAction"
+    },
+    "60983da3b3c8ec1fb45efab02020426f960163c6f2": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "slideAction"
+    },
+    "609d831a24744a02167b349f0cede3478fb049b2fb": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "sesAction"
+    },
+    "60a3a565c1bcb48f64dbfaa3779323c92c1d5708df": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "uploadImageAction"
+    },
+    "60a991999de51220687357462f236866ebe4758ee7": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -4072,105 +3680,7 @@
       "filename": "src/app/admin/actions.ts",
       "exportedName": "upsertTaxAction"
     },
-    "60f82b1923825197c2939dda1109a701f6b61c1521": {
-      "workers": {
-        "app/admin/approvals/page": {
-          "moduleId": 43835,
-          "async": true
-        },
-        "app/admin/brands/[id]/page": {
-          "moduleId": 94703,
-          "async": true
-        },
-        "app/admin/brands/page": {
-          "moduleId": 68254,
-          "async": true
-        },
-        "app/admin/categories/[id]/page": {
-          "moduleId": 60581,
-          "async": true
-        },
-        "app/admin/categories/page": {
-          "moduleId": 26488,
-          "async": true
-        },
-        "app/admin/customers/[id]/page": {
-          "moduleId": 51144,
-          "async": true
-        },
-        "app/admin/customers/new/page": {
-          "moduleId": 83708,
-          "async": true
-        },
-        "app/admin/enquiries/[id]/page": {
-          "moduleId": 3607,
-          "async": true
-        },
-        "app/admin/invoices/[id]/page": {
-          "moduleId": 4436,
-          "async": true
-        },
-        "app/admin/jobs/[id]/page": {
-          "moduleId": 9693,
-          "async": true
-        },
-        "app/admin/jobs/new/page": {
-          "moduleId": 71589,
-          "async": true
-        },
-        "app/admin/orders/[id]/page": {
-          "moduleId": 47798,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/products/new/page": {
-          "moduleId": 5661,
-          "async": true
-        },
-        "app/admin/quotes/[id]/page": {
-          "moduleId": 80181,
-          "async": true
-        },
-        "app/admin/quotes/new/page": {
-          "moduleId": 70508,
-          "async": true
-        },
-        "app/admin/services/[slug]/page": {
-          "moduleId": 25064,
-          "async": true
-        },
-        "app/admin/ses/page": {
-          "moduleId": 93589,
-          "async": true
-        },
-        "app/admin/settings/page": {
-          "moduleId": 34188,
-          "async": true
-        },
-        "app/admin/slides/[id]/page": {
-          "moduleId": 25276,
-          "async": true
-        },
-        "app/admin/slides/page": {
-          "moduleId": 16498,
-          "async": true
-        },
-        "app/admin/tags/page": {
-          "moduleId": 55502,
-          "async": true
-        },
-        "app/admin/users/page": {
-          "moduleId": 96678,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/actions.ts",
-      "exportedName": "paymentAction"
-    },
-    "60ff3b60dd962f0d6e1a4b0b45cca84277d4a3513c": {
+    "60b2fecec1a5f0c58f3f19b20cfe5d55ed755ddd48": {
       "workers": {
         "app/admin/approvals/page": {
           "moduleId": 43835,
@@ -4268,7 +3778,497 @@
       "filename": "src/app/admin/actions.ts",
       "exportedName": "revokeAssignmentAction"
     },
-    "40e9c554c2b5de876482b6ca7d6bd7a23bea0c9b45": {
+    "60c42ac98d65c6d41d2732ae5fc99e448713d7b572": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "paymentAction"
+    },
+    "60c660d12e01e251d5dcd42b4bd154e297780c08ca": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "tagAction"
+    },
+    "60c6ebdc6d54b43f9095b083b5bc5bc9d5a8479770": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "updateSettingsAction"
+    },
+    "60e843867b2198b83085857a0379aaa2a1ed1f7a3c": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "imageAction"
+    },
+    "60fe19bdfaa12da700c5429712c4009139911878a9": {
+      "workers": {
+        "app/admin/approvals/page": {
+          "moduleId": 43835,
+          "async": true
+        },
+        "app/admin/brands/[id]/page": {
+          "moduleId": 94703,
+          "async": true
+        },
+        "app/admin/brands/page": {
+          "moduleId": 68254,
+          "async": true
+        },
+        "app/admin/categories/[id]/page": {
+          "moduleId": 60581,
+          "async": true
+        },
+        "app/admin/categories/page": {
+          "moduleId": 26488,
+          "async": true
+        },
+        "app/admin/customers/[id]/page": {
+          "moduleId": 51144,
+          "async": true
+        },
+        "app/admin/customers/new/page": {
+          "moduleId": 83708,
+          "async": true
+        },
+        "app/admin/enquiries/[id]/page": {
+          "moduleId": 3607,
+          "async": true
+        },
+        "app/admin/invoices/[id]/page": {
+          "moduleId": 4436,
+          "async": true
+        },
+        "app/admin/jobs/[id]/page": {
+          "moduleId": 9693,
+          "async": true
+        },
+        "app/admin/jobs/new/page": {
+          "moduleId": 71589,
+          "async": true
+        },
+        "app/admin/orders/[id]/page": {
+          "moduleId": 47798,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/products/new/page": {
+          "moduleId": 5661,
+          "async": true
+        },
+        "app/admin/quotes/[id]/page": {
+          "moduleId": 80181,
+          "async": true
+        },
+        "app/admin/quotes/new/page": {
+          "moduleId": 70508,
+          "async": true
+        },
+        "app/admin/services/[slug]/page": {
+          "moduleId": 25064,
+          "async": true
+        },
+        "app/admin/ses/page": {
+          "moduleId": 93589,
+          "async": true
+        },
+        "app/admin/settings/page": {
+          "moduleId": 34188,
+          "async": true
+        },
+        "app/admin/slides/[id]/page": {
+          "moduleId": 25276,
+          "async": true
+        },
+        "app/admin/slides/page": {
+          "moduleId": 16498,
+          "async": true
+        },
+        "app/admin/tags/page": {
+          "moduleId": 55502,
+          "async": true
+        },
+        "app/admin/users/page": {
+          "moduleId": 96678,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/actions.ts",
+      "exportedName": "jobAction"
+    },
+    "40c237bb2a769bb3ef98bfbbe3cce0c1d30ccc256c": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4322,61 +4322,7 @@
       "filename": "src/app/admin/inventory-actions.ts",
       "exportedName": "draftFromReorderAction"
     },
-    "60173e83f0c148782bb314a9de1c37419d3f391bd7": {
-      "workers": {
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "countAction"
-    },
-    "602cb74c31fb47362b77cc4db3b36b6de302fdd26f": {
+    "602907d170915dcab2281c7821eadcd12999a1b00f": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4430,169 +4376,7 @@
       "filename": "src/app/admin/inventory-actions.ts",
       "exportedName": "startCountAction"
     },
-    "603d1a6c02f578de0554e7652c97907b520facdf44": {
-      "workers": {
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "stockSettingsAction"
-    },
-    "6040d3c378c0dac35771d8b38d44e058af9e3214d0": {
-      "workers": {
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "transferAction"
-    },
-    "604f1974d5e5ca3cc0c621bf5e98e418e903d1d6c6": {
-      "workers": {
-        "app/admin/inventory/counts/[id]/page": {
-          "moduleId": 60384,
-          "async": true
-        },
-        "app/admin/inventory/counts/page": {
-          "moduleId": 31943,
-          "async": true
-        },
-        "app/admin/inventory/locations/page": {
-          "moduleId": 21311,
-          "async": true
-        },
-        "app/admin/inventory/receive/page": {
-          "moduleId": 46715,
-          "async": true
-        },
-        "app/admin/inventory/reorder/page": {
-          "moduleId": 34897,
-          "async": true
-        },
-        "app/admin/inventory/transfers/[id]/page": {
-          "moduleId": 1436,
-          "async": true
-        },
-        "app/admin/inventory/transfers/page": {
-          "moduleId": 46978,
-          "async": true
-        },
-        "app/admin/products/[id]/page": {
-          "moduleId": 30302,
-          "async": true
-        },
-        "app/admin/purchasing/[id]/page": {
-          "moduleId": 74491,
-          "async": true
-        },
-        "app/admin/purchasing/new/page": {
-          "moduleId": 66786,
-          "async": true
-        },
-        "app/admin/suppliers/[id]/page": {
-          "moduleId": 66397,
-          "async": true
-        },
-        "app/admin/suppliers/page": {
-          "moduleId": 25864,
-          "async": true
-        }
-      },
-      "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "createTransferAction"
-    },
-    "605769306176fbdda457ab8d2058d26df7ecc7de87": {
+    "602a44f7138d2b7b6086c0105a4aac424f27afc311": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4646,7 +4430,7 @@
       "filename": "src/app/admin/inventory-actions.ts",
       "exportedName": "locationAction"
     },
-    "60591a571612d35ba6ca7bc1675cc7603ab491d7af": {
+    "60594bbb2d7eeef413425e2d749520f5e9d1340a50": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4698,9 +4482,9 @@
         }
       },
       "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "supplierAction"
+      "exportedName": "stockSettingsAction"
     },
-    "6073f1530fe0c404d569dd37f3c00fa25958d4a50d": {
+    "606b258d670e919674d92b962ded48bfbb0ed17930": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4752,9 +4536,9 @@
         }
       },
       "filename": "src/app/admin/inventory-actions.ts",
-      "exportedName": "stockAction"
+      "exportedName": "transferAction"
     },
-    "60e31a41eaf440615cd0ab3f037331e450f2ed63b9": {
+    "60903fd165401725da83f9f907bf12e30185f7a7ad": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4808,7 +4592,223 @@
       "filename": "src/app/admin/inventory-actions.ts",
       "exportedName": "createPoAction"
     },
-    "60e9e0610b036019656ca271e8a86eb6c24f8d519a": {
+    "60bce39066cd672b892b3585bfa3b7577c862cd26e": {
+      "workers": {
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/inventory-actions.ts",
+      "exportedName": "countAction"
+    },
+    "60dc6a552ff4f9451af43207d37ddf09548d57cfc6": {
+      "workers": {
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/inventory-actions.ts",
+      "exportedName": "createTransferAction"
+    },
+    "60e97b9ab5f7b619df208108cc207859670a4542e8": {
+      "workers": {
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/inventory-actions.ts",
+      "exportedName": "supplierAction"
+    },
+    "60f74a1b317ca0abad778f1add032751b25da9109e": {
+      "workers": {
+        "app/admin/inventory/counts/[id]/page": {
+          "moduleId": 60384,
+          "async": true
+        },
+        "app/admin/inventory/counts/page": {
+          "moduleId": 31943,
+          "async": true
+        },
+        "app/admin/inventory/locations/page": {
+          "moduleId": 21311,
+          "async": true
+        },
+        "app/admin/inventory/receive/page": {
+          "moduleId": 46715,
+          "async": true
+        },
+        "app/admin/inventory/reorder/page": {
+          "moduleId": 34897,
+          "async": true
+        },
+        "app/admin/inventory/transfers/[id]/page": {
+          "moduleId": 1436,
+          "async": true
+        },
+        "app/admin/inventory/transfers/page": {
+          "moduleId": 46978,
+          "async": true
+        },
+        "app/admin/products/[id]/page": {
+          "moduleId": 30302,
+          "async": true
+        },
+        "app/admin/purchasing/[id]/page": {
+          "moduleId": 74491,
+          "async": true
+        },
+        "app/admin/purchasing/new/page": {
+          "moduleId": 66786,
+          "async": true
+        },
+        "app/admin/suppliers/[id]/page": {
+          "moduleId": 66397,
+          "async": true
+        },
+        "app/admin/suppliers/page": {
+          "moduleId": 25864,
+          "async": true
+        }
+      },
+      "filename": "src/app/admin/inventory-actions.ts",
+      "exportedName": "stockAction"
+    },
+    "60f941504b727e7afc4b3f9d89b8098c50daa098c7": {
       "workers": {
         "app/admin/inventory/counts/[id]/page": {
           "moduleId": 60384,
@@ -4864,5 +4864,5 @@
     }
   },
   "edge": {},
-  "encryptionKey": "of8YNK6q7XBpSf47MRRUCNbSngBB6NAKHNfVOIDUp+Y="
+  "encryptionKey": "RjrDL0es6gPK7eqkq7DBha2GIBSPOLu3o6VO4br+l5U="
 }

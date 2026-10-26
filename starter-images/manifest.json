@@ -71,6 +71,16 @@
       "slug": "souvenirs-promotional",
       "image": "souvenirs-light",
       "alt": "Illustration of a branded T-shirt, mug, cap and tote bag"
+    },
+    {
+      "slug": "alarms-access-control",
+      "image": "alarms-light",
+      "alt": "Illustration of an alarm keypad, a motion detector, a card reader and a siren"
+    },
+    {
+      "slug": "printers-ink",
+      "image": "printing-light",
+      "alt": "Illustration of a printer, ink drops, business cards and paper"
     }
   ],
   "slides": [

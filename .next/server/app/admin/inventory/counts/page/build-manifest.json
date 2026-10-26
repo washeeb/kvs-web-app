@@ -8,15 +8,15 @@
   "rootMainFiles": [
     "static/chunks/1ckvzn7sfprko.js",
     "static/chunks/2gs9k2bmz4jgn.js",
-    "static/chunks/0s7mvllxht1mo.js",
-    "static/chunks/00l0re8e4qog_.js",
+    "static/chunks/216iyidhmrh3u.js",
+    "static/chunks/1m9ovhhjmej5e.js",
     "static/chunks/turbopack-2c3mg3r-05n1w.js"
   ],
   "pages": {},
   "ampFirstPages": [],
   "rootMainFilesTree": {},
   "pagesChunkGroupBootstrapParams": {
-    "/admin/inventory/counts/page": {"otherChunks":["static/chunks/1ckvzn7sfprko.js","static/chunks/2gs9k2bmz4jgn.js","static/chunks/0s7mvllxht1mo.js","static/chunks/00l0re8e4qog_.js"],"runtimeModuleIds":[94553]}
+    "/admin/inventory/counts/page": {"otherChunks":["static/chunks/1ckvzn7sfprko.js","static/chunks/2gs9k2bmz4jgn.js","static/chunks/216iyidhmrh3u.js","static/chunks/1m9ovhhjmej5e.js"],"runtimeModuleIds":[94553]}
   },
   "chunkLoadingGlobal": "TURBOPACK"
 }

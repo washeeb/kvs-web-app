@@ -9701,13 +9701,13 @@ var init_dialect = __esm({
         const columnNames = Object.keys(tableColumns).filter(
           (colName) => set2[colName] !== void 0 || tableColumns[colName]?.onUpdateFn !== void 0
         );
-        const setSize = columnNames.length;
+        const setSize2 = columnNames.length;
         return sql.join(columnNames.flatMap((colName, i) => {
           const col = tableColumns[colName];
           const onUpdateFnResult = col.onUpdateFn?.();
           const value = set2[colName] ?? (is(onUpdateFnResult, SQL) ? onUpdateFnResult : sql.param(onUpdateFnResult, col));
           const res = sql`${sql.identifier(this.casing.getColumnCasing(col))} = ${value}`;
-          if (i < setSize - 1) {
+          if (i < setSize2 - 1) {
             return [res, sql.raw(", ")];
           }
           return [res];
@@ -14600,6 +14600,17 @@ var init_punycode = __esm({
 // node_modules/nodemailer/dist/esm/shared/url.js
 import net from "node:net";
 import urllib from "node:url";
+function stripSurroundingWhitespace(input2) {
+  let start = 0;
+  let end = input2.length;
+  while (start < end && input2.charCodeAt(start) <= 32) {
+    start++;
+  }
+  while (end > start && input2.charCodeAt(end - 1) <= 32) {
+    end--;
+  }
+  return input2.slice(start, end);
+}
 function invalidUrl(input2) {
   const err = new TypeError("Invalid URL");
   err.code = "ERR_INVALID_URL";
@@ -14648,18 +14659,17 @@ function normalizeHostname(raw, href) {
   }
   return mapped;
 }
-var SLASHLESS_AUTHORITY, SURROUNDING_WHITESPACE, LEGACY_TRIM, AUTHORITY, FORBIDDEN_HOST_CHARS, CONTROL_CHARS, parse, resolve;
+var SLASHLESS_AUTHORITY, LEGACY_TRIM, AUTHORITY, FORBIDDEN_HOST_CHARS, CONTROL_CHARS, parse, resolve;
 var init_url = __esm({
   "node_modules/nodemailer/dist/esm/shared/url.js"() {
     init_punycode();
     SLASHLESS_AUTHORITY = /^([a-zA-Z][a-zA-Z0-9+.-]*:)(?!\/\/)([\s\S]+)$/;
-    SURROUNDING_WHITESPACE = /^[\x00-\x20]+|[\x00-\x20]+$/g;
     LEGACY_TRIM = /^[\x00-\x20\u00a0\ufeff]+/;
     AUTHORITY = /^([a-zA-Z0-9+.-]+:)?[\\/]{2}([^\\/?#]*)/;
     FORBIDDEN_HOST_CHARS = /[\x00-\x20#/:<>?@[\\\]^|\x7f]/;
     CONTROL_CHARS = /[\x00-\x1f\x7f]/;
     parse = (input2, parseQueryString) => {
-      input2 = (input2 || "").replace(SURROUNDING_WHITESPACE, "");
+      input2 = stripSurroundingWhitespace(input2 || "");
       const slashless = SLASHLESS_AUTHORITY.exec(input2);
       const normalized2 = slashless ? slashless[1] + "//" + slashless[2] : input2;
       let u;
@@ -14948,7 +14958,7 @@ var init_cookies = __esm({
 var version2;
 var init_package_info = __esm({
   "node_modules/nodemailer/dist/esm/package-info.js"() {
-    version2 = "10.1.0";
+    version2 = "10.2.1";
   }
 });
 
@@ -14993,12 +15003,19 @@ function parseFetchUrl(url2) {
   }
   return parsed;
 }
+function fetchPort(parsed) {
+  return parsed.port ? Number(parsed.port) : parsed.protocol === "https:" ? 443 : 80;
+}
 function nmfetch(url2, options) {
   options = options || {};
   options.fetchRes = options.fetchRes || new PassThrough();
   options.cookies = options.cookies || new cookies_default();
   options.redirects = options.redirects || 0;
   options.maxRedirects = isNaN(options.maxRedirects) ? MAX_REDIRECTS : options.maxRedirects;
+  if (!options.deadline) {
+    options.maxTime = typeof options.maxTime === "number" && options.maxTime >= 0 ? options.maxTime : DEFAULT_MAX_TIME;
+    options.deadline = options.maxTime ? Date.now() + options.maxTime : 0;
+  }
   const fetchRes = options.fetchRes;
   const parsed = parseFetchUrl(url2);
   if (!parsed) {
@@ -15089,7 +15106,7 @@ function nmfetch(url2, options) {
     method,
     host: parsed.hostname,
     path: parsed.path,
-    port: parsed.port ? parsed.port : parsed.protocol === "https:" ? 443 : 80,
+    port: fetchPort(parsed),
     headers,
     // Validate TLS certificates by default. Callers that genuinely need to
     // reach a self-signed/internal host opt out explicitly with
@@ -15118,11 +15135,19 @@ function nmfetch(url2, options) {
     });
     return fetchRes;
   }
+  let deadlineTimer;
+  const clearDeadline = () => {
+    if (deadlineTimer) {
+      clearTimeout(deadlineTimer);
+      deadlineTimer = void 0;
+    }
+  };
   const fail = (err, sourceUrl = url2) => {
     if (finished) {
       return;
     }
     finished = true;
+    clearDeadline();
     setFetchCode(err);
     err.sourceUrl = sourceUrl;
     fetchRes.emit("error", err);
@@ -15132,8 +15157,13 @@ function nmfetch(url2, options) {
   if (timeout) {
     req.setTimeout(timeout, () => fail(new Error("Request Timeout")));
   }
+  if (options.deadline) {
+    deadlineTimer = setTimeout(() => fail(new Error("Request exceeded the allowed " + options.maxTime + " ms")), Math.max(options.deadline - Date.now(), 1));
+    deadlineTimer.unref();
+  }
   req.on("error", (err) => fail(err));
   fetchRes.once("close", () => {
+    clearDeadline();
     if (finished || fetchRes.readableEnded) {
       return;
     }
@@ -15173,17 +15203,17 @@ function nmfetch(url2, options) {
       if (!redirectParsed) {
         return fail(new Error("Unsupported protocol for URL " + redirectUrl), redirectUrl);
       }
-      const crossHost = redirectParsed.hostname !== parsed.hostname;
-      const downgrade = parsed.protocol === "https:" && redirectParsed.protocol === "http:";
-      if (options.headers && (crossHost || downgrade)) {
+      const crossOrigin = redirectParsed.protocol !== parsed.protocol || redirectParsed.hostname !== parsed.hostname || fetchPort(redirectParsed) !== fetchPort(parsed);
+      if (options.headers && crossOrigin) {
         const sensitive = ["authorization", "cookie", "proxy-authorization"];
         Object.keys(options.headers).forEach((key) => {
-          if (sensitive.includes(key.toLowerCase())) {
+          if (sensitive.includes(key.toLowerCase().trim())) {
             delete options.headers[key];
           }
         });
       }
       finished = true;
+      clearDeadline();
       res.resume();
       req.abort();
       return nmfetch(redirectUrl, options);
@@ -15194,6 +15224,7 @@ function nmfetch(url2, options) {
       return fail(new Error("Invalid status code " + res.statusCode));
     }
     res.on("error", (err) => fail(err));
+    res.once("end", () => clearDeadline());
     const maxBytes = typeof options.maxBytes === "number" && options.maxBytes > 0 ? options.maxBytes : DEFAULT_MAX_BYTES;
     const source = inflate || res;
     let received = 0;
@@ -15227,7 +15258,7 @@ function nmfetch(url2, options) {
   });
   return fetchRes;
 }
-var MAX_REDIRECTS, DEFAULT_TIMEOUT, DEFAULT_MAX_BYTES, TLS_OPTION_KEYS;
+var MAX_REDIRECTS, DEFAULT_TIMEOUT, DEFAULT_MAX_TIME, DEFAULT_MAX_BYTES, TLS_OPTION_KEYS;
 var init_fetch = __esm({
   "node_modules/nodemailer/dist/esm/fetch/index.js"() {
     init_url();
@@ -15237,6 +15268,7 @@ var init_fetch = __esm({
     init_objects();
     MAX_REDIRECTS = 5;
     DEFAULT_TIMEOUT = 60 * 1e3;
+    DEFAULT_MAX_TIME = 2 * 60 * 1e3;
     DEFAULT_MAX_BYTES = 64 * 1024 * 1024;
     TLS_OPTION_KEYS = [
       "ALPNProtocols",
@@ -15263,6 +15295,7 @@ var init_fetch = __esm({
     ];
     nmfetch.Cookies = cookies_default;
     nmfetch.DEFAULT_TIMEOUT = DEFAULT_TIMEOUT;
+    nmfetch.DEFAULT_MAX_TIME = DEFAULT_MAX_TIME;
   }
 });
 
@@ -15582,6 +15615,12 @@ var init_data_stream = __esm({
   }
 });
 
+// node_modules/nodemailer/dist/esm/smtp-connection/server-message-id.js
+var init_server_message_id = __esm({
+  "node_modules/nodemailer/dist/esm/smtp-connection/server-message-id.js"() {
+  }
+});
+
 // node_modules/nodemailer/dist/esm/smtp-connection/index.js
 var CONNECTION_TIMEOUT, SOCKET_TIMEOUT, GREETING_TIMEOUT, DNS_TIMEOUT, CLOSE_TIMEOUT, KEEPALIVE_DELAY, MAX_RESPONSE_SIZE;
 var init_smtp_connection = __esm({
@@ -15589,6 +15628,7 @@ var init_smtp_connection = __esm({
     init_package_info();
     init_data_stream();
     init_shared();
+    init_server_message_id();
     init_errors3();
     CONNECTION_TIMEOUT = 2 * 60 * 1e3;
     SOCKET_TIMEOUT = 10 * 60 * 1e3;
@@ -15983,6 +16023,13 @@ var init_services = __esm({
         "host": "smtp.office365.com",
         "port": 587,
         "secure": false
+      },
+      "Oveyon": {
+        "description": "Oveyon",
+        "host": "smtp.oveyon.com",
+        "port": 587,
+        "secure": false,
+        "requireTLS": true
       },
       "Postmark": {
         "description": "Postmark",
@@ -16519,6 +16566,7 @@ __export(util_exports, {
   required: () => required,
   safeExtend: () => safeExtend,
   shallowClone: () => shallowClone,
+  sizeCaps: () => sizeCaps,
   slugify: () => slugify,
   stringifyPrimitive: () => stringifyPrimitive,
   toZod: () => toZod,
@@ -16941,6 +16989,18 @@ function prefixIssues(path5, issues) {
 }
 function unwrapMessage(message) {
   return typeof message === "string" ? message : message?.message;
+}
+function sizeCaps(defChecks) {
+  const caps = [];
+  for (const ch of defChecks ?? []) {
+    const d = ch._zod.def;
+    if (!/_(length|size)$|_equals$/.test(d.check))
+      break;
+    const max = d.maximum ?? d.length ?? d.size;
+    if (max >= 0)
+      caps.push([max, ch]);
+  }
+  return caps;
 }
 function attachSchema(issues, start, inst) {
   var _a3;
@@ -18505,7 +18565,7 @@ var init_versions = __esm({
     version3 = {
       major: 4,
       minor: 6,
-      patch: 5
+      patch: 7
     };
   }
 });
@@ -18666,6 +18726,28 @@ function isValidJWT(token, algorithm = null) {
   } catch {
     return false;
   }
+}
+function capSize(inst, size) {
+  const caps = sizeCaps(inst._zod.def.checks);
+  if (!caps.length)
+    return;
+  const cap = Math.min(...caps.map((c) => c[0]));
+  const parse4 = inst._zod.parse;
+  inst._zod.parse = (payload, ctx) => {
+    const n = size(payload.value);
+    if (n > cap && !ctx?.skipChecks && ctx?.direction !== "backward") {
+      for (const [max, ch] of sizeCaps(inst._zod.def.checks)) {
+        if (n > max && ch._zod.def.when(payload)) {
+          const start = payload.issues.length;
+          ch._zod.check(payload);
+          payload.issues[start].continue = false;
+          attachSchema(payload.issues, start, inst);
+          return payload;
+        }
+      }
+    }
+    return parse4(payload, ctx);
+  };
 }
 function handleArrayResult(result, final, index2) {
   if (result.issues.length) {
@@ -19167,7 +19249,7 @@ function handleRefineResult(result, payload, input2, inst) {
     payload.issues.push(issue(_iss));
   }
 }
-var $ZodType, toStandardResult, $ZodString, $ZodStringFormat, $ZodGUID, $ZodUUID, $ZodEmail, URL_BAD_FORMAT, URL_UNPARSEABLE, asciiTabOrNewline, $ZodURL, $ZodEmoji, $ZodNanoID, $ZodCUID, $ZodCUID2, $ZodULID, $ZodXID, $ZodKSUID, $ZodISODateTime, $ZodISODate, $ZodISOTime, $ZodISODuration, $ZodIPv4, ipv6Alphabet, $ZodIPv6, $ZodMAC, $ZodCIDRv4, $ZodCIDRv6, base64Charset, $ZodBase64, base64urlCharset, $ZodBase64URL, $ZodE164, CC_SANITIZE, $ZodCreditCard, $ZodIBAN, $ZodJWT, $ZodCustomStringFormat, $ZodNumber, $ZodNumberFormat, $ZodBoolean, $ZodBigInt, $ZodBigIntFormat, $ZodSymbol, $ZodUndefined, $ZodNull, $ZodAny, $ZodUnknown, $ZodNever, $ZodVoid, $ZodDate, $ZodArray, NO_SYMBOL_KEYS, $ZodObject, $ZodObjectJIT, $ZodUnion, $ZodXor, $ZodDiscriminatedUnion, $ZodIntersection, $ZodTuple, $ZodRecord, $ZodMap, $ZodSet, $ZodEnum, $ZodLiteral, $ZodFile, $ZodTransform, $ZodOptional, $ZodExactOptional, $ZodNullable, $ZodDefault, $ZodPrefault, $ZodNonOptional, $ZodSuccess, $ZodCatch, $ZodNaN, $ZodPipe, $ZodCodec, $ZodPreprocess, $ZodReadonly, $ZodTemplateLiteral, $ZodFunction, $ZodPromise, $ZodLazy, $ZodCustom;
+var $ZodType, toStandardResult, $ZodString, $ZodStringFormat, $ZodGUID, $ZodUUID, $ZodEmail, URL_BAD_FORMAT, URL_UNPARSEABLE, asciiTabOrNewline, $ZodURL, $ZodEmoji, $ZodNanoID, $ZodCUID, $ZodCUID2, $ZodULID, $ZodXID, $ZodKSUID, $ZodISODateTime, $ZodISODate, $ZodISOTime, $ZodISODuration, $ZodIPv4, ipv6Alphabet, $ZodIPv6, $ZodMAC, $ZodCIDRv4, $ZodCIDRv6, base64Charset, $ZodBase64, base64urlCharset, $ZodBase64URL, $ZodE164, CC_SANITIZE, $ZodCreditCard, $ZodIBAN, $ZodJWT, $ZodCustomStringFormat, $ZodNumber, $ZodNumberFormat, $ZodBoolean, $ZodBigInt, $ZodBigIntFormat, $ZodSymbol, $ZodUndefined, $ZodNull, $ZodAny, $ZodUnknown, $ZodNever, $ZodVoid, $ZodDate, arraySize, mapSize, setSize, $ZodArray, NO_SYMBOL_KEYS, $ZodObject, $ZodObjectJIT, $ZodUnion, $ZodXor, $ZodDiscriminatedUnion, $ZodIntersection, $ZodTuple, $ZodRecord, $ZodMap, $ZodSet, $ZodEnum, $ZodLiteral, $ZodFile, $ZodTransform, $ZodOptional, $ZodExactOptional, $ZodNullable, $ZodDefault, $ZodPrefault, $ZodNonOptional, $ZodSuccess, $ZodCatch, $ZodNaN, $ZodPipe, $ZodCodec, $ZodPreprocess, $ZodReadonly, $ZodTemplateLiteral, $ZodFunction, $ZodPromise, $ZodLazy, $ZodCustom;
 var init_schemas = __esm({
   "node_modules/zod/v4/core/schemas.js"() {
     init_checks2();
@@ -19774,6 +19856,9 @@ var init_schemas = __esm({
         return payload;
       };
     });
+    arraySize = (input2) => Array.isArray(input2) ? input2.length : -1;
+    mapSize = (input2) => input2 instanceof Map ? input2.size : -1;
+    setSize = (input2) => input2 instanceof Set ? input2.size : -1;
     $ZodArray = /* @__PURE__ */ $constructor("$ZodArray", (inst, def) => {
       $ZodType.init(inst, def);
       const memo2 = globalConfig.memoizer;
@@ -19811,6 +19896,7 @@ var init_schemas = __esm({
         }
         return payload;
       };
+      capSize(inst, arraySize);
     });
     NO_SYMBOL_KEYS = [];
     $ZodObject = /* @__PURE__ */ $constructor("$ZodObject", (inst, def) => {
@@ -20449,6 +20535,7 @@ var init_schemas = __esm({
           return Promise.all(proms).then(() => payload);
         return payload;
       };
+      capSize(inst, mapSize);
     });
     $ZodSet = /* @__PURE__ */ $constructor("$ZodSet", (inst, def) => {
       $ZodType.init(inst, def);
@@ -20485,6 +20572,7 @@ var init_schemas = __esm({
           return Promise.all(proms).then(() => payload);
         return payload;
       };
+      capSize(inst, setSize);
     });
     $ZodEnum = /* @__PURE__ */ $constructor("$ZodEnum", (inst, def) => {
       $ZodType.init(inst, def);
@@ -30274,9 +30362,15 @@ function generateNullableCheck(doc, ctx, schema, accessor, buildsValue = true) {
   doc.write(`}`);
   return outputVar;
 }
+function generateSizeGate(doc, schema, size) {
+  for (const [max, check3] of sizeCaps(schema._zod.def.checks)) {
+    doc.write(`if (${size} > ${numericOperand(max, check3._zod.def.check)}) return INVALID;`);
+  }
+}
 function generateArrayCheck(doc, ctx, schema, accessor, buildsValue = true) {
   const def = schema._zod.def;
   doc.write(`if (!Array.isArray(${accessor})) return INVALID;`);
+  generateSizeGate(doc, schema, `${accessor}.length`);
   const outputVar = buildsValue ? newVar(ctx) : null;
   const iVar = newVar(ctx);
   const elemVar = newVar(ctx);
@@ -30676,6 +30770,7 @@ function literalPropertyKey(ctx, key) {
 function generateMapCheck(doc, ctx, schema, accessor) {
   const def = schema._zod.def;
   doc.write(`if (!(${accessor} instanceof Map)) return INVALID;`);
+  generateSizeGate(doc, schema, `${accessor}.size`);
   const outputVar = newVar(ctx);
   const kVar = newVar(ctx);
   const valVar = newVar(ctx);
@@ -30692,6 +30787,7 @@ function generateMapCheck(doc, ctx, schema, accessor) {
 function generateSetCheck(doc, ctx, schema, accessor) {
   const def = schema._zod.def;
   doc.write(`if (!(${accessor} instanceof Set)) return INVALID;`);
+  generateSizeGate(doc, schema, `${accessor}.size`);
   const outputVar = newVar(ctx);
   const valVar = newVar(ctx);
   doc.write(`const ${outputVar} = new Set();`);
